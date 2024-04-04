@@ -1,13 +1,20 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/Card.astro";
 ---
 
 <Layout title="Welcome to Astro.">
-	<main>
-		<h1>Welcome to Astro</h1>
-		<p>
-			To get started, open the directory <code>src/pages</code> in your project.<br />
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
-		</p>
-	</main>
+  <main class="flex flex-col gap-8 sm:gap-16">
+    <section class="flex flex-col items-start gap-3 sm:gap-4">
+      <h1 class="mb-0">Netlify Platform Starter - Astro.js</h1>
+      <p class="text-lg">Get started with Astro.js and Netlify in seconds.</p>
+      <a
+        href="https://docs.netlify.com/frameworks/astro/"
+        class="btn btn-lg btn-primary sm:btn-wide"
+      >
+        Read the Docs
+      </a>
+      <Card title="Random Title" text="Long random text about Astro.js. Get started with Astro.js and Netlify in seconds." />
+    </section>
+  </main>
 </Layout>

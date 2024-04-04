@@ -1,6 +1,7 @@
 ---
 import '../../src/styles/globals.css';
 import Header from "../components/Header.astro"
+import Footer from "../components/Footer.astro"
 interface Props {
 	title: string;
 }
@@ -23,6 +24,7 @@ const { title } = Astro.props;
 			<div class="flex flex-col w-full max-w-5xl mx-auto grow">
 				<Header />
 				<slot />
+				<Footer />
 			</div>
 		</div>
 	</body>

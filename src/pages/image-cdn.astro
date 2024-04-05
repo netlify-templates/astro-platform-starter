@@ -1,0 +1,41 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Image CDN">
+  <main class="flex flex-col gap-8 sm:gap-16">
+    <div class="flex flex-col gap-6 sm:gap-12">
+      <section class="flex flex-col items-start gap-6 sm:gap-8">
+          <h1 class="mb-0">Image CDN</h1>
+      </section>
+      <section>
+          <h2 class="mb-4 text-2xl font-bold sm:text-3xl">Using next/image component</h2>
+          <div
+              class="relative max-w-screen-lg mt-8 overflow-hidden border-2 border-white rounded-lg"
+              style={{ aspectRatio: '3/2' }}
+          >
+              <img
+                  src="/images/corgi.jpg"
+                  alt="Corgi"
+              />
+          </div>
+          <span class="text-sm italic">
+              Credit: photo by{' '}
+              <a href="https://unsplash.com/@alvannee?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">
+                  Alvan Nee
+              </a>{' '}
+              on{' '}
+              <a href="https://unsplash.com/photos/long-coated-white-and-brown-dog-lvFlpqEvuRM?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">
+                  Unsplash
+              </a>
+          </span>
+      </section>
+      <section>
+          <h2 class="mb-4 text-2xl font-bold sm:text-3xl">
+              Original vs. optimized image: can you tell the difference?
+          </h2>
+      </section>
+    </div>
+  </main>
+</Layout>
+

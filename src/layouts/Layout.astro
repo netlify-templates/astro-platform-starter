@@ -1,10 +1,10 @@
 ---
 import '../../src/styles/globals.css';
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
-	title: string;
+    title: string;
 }
 
 const { title } = Astro.props;
@@ -12,20 +12,20 @@ const { title } = Astro.props;
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<title>{title}</title>
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-	</head>
-	<body class="antialiased text-white bg-blue-900">
-		<div class="flex flex-col min-h-screen px-6 bg-grid-pattern sm:px-12">
-			<div class="flex flex-col w-full max-w-5xl mx-auto grow">
-				<Header />
-				<div class="grow"><slot /></div>
-				<Footer />
-			</div>
-		</div>
-	</body>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{title}</title>
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    </head>
+    <body class="antialiased text-white bg-teal-600">
+        <div class="flex flex-col min-h-screen px-6 bg-grid-pattern sm:px-12">
+            <div class="flex flex-col w-full max-w-5xl mx-auto grow">
+                <Header />
+                <main class="grow"><slot /></main>
+                <Footer />
+            </div>
+        </div>
+    </body>
 </html>

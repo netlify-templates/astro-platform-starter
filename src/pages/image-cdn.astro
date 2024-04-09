@@ -1,12 +1,20 @@
 ---
 import { Image } from 'astro:assets';
+import ContextAlert from '../components/ContextAlert.astro';
 import Layout from '../layouts/Layout.astro';
 import Markdown from '../components/Markdown.astro';
-import corgi from './_assets/corgi.jpg';
+import corgi from '../assets/corgi.jpg';
+import { getNetlifyContext } from '../utils';
 
-const sampleImageSrc = '/images/corgi.jpg';
+const sampleImage = '/images/corgi.jpg';
+
+const ctx = getNetlifyContext();
+const forceWebP = ctx === 'dev';
+const sampleImageNetlify = `/.netlify/images?url=${sampleImage}${forceWebP ? '&fm=webp' : ''}`;
 
 const astroImageSnippet = `
+## Using built-in Astro &lt;Image /&gt; component
+
 When running on Netlify, \`next/image\` is automatically set-up to use Netlify Image CDN for optimized images.
 
 ~~~jsx
@@ -18,6 +26,8 @@ import Image from 'next/image';
 `;
 
 const originalVsCdnSnippet = `
+## Original vs. optimized image: can you tell the difference?
+
 In the code below, a regular \`<img>\` tag is used in both cases for a framework-agnostic example. 
 Other than using \`next/image\` or rolling your own \`<img>\` tags, you can also use the excellent [unpic-img](https://unpic.pics/).
 
@@ -33,37 +43,41 @@ Other than using \`next/image\` or rolling your own \`<img>\` tags, you can also
 />
 ~~~
 `;
+
+const devModeWarning = `
+In local development, optimization is performed locally without automatic format
+detection, so format is set to WebP.
+`;
 ---
 
 <Layout title="Image CDN">
-    <div class="flex flex-col gap-8 sm:gap-16">
-        <section>
-            <h1 class="mb-0">Image CDN</h1>
+    <div class="flex flex-col gap-12 sm:gap-16">
+        <section class="space-y-8">
+            <ContextAlert addedChecksFunction={
+                (ctx) => {
+                    return ctx === "dev" ? devModeWarning : null;
+                }
+            } />
+            <h1>Image CDN</h1>
         </section>
         <section>
-            <h2 class="mb-6 text-2xl font-bold sm:text-3xl">Using built-in Astro &lt;Image /&gt; component</h2>
             <Markdown content={astroImageSnippet} class="mb-8" />
             <figure>
                 <Image src={corgi} alt="Corgi" class="border-2 border-white rounded-lg" />
                 <figcaption class="mt-2 text-sm italic">
-                    Credit: photo by <a href="https://unsplash.com/@alvannee?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Alvan Nee</a> on
-                    <a
-                        href="https://unsplash.com/photos/long-coated-white-and-brown-dog-lvFlpqEvuRM?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
-                    >
-                        Unsplash
-                    </a>
+                    Credit: photo by <a href="https://unsplash.com/@alvannee">Alvan Nee</a> on
+                    <a href="https://unsplash.com/photos/long-coated-white-and-brown-dog-lvFlpqEvuRM"> Unsplash </a>
                 </figcaption>
             </figure>
         </section>
         <section>
-            <h2 class="mb-6 text-2xl font-bold sm:text-3xl">Original vs. optimized image: can you tell the difference?</h2>
             <Markdown content={originalVsCdnSnippet} class="mb-8" />
             <div class="diff aspect-[3/2] rounded-lg border-2 border-white">
                 <div class="diff-item-1">
                     <div>
                         <div class="relative">
                             <span class="hidden absolute py-1.5 px-2.5 text-sm rounded-lg bg-neutral-900/70 top-2.5 right-2.5"></span>
-                            <img src={`/.netlify/images?url=${sampleImageSrc}`} alt="Corgi" />
+                            <img src={sampleImageNetlify} alt="Corgi" />
                         </div>
                     </div>
                 </div>
@@ -71,7 +85,7 @@ Other than using \`next/image\` or rolling your own \`<img>\` tags, you can also
                     <div>
                         <div class="relative">
                             <span class="hidden absolute py-1.5 px-2.5 text-sm rounded-lg bg-neutral-900/70 top-2.5 left-2.5"></span>
-                            <img src={sampleImageSrc} alt="Corgi" />
+                            <img src={sampleImage} alt="Corgi" />
                         </div>
                     </div>
                 </div>

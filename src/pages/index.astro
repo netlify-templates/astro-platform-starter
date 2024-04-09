@@ -1,20 +1,13 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card.astro";
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
 ---
 
 <Layout title="Welcome to Astro.">
-  <main class="flex flex-col gap-8 sm:gap-16">
-    <section class="flex flex-col items-start gap-3 sm:gap-4">
-      <h1 class="mb-0">Netlify Platform Starter - Astro.js</h1>
-      <p class="text-lg">Get started with Astro.js and Netlify in seconds.</p>
-      <a
-        href="https://docs.netlify.com/frameworks/astro/"
-        class="btn btn-lg btn-primary sm:btn-wide"
-      >
-        Read the Docs
-      </a>
-      <Card title="Random Title" text="Long random text about Astro.js. Get started with Astro.js and Netlify in seconds." />
-    </section>
-  </main>
+    <h1 class="mb-8">Netlify Platform Starter - Astro.js</h1>
+    <p class="mb-6 text-lg">Get started with Astro.js and Netlify in seconds.</p>
+    <p class="mb-8">
+        <a href="https://docs.netlify.com/frameworks/astro/" class="btn btn-lg btn-primary sm:btn-wide">Read the Docs</a>
+    </p>
+    <Card title="Random Title" text="Long random text about Astro.js. Get started with Astro.js and Netlify in seconds." />
 </Layout>

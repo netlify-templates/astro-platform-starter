@@ -6,15 +6,19 @@
 
 @layer base {
     h1 {
-        @apply mb-6 text-4xl font-bold tracking-tight sm:text-5xl;
+        @apply text-4xl font-bold tracking-tight sm:text-5xl;
+    }
+
+    h2 {
+        @apply text-2xl font-bold sm:text-3xl
     }
 
     a {
-        @apply underline;
+        @apply underline transition hover:opacity-80;
     }
 
     pre {
-        @apply overflow-x-auto p-6 rounded-lg;
+        @apply p-6 overflow-x-auto rounded-lg;
     }
 
     :not(pre) > code {
@@ -22,7 +26,13 @@
         font-size: 0.9em;
     }
 
-    .markdown > * {
+    .markdown > h1,
+    .markdown > h2 {
+        @apply mt-12 mb-6;
+    }
+
+    .markdown > p,
+    .markdown > pre {
         @apply my-6;
     }
 

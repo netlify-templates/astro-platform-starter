@@ -1,8 +1,17 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from '../layouts/Layout.astro';
+import ShapeEditor from '../components/ShapeEditor.astro';
+import StoredBlobsList from '../components/StoredBlobsList.astro';
 ---
 
 <Layout title="Blobs">
-      <h1 class="mb-8">Blobs x Blobs</h1>
-      <p class="text-lg">Get started with Astro.js and Netlify in seconds.</p>
+    <h1 class="mb-8">Blobs x Blobs</h1>
+    <div class="flex flex-col gap-8 md:flex-row">
+        <div class="flex-1">
+            <ShapeEditor />
+        </div>
+        <div class="flex-1">
+            <StoredBlobsList />
+        </div>
+    </div>
 </Layout>

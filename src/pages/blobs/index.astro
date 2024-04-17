@@ -2,7 +2,6 @@
 import Layout from '../../layouts/Layout.astro';
 import Markdown from '../../components/Markdown.astro';
 import ShapeEditor from './_components/ShapeEditor.tsx';
-import { getNetlifyContext } from '../../utils';
 
 const explainer = `
 [Netlify Blobs](https://docs.netlify.com/blobs/overview/) provides an object store for any kind of data, be it JSON, binary, 
@@ -12,12 +11,6 @@ or [really](https://mk.gg/projects/chalkstream) anything else ([really!](https:/
 
 <Layout title="Blobs">
     <h1 class="mb-8">Blobs x Blobs</h1>
-    {
-        !!getNetlifyContext() && (
-            <>
-                <Markdown content={explainer} class="mb-12" />
-                <ShapeEditor client:load />
-            </>
-        )
-    }
+    <Markdown content={explainer} class="mb-12" />
+    <ShapeEditor client:load />
 </Layout>

@@ -14,7 +14,7 @@ export const POST: APIRoute = async ({ request }) => {
 };
 
 export const GET: APIRoute = async ({ request }) => {
-    const blobStore = getStore('shapes');
+    const blobStore = getStore({ name: 'shapes', consistency: 'strong' });
     const data = await blobStore.list();
     const keys = data.blobs.map(({ key }) => key);
     return new Response(

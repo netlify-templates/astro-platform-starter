@@ -39,11 +39,10 @@ const exampleTag = tags[randomInt(0, tags.length - 1)];
 ---
 
 <Layout title="Revalidation">
-    <ContextAlert class="mb-4" />
     <h1 class="mb-10">Revalidating Server Content</h1>
     <Markdown content={explainer} class="text-lg mb-10" />
     <button class="revalidate-button btn btn-primary" data-tag={exampleTag}>Invalidate tag: {exampleTag}</button>
-    <button class="revalidate-button btn btn-primary" onclick="location.reload()">Reload page</button>
+    <button class="btn btn-primary" onclick="location.reload()">Reload page</button>
 </Layout>
 
 <script>

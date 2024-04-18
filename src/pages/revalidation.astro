@@ -32,15 +32,11 @@ Use the button below to invlidate a random tag out of this page's tags, then ref
 `;
 
 const exampleTag = tags[randomInt(0, tags.length - 1)];
-
-//Astro.response.headers.set('Cache-Control', 'public, max-age=0, must-revalidate'); // Tell browsers to always revalidate
-//Astro.response.headers.set('Netlify-CDN-Cache-Control', 'public, max-age=31536000, must-revalidate'); // Tell Edge to cache asset for up to a year,
-//Astro.response.headers.set('Cache-Tag', 'cats4u');
 ---
 
 <Layout title="Revalidation">
     <h1 class="mb-10">Revalidating Server Content</h1>
-    <Markdown content={explainer} class="text-lg mb-10" />
+    <Markdown content={explainer} class="mb-10" />
     <button class="revalidate-button btn btn-primary" data-tag={exampleTag}>Invalidate tag: {exampleTag}</button>
     <button class="btn btn-primary" onclick="location.reload()">Reload page</button>
 </Layout>

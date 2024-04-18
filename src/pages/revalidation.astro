@@ -8,10 +8,10 @@ export const prerender = false;
 
 const tags = ['/revalidation', 'cats-related', 'all-pets-related'];
 const headers = cacheHeaders(365, tags);
-Object.entries(cacheHeaders).map(([k, v]) => {
+
+Object.entries(headers).map(([k, v]) => {
     Astro.response.headers.set(k, v);
 });
-const exampleTag = tags[randomInt(0, tags.length - 1)];
 
 const explainer = `
 This is a server-rendered page, last created at \`${new Date().toUTCString()}\` with a few extra response headers:
@@ -30,6 +30,8 @@ a performance hit as pages are being rebuilt.
 
 Use the button below to invlidate a random tag out of this page's tags, then refresh the page.
 `;
+
+const exampleTag = tags[randomInt(0, tags.length - 1)];
 
 //Astro.response.headers.set('Cache-Control', 'public, max-age=0, must-revalidate'); // Tell browsers to always revalidate
 //Astro.response.headers.set('Netlify-CDN-Cache-Control', 'public, max-age=31536000, must-revalidate'); // Tell Edge to cache asset for up to a year,

@@ -1,0 +1,42 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+import ContextAlert from '../components/ContextAlert.astro';
+import Markdown from '../components/Markdown.astro';
+
+export const prerender = false;
+
+const explainer = `
+${Date.now().toLocaleString()}
+Blah
+`;
+
+Astro.response.headers.set('Cache-Control', 'public, max-age=0, must-revalidate'); // Tell browsers to always revalidate
+Astro.response.headers.set('Netlify-CDN-Cache-Control', 'public, max-age=31536000, must-revalidate'); // Tell Edge to cache asset for up to a year,
+Astro.response.headers.set('Cache-Tag', 'example');
+---
+
+<Layout title="Revalidation">
+    <ContextAlert class="mb-4" />
+    <h1 class="mb-10">Revalidating Server Content</h1>
+    <Markdown content={explainer} class="text-lg mb-10" />
+    <button class="revalidate-button btn btn-primary">Revalidate</button>
+</Layout>
+
+<script>
+    function revalidate() {
+        fetch('/api/revalidate', {
+            method: 'POST',
+            body: JSON.stringify({ tags: ['example'] }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+
+    // Find all buttons with the `alert` class on the page.
+    const revalidateButton = document.querySelectorAll('button.revalidate-button')[0];
+    revalidateButton.addEventListener('click', () => {
+        revalidate();
+    });
+</script>

@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { getStore } from '@netlify/blobs';
 
+export const prerender = false;
+
 export const GET: APIRoute = async (context) => {
     const urlParams = new URL(context.url);
     const key = urlParams.searchParams.get('key');

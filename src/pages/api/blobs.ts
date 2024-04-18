@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { getStore } from '@netlify/blobs';
 
+export const prerender = false;
+
 export const POST: APIRoute = async ({ request }) => {
     const parameters = await request.json();
     const blobStore = getStore('shapes');

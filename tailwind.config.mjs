@@ -22,11 +22,11 @@ export default {
             {
                 lofi: {
                     ...require('daisyui/src/theming/themes')['lofi'],
-                    primary: '#ffb454',
-                    'primary-content': '#11151c',
-                    secondary: '#d95757',
-                    info: '#ffb454',
-                    'info-content': '#11151c'
+                    primary: '#F67280',
+                    'primary-content': '#1f1f1f',
+                    secondary: '#C06C84',
+                    info: '#F67280',
+                    'info-content': '#1f1f1f'
                 }
             }
         ]

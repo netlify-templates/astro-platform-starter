@@ -10,7 +10,7 @@
     }
 
     h2 {
-        @apply text-2xl font-bold sm:text-3xl
+        @apply text-2xl font-bold sm:text-3xl;
     }
 
     a {
@@ -22,7 +22,7 @@
     }
 
     :not(pre) > code {
-        @apply px-1 py-0.5 font-mono rounded bg-neutral-900 text-yellow-200;
+        @apply px-1 py-0.5 font-mono rounded bg-[#0b0e14] text-[#ffb454];
         font-size: 0.9em;
     }
 }

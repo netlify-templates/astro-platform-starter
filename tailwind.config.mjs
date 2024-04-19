@@ -3,7 +3,7 @@ const colors = require('tailwindcss/colors');
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 export default {
-	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+    content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
     theme: {
         extend: {
             backgroundImage: {
@@ -22,14 +22,14 @@ export default {
             {
                 lofi: {
                     ...require('daisyui/src/theming/themes')['lofi'],
-                    primary: '#fbb13d',
-                    'primary-content': '#171717',
-                    secondary: '#0f766e',
-                    info: '#fbb13d',
-                    'info-content': '#171717',
+                    primary: '#ffb454',
+                    'primary-content': '#11151c',
+                    secondary: '#d95757',
+                    info: '#ffb454',
+                    'info-content': '#11151c'
                 }
             }
         ]
     },
-	plugins: [require('daisyui')],
-}
+    plugins: [require('daisyui')]
+};

@@ -16,7 +16,7 @@ const { content, class: className } = Astro.props;
 // with the loaded themes and languages.
 const highlighter = await getHighlighter({
     langs: ['jsx', 'js'],
-    themes: ['poimandres']
+    themes: ['min-dark']
 });
 const html = await new Marked()
     .use(
@@ -24,7 +24,7 @@ const html = await new Marked()
             highlight(code, lang, props) {
                 return highlighter.codeToHtml(code, {
                     lang,
-                    theme: 'poimandres'
+                    theme: 'min-dark'
                 });
             }
         })

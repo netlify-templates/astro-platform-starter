@@ -10,18 +10,25 @@ const sampleImage = '/images/corgi.jpg';
 
 const ctx = getNetlifyContext();
 const forceWebP = ctx === 'dev';
-const sampleImageNetlify = `/.netlify/images?url=${sampleImage}${forceWebP ? '&fm=webp' : ''}`;
+const sampleImageSrcSet = [640, 1280, 2048]
+    .map((size) => {
+        return `/.netlify/images?url=${sampleImage}&w=${size}${forceWebP ? '&fm=webp' : ''} ${size}w`;
+    })
+    .join(', ');
+const sizes = '(max-width: 1024px) 100vw, 1024px';
 
 const astroImageSnippet = `
-## Using built-in Astro &lt;Image /&gt; component
+## Using the built-in Astro &lt;Image /&gt; component
 
-When running on Netlify, \`next/image\` is automatically set-up to use Netlify Image CDN for optimized images.
+Astro's \`Image\` component will automatically use Netlify Image CDN to serve optimized images.
 
 ~~~jsx
-import Image from 'next/image';
-
-// In your component
-<Image src="/images/corgi.jpg" alt="Corgi" /* ... additional props */ />
+---
+import { Image } from 'astro:assets';
+import corgi from '../assets/corgi.jpg';
+---
+// Later in your markup...
+<Image src={corgi} alt="Corgi" /* ... additional props */ />
 ~~~
 `;
 
@@ -29,7 +36,7 @@ const originalVsCdnSnippet = `
 ## Original vs. optimized image: can you tell the difference?
 
 In the code below, a regular \`<img>\` tag is used in both cases for a framework-agnostic example. 
-Other than using \`next/image\` or rolling your own \`<img>\` tags, you can also use the excellent [unpic-img](https://unpic.pics/).
+Note that aside from Astro's \`Image\` or rolling your own \`<img>\` tags, you can also use the excellent [unpic-img](https://unpic.pics/) package.
 
 ~~~jsx
 // <== On the left, the original image
@@ -37,8 +44,8 @@ Other than using \`next/image\` or rolling your own \`<img>\` tags, you can also
 
 // ==> On the right, explicitly using Netlify Image CDN endpoint for a responsive image
 <img 
-  srcSet="/.netlify/images?url=images/corgi.jpg&w=640 640w, /.netlify/images?url=images/corgi.jpg&w=1280 1280w, /.netlify/images?url=images/corgi.jpg&w=2048 2048w"
-  sizes="(max-width: 1024px) 100vw, 1024px" 
+  srcSet="${sampleImageSrcSet}"
+  sizes="${sizes}" 
   alt="Corgi" 
 />
 ~~~
@@ -53,11 +60,11 @@ detection, so format is set to WebP.
 <Layout title="Image CDN">
     <div class="flex flex-col gap-12 sm:gap-16">
         <section class="space-y-8">
-            <ContextAlert addedChecksFunction={
-                (ctx) => {
-                    return ctx === "dev" ? devModeWarning : null;
-                }
-            } />
+            <ContextAlert
+                addedChecksFunction={(ctx) => {
+                    return ctx === 'dev' ? devModeWarning : null;
+                }}
+            />
             <h1>Image CDN</h1>
         </section>
         <section>
@@ -77,7 +84,7 @@ detection, so format is set to WebP.
                     <div>
                         <div class="relative">
                             <span class="hidden absolute py-1.5 px-2.5 text-sm rounded-lg bg-neutral-900/70 top-2.5 right-2.5"></span>
-                            <img src={sampleImageNetlify} alt="Corgi" />
+                            <img srcset={sampleImageSrcSet} alt="Corgi" />
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,7 +8,7 @@
     }
 
     h2 {
-        @apply text-2xl font-bold sm:text-3xl
+        @apply text-2xl font-bold sm:text-3xl;
     }
 
     a {
@@ -22,10 +20,12 @@
     }
 
     :not(pre) > code {
-        @apply px-1 py-0.5 font-mono rounded bg-neutral-900 text-yellow-200;
+        @apply px-1 py-0.5 font-mono rounded bg-[#1f1f1f] text-[#F67280];
         font-size: 0.9em;
     }
+}
 
+@layer components {
     .markdown > h1,
     .markdown > h2 {
         @apply mt-12 mb-6;

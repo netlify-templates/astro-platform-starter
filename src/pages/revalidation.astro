@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ContextAlert from '../components/ContextAlert.astro';
+import Markdown from '../components/Markdown.astro';
+import { cacheHeaders, randomInt } from '../utils';
+
+export const prerender = false;
+
+const tags = ['/revalidation', 'cats-related', 'all-pets-related'];
+const headers = cacheHeaders(365, tags);
+
+Object.entries(headers).map(([k, v]) => {
+    Astro.response.headers.set(k, v);
+});
+
+const explainer = `
+This is a server-rendered page, last created at \`${new Date().toUTCString()}\` with a few extra response headers:
+
+~~~js
+${JSON.stringify(headers, null, 2)}
+~~~
+
+Meaning: **for browsers,** this is a non-cacheable page. At the **CDN level,** it *is* cacheable for up to a year (and Netlify also automatically busts the cache on new deployments, by default).
+
+But there's something more: the \`Cache-Tag\` header, in tandem with the [purge API](https://docs.netlify.com/platform/caching/#on-demand-invalidation), allows a developer to invalidate at will any
+pieces of content (pages, JSON responses, or whatnot) based on the tags associated with them. Tags are completely up to you to decide on, and allow for very powerful patterns.
+
+In real-world applications, you may want to use [stale-while-revalidate](https://docs.netlify.com/platform/caching/#stale-while-revalidate-directive) as well, so that end-users don't experience 
+a performance hit as pages are being rebuilt.
+
+Use the button below to invlidate a random tag out of this page's tags, then refresh the page.
+`;
+
+const exampleTag = tags[randomInt(0, tags.length - 1)];
+---
+
+<Layout title="Revalidation">
+    <h1 class="mb-10">Revalidating Server Content</h1>
+    <Markdown content={explainer} class="mb-10" />
+    <button class="revalidate-button btn btn-primary" data-tag={exampleTag}>Invalidate tag: {exampleTag}</button>
+    <button class="btn btn-primary" onclick="location.reload()">Reload page</button>
+</Layout>
+
+<script>
+    function revalidate(tag: string) {
+        fetch('/api/revalidate', {
+            method: 'POST',
+            body: JSON.stringify({ tags: [tag] }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        alert(`Invalidated tag: ${tag}`);
+    }
+
+    const revalidateButton = document.querySelectorAll('button.revalidate-button')[0];
+    revalidateButton.addEventListener('click', (e) => {
+        const tag = (e.target as HTMLButtonElement).getAttribute('data-tag');
+        revalidate(tag);
+    });
+</script>

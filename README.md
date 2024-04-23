@@ -1,4 +1,4 @@
-# Astro.js on Netlify Platform Starter
+# Astro on Netlify Platform Starter
 
 ## Commands
 

@@ -3,7 +3,7 @@ const colors = require('tailwindcss/colors');
 const defaultTheme = require('tailwindcss/defaultTheme');
 const fs = require('fs');
 
-const noiseBitmap = fs.readFileSync('./public/images/noise.png', { encoding: 'base64' });
+const noiseBitmap = fs.readFileSync('./src/assets/noise.png', { encoding: 'base64' });
 const noiseDataUri = 'data:image/png;base64,' + noiseBitmap;
 
 export default {

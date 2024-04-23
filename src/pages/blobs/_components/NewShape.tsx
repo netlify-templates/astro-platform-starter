@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import ShapePreview from './ShapePreview.tsx';
-import { generateBlob } from '../../../utils';
+import { generateBlob, uploadDisabled } from '../../../utils';
 import type { BlobProps } from '../../../types.ts';
 
 interface Props {
@@ -51,7 +51,7 @@ export default function NewShape(props: Props) {
                 <button className="btn btn-primary" onClick={randomizeBlob}>
                     Randomize
                 </button>
-                <button className="btn btn-primary" onClick={uploadBlob} disabled={wasUploaded || !blobData}>
+                <button className="btn btn-primary" onClick={uploadBlob} disabled={uploadDisabled || wasUploaded || !blobData}>
                     Upload
                 </button>
             </div>

@@ -53,3 +53,5 @@ export function cacheHeaders(maxAgeDays = 365, cacheTags?: string[]): Record<str
     if (cacheTags?.length > 0) headers['Cache-Tag'] = cacheTags.join(',');
     return headers;
 }
+
+export const uploadDisabled = import.meta.env.PUBLIC_DISABLE_UPLOADS?.toLowerCase() === 'true';

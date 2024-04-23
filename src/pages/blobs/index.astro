@@ -2,6 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import Markdown from '../../components/Markdown.astro';
 import ShapeEditor from './_components/ShapeEditor.tsx';
+import { uploadDisabled } from '../../utils';
+import ContextAlert from '../../components/ContextAlert.astro';
 
 const explainer = `
 [Netlify Blobs](https://docs.netlify.com/blobs/overview/) provides an object store for any kind of data, be it JSON, binary, 
@@ -9,9 +11,22 @@ or [really](https://mk.gg/projects/chalkstream) anything else ([really!](https:/
 
 Below is an Astro island with a React component for editing, uploading and viewing blobs to the blob store 🙂.
 `;
+
+const uploadDisabledText = `
+User uploads are disabled in this site. To run your own and try it out: 
+<a href="https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/astro-platform-starter">
+<img src="https://www.netlify.com/img/deploy/button.svg" style="display: inline;" alt="Deploy to Netlify" />
+</a>
+`;
 ---
 
 <Layout title="Blobs">
+    <ContextAlert
+        addedChecksFunction={() => {
+            return uploadDisabled ? uploadDisabledText : null;
+        }}
+        class="mb-6"
+    />
     <h1 class="mb-8">Blobs x Blobs</h1>
     <Markdown content={explainer} class="mb-12" />
     <ShapeEditor client:load />

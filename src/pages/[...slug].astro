@@ -1,0 +1,30 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+    const pages = await getCollection('pages');
+    return pages.map((page) => {
+        return {
+            params: { slug: page.slug },
+            props: { page }
+        };
+    });
+}
+
+type Props = { page: CollectionEntry<'pages'> };
+
+const { page } = Astro.props;
+const { title } = page.data;
+const { Content } = await page.render();
+---
+
+<div>
+    <article class="mb-16 sm:mb-24">
+        <header class="mb-8">
+            <h1 class="font-serif text-3xl font-medium leading-tight sm:text-5xl sm:leading-tight">{title}</h1>
+        </header>
+        <div class="prose max-w-none sm:prose-lg">
+            <Content />
+        </div>
+    </article>
+</div>

@@ -14,7 +14,6 @@ sections:
       type: button
       label: Get Started
       url: /
-    theme: light
     layout: imgRight
     background: primary
   - type: quote

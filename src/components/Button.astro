@@ -1,0 +1,13 @@
+---
+interface Props {
+    label?: string;
+    url?: string;
+    class?: string;
+}
+
+const { label, url, class: className } = Astro.props;
+---
+
+<a href={url ?? '/'} class={className} data-sb-field-path={Astro.props['data-sb-field-path']}>
+    <span data-sb-field-path=".label">{label}</span>
+</a>

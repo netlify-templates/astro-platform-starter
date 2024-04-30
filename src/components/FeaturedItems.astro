@@ -1,0 +1,60 @@
+---
+interface Props {
+    heading?: string;
+    body?: any;
+    items?: any;
+    image?: any;
+    background?: 'none' | 'light' | 'primary';
+    class?: string;
+}
+
+import Markdown from './Markdown.astro';
+
+const { heading, body, items, image, background } = Astro.props;
+
+const bgClassMap = {
+    none: '',
+    light: 'px-8 py-12 bg-white text-neutral-900 rounded md:px-12 md:py-16',
+    primary: 'px-8 py-12 bg-primary text-neutral-900 rounded md:px-12 md:py-16'
+};
+---
+
+<div class={bgClassMap[background] ?? bgClassMap['none']} data-sb-field-path={Astro.props['data-sb-field-path']}>
+    {
+        heading && (
+            <h2 class="text-3xl font-bold text-center sm:text-4xl" data-sb-field-path=".heading">
+                {heading}
+            </h2>
+        )
+    }
+    {body && <Markdown content={body} class={`text-center ${heading && 'mt-2'} sm:text-lg`} data-sb-field-path=".body" />}
+    {
+        items?.length > 0 && (
+            <div class={`grid gap-6 ${(heading || body) && 'mt-12'} sm:grid-cols-3 md:gap-12`}>
+                {items.map((item, idx) => (
+                    <div class="border-2 border-current border-dashed card card-compact" data-sb-field-path={`.items.${idx}`}>
+                        <div class="card-body">
+                            {image?.src && (
+                                <figure class="w-full aspect-[4/3] relative">
+                                    <img
+                                        src={image?.src}
+                                        alt={image?.alt || ''}
+                                        class="object-cover rounded"
+                                        sizes="(max-width: 767px) 100vw, (max-width: 1200px) 50vw, 600px"
+                                        data-sb-field-path=".image"
+                                    />
+                                </figure>
+                            )}
+                            {heading && (
+                                <h3 class="card-title" data-sb-field-path=".heading">
+                                    {heading}
+                                </h3>
+                            )}
+                            {body && <Markdown content={body} data-sb-field-path=".body" />}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        )
+    }
+</div>

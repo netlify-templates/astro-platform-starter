@@ -1,0 +1,58 @@
+---
+interface Props {
+    authorName?: string;
+    authorTitle?: string;
+    authorImage?: any;
+    background?: 'none' | 'light' | 'primary';
+    quote?: Text;
+    class?: string;
+}
+
+const { quote, authorName, authorTitle, authorImage, background } = Astro.props;
+
+const bgClassMap = {
+    none: '',
+    light: 'px-8 py-12 bg-white text-neutral-900 rounded md:px-12 md:py-16',
+    primary: 'px-8 py-12 bg-primary text-neutral-900 rounded md:px-12 md:py-16'
+};
+---
+
+<div class={bgClassMap[background] ?? bgClassMap['none']} data-sb-field-path={Astro.props['data-sb-field-path']}>
+    <blockquote class="flex flex-col items-center gap-8">
+        <p class="text-xl text-center sm:text-2xl max-w-[45ch]" data-sb-field-path=".quote">
+            {quote}
+        </p>
+        {
+            (authorName || authorTitle || authorImage?.src) && (
+                <footer class="flex items-center gap-4">
+                    {authorImage?.src && (
+                        <div class="w-16 sm:w-24 shrink-0 aspect-square">
+                            <img
+                                src={authorImage?.src}
+                                alt={authorImage?.alt || ''}
+                                width={96}
+                                height={96}
+                                class="object-cover w-full h-full rounded-full"
+                                data-sb-field-path=".authorImage"
+                            />{' '}
+                        </div>
+                    )}
+                    {(authorName || authorTitle) && (
+                        <div class={authorImage?.src ? 'text-left' : 'text-center'}>
+                            {authorName && (
+                                <p class="sm:text-lg" data-sb-field-path=".authorName">
+                                    {authorName}
+                                </p>
+                            )}
+                            {authorTitle && (
+                                <p class="text-sm sm:text-base" data-sb-field-path=".authorName">
+                                    {authorTitle}
+                                </p>
+                            )}
+                        </div>
+                    )}
+                </footer>
+            )
+        }
+    </blockquote>
+</div>

@@ -1,5 +1,9 @@
 ---
 import { type CollectionEntry, getCollection } from 'astro:content';
+import Layout from './../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import FeaturedItems from './../components/FeaturedItems.astro';
+import Quote from './../components/Quote.astro';
 
 export async function getStaticPaths() {
     const pages = await getCollection('pages');
@@ -14,17 +18,23 @@ export async function getStaticPaths() {
 type Props = { page: CollectionEntry<'pages'> };
 
 const { page } = Astro.props;
-const { title } = page.data;
-const { Content } = await page.render();
+const { title, sections } = page.data;
+
+const componentMap = {
+    featuredItems: FeaturedItems,
+    hero: Hero,
+    quote: Quote
+};
 ---
 
-<div>
-    <article class="mb-16 sm:mb-24">
-        <header class="mb-8">
-            <h1 class="font-serif text-3xl font-medium leading-tight sm:text-5xl sm:leading-tight">{title}</h1>
-        </header>
-        <div class="prose max-w-none sm:prose-lg">
-            <Content />
-        </div>
-    </article>
-</div>
+<Layout title={title}>
+    <div class="flex flex-col w-full gap-16 sm:gap-24" data-sb-object-id={['src/content/pages/', page.id].join('')}>
+        {
+            sections?.length &&
+                sections.map((section, idx) => {
+                    const Component = componentMap[section.type];
+                    return <Component {...section} data-sb-field-path={`sections.${idx}`} key={idx} />;
+                })
+        }
+    </div>
+</Layout>

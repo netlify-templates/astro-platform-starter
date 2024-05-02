@@ -32,4 +32,4 @@ const html = await new Marked()
     .parse(content);
 ---
 
-<div class:list={['markdown', className]} set:html={html} />
+<div class:list={['markdown', className]} set:html={html} data-sb-field-path={Astro.props['data-sb-field-path']} />

@@ -33,7 +33,7 @@ const componentMap = {
             sections?.length &&
                 sections.map((section, idx) => {
                     const Component = componentMap[section.type];
-                    return <Component {...section} data-sb-field-path={`sections.${idx}`} key={idx} />;
+                    return <Component {...section} data-sb-field-path={`sections.${idx}`} />;
                 })
         }
     </div>

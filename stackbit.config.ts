@@ -19,11 +19,11 @@ export default defineStackbitConfig({
             models: [button, featuredItems, hero, page, quote],
             assetsConfig: {
                 referenceType: 'static',
-                staticDir: 'public',
-                uploadDir: 'images',
-                publicPath: '/'
+                staticDir: 'src/content/pages',
+                uploadDir: '_images',
+                publicPath: '/src/content/pages/'
             }
         })
     ],
-    modelExtensions: [{ name: 'page', type: 'page', urlPath: '{slug}' }]
+    modelExtensions: [{ name: 'page', type: 'page', urlPath: '/{slug}' }]
 });

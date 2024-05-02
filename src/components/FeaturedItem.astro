@@ -1,0 +1,29 @@
+---
+import { Image } from 'astro:assets';
+import Markdown from './Markdown.astro';
+import { resolveImage } from '../content/pages/_resolveImage';
+
+const { heading, body, image } = Astro.props;
+
+const resolvedImage = await resolveImage(image?.src);
+---
+
+<div class="border-2 border-current border-dashed card card-compact" data-sb-field-path={Astro.props['data-sb-field-path']}>
+    <div class="card-body">
+        {
+            resolvedImage && (
+                <figure class="w-full aspect-[4/3] relative">
+                    <Image src={resolvedImage} alt={image?.alt || ''} width={600} class="w-full h-full object-cover rounded" data-sb-field-path=".image" />
+                </figure>
+            )
+        }
+        {
+            heading && (
+                <h3 class="card-title" data-sb-field-path=".heading">
+                    {heading}
+                </h3>
+            )
+        }
+        {body && <Markdown content={body} data-sb-field-path=".body" />}
+    </div>
+</div>

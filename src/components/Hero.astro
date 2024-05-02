@@ -1,60 +1,58 @@
 ---
-interface Props {
-    heading?: string;
-    body?: any;
-    items?: any;
-    image?: any;
-    background?: 'none' | 'light' | 'primary';
-    class?: string;
-}
-
+import { Image } from 'astro:assets';
+import Button from './Button.astro';
 import Markdown from './Markdown.astro';
+import { resolveImage } from '../content/pages/_resolveImage';
 
-const { heading, body, items, image, background } = Astro.props;
+const { heading, body, image, button, layout, background } = Astro.props;
+
+const resolvedImage = await resolveImage(image?.src);
+
+const layoutClassMap = {
+    imgLeft: 'md:flex-row-reverse',
+    imgRight: 'md:flex-row'
+};
 
 const bgClassMap = {
     none: '',
     light: 'px-8 py-12 bg-white text-neutral-900 rounded md:px-12 md:py-16',
     primary: 'px-8 py-12 bg-primary text-neutral-900 rounded md:px-12 md:py-16'
 };
+
+const btnClassMap = {
+    none: 'btn-primary',
+    light: 'btn-primary',
+    primary: 'btn-outline btn-accent'
+};
 ---
 
 <div class={bgClassMap[background] ?? bgClassMap['none']} data-sb-field-path={Astro.props['data-sb-field-path']}>
-    {
-        heading && (
-            <h2 class="text-3xl font-bold text-center sm:text-4xl" data-sb-field-path=".heading">
-                {heading}
-            </h2>
-        )
-    }
-    {body && <Markdown content={body} class={`text-center ${heading && 'mt-2'} sm:text-lg`} data-sb-field-path=".body" />}
-    {
-        items?.length > 0 && (
-            <div class={`grid gap-6 ${(heading || body) && 'mt-12'} sm:grid-cols-3 md:gap-12`}>
-                {items.map((item, idx) => (
-                    <div class="border-2 border-current border-dashed card card-compact" data-sb-field-path={`.items.${idx}`}>
-                        <div class="card-body">
-                            {image?.src && (
-                                <figure class="w-full aspect-[4/3] relative">
-                                    <img
-                                        src={image?.src}
-                                        alt={image?.alt || ''}
-                                        class="object-cover rounded"
-                                        sizes="(max-width: 767px) 100vw, (max-width: 1200px) 50vw, 600px"
-                                        data-sb-field-path=".image"
-                                    />
-                                </figure>
-                            )}
-                            {heading && (
-                                <h3 class="card-title" data-sb-field-path=".heading">
-                                    {heading}
-                                </h3>
-                            )}
-                            {body && <Markdown content={body} data-sb-field-path=".body" />}
-                        </div>
-                    </div>
-                ))}
-            </div>
-        )
-    }
+    <div class:list={['flex flex-col gap-12 md:items-center', layoutClassMap[layout] ?? layoutClassMap['imgRight']]}>
+        <div class="flex-1 w-full max-w-xl mx-auto space-y-6">
+            {
+                heading && (
+                    <h1 class="text-3xl font-bold sm:text-4xl" data-sb-field-path=".heading">
+                        {heading}
+                    </h1>
+                )
+            }
+            {body && <Markdown content={body} class="sm:text-lg" data-sb-field-path=".body" />}
+            {
+                button && (
+                    <Button
+                        {...button}
+                        class:list={['btn sm:btn-lg sm:btn-wide', btnClassMap[background] ?? btnClassMap['none']]}
+                        data-sb-field-path=".button"
+                    />
+                )
+            }
+        </div>
+        {
+            resolvedImage && (
+                <div class="w-full aspect-[4/3] flex-1 relative overflow-hidden rounded-lg">
+                    <Image src={resolvedImage} alt={image?.alt || ''} width={640} class="w-full h-full object-cover" data-sb-field-path=".image" />
+                </div>
+            )
+        }
+    </div>
 </div>

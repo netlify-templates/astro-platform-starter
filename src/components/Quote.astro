@@ -1,14 +1,10 @@
 ---
-interface Props {
-    authorName?: string;
-    authorTitle?: string;
-    authorImage?: any;
-    background?: 'none' | 'light' | 'primary';
-    quote?: Text;
-    class?: string;
-}
+import { Image } from 'astro:assets';
+import { resolveImage } from '../content/pages/_resolveImage';
 
 const { quote, authorName, authorTitle, authorImage, background } = Astro.props;
+
+const resolvedAuthorImage = await resolveImage(authorImage?.src);
 
 const bgClassMap = {
     none: '',
@@ -23,22 +19,21 @@ const bgClassMap = {
             {quote}
         </p>
         {
-            (authorName || authorTitle || authorImage?.src) && (
+            (authorName || authorTitle || resolvedAuthorImage) && (
                 <footer class="flex items-center gap-4">
-                    {authorImage?.src && (
+                    {resolvedAuthorImage && (
                         <div class="w-16 sm:w-24 shrink-0 aspect-square">
-                            <img
-                                src={authorImage?.src}
+                            <Image
+                                src={resolvedAuthorImage}
                                 alt={authorImage?.alt || ''}
                                 width={96}
-                                height={96}
                                 class="object-cover w-full h-full rounded-full"
                                 data-sb-field-path=".authorImage"
                             />{' '}
                         </div>
                     )}
                     {(authorName || authorTitle) && (
-                        <div class={authorImage?.src ? 'text-left' : 'text-center'}>
+                        <div class={resolvedAuthorImage ? 'text-left' : 'text-center'}>
                             {authorName && (
                                 <p class="sm:text-lg" data-sb-field-path=".authorName">
                                     {authorName}

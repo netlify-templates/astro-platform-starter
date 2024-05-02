@@ -1,4 +1,4 @@
-import { PageModel } from '@stackbit/types';
+import { type PageModel } from '@stackbit/types';
 
 export const page: PageModel = {
     name: 'page',

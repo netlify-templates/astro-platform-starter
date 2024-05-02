@@ -8,7 +8,7 @@ sections:
       And a super compelling supporting paragraph that makes the user
       immediately want to click the button below.
     image:
-      src: /images/corgi-hero.jpg
+      src: /src/content/pages/_images/corgi.jpg
       alt: Corgi
     button:
       type: button
@@ -17,14 +17,15 @@ sections:
     layout: imgRight
     background: primary
   - type: quote
-    background: light
     quote: >-
       Netlify is just amazing. Fast, reliable, good community, perfect to
       publish web projects from Github without any headache.
     authorName: Author Name
     authorTitle: Author title
     authorImage:
-      src: /images/corgi-author.jpg
+      src: /src/content/pages/_images/corgi.jpg
+      alt: Corgi
+    background: light
   - type: featuredItems
     background: light
     heading: Featured Items
@@ -34,7 +35,8 @@ sections:
       - heading: Item Title
         body: Item text.
         image:
-          src: /images/corgi.jpg
+          src: /src/content/pages/_images/corgi.jpg
+          alt: Corgi
       - heading: Item Title
         body: Item text.
 ---

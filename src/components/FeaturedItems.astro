@@ -1,16 +1,8 @@
 ---
-interface Props {
-    heading?: string;
-    body?: any;
-    items?: any;
-    image?: any;
-    background?: 'none' | 'light' | 'primary';
-    class?: string;
-}
-
+import FeaturedItem from './FeaturedItem.astro';
 import Markdown from './Markdown.astro';
 
-const { heading, body, items, image, background } = Astro.props;
+const { heading, body, items, background } = Astro.props;
 
 const bgClassMap = {
     none: '',
@@ -27,32 +19,12 @@ const bgClassMap = {
             </h2>
         )
     }
-    {body && <Markdown content={body} class={`text-center ${heading && 'mt-2'} sm:text-lg`} data-sb-field-path=".body" />}
+    {body && <Markdown content={body} class:list={['text-center', heading && 'mt-2', 'sm:text-lg']} data-sb-field-path=".body" />}
     {
         items?.length > 0 && (
-            <div class={`grid gap-6 ${(heading || body) && 'mt-12'} sm:grid-cols-3 md:gap-12`}>
+            <div class:list={['grid gap-6', (heading || body) && 'mt-12', 'md:grid-cols-3 lg:gap-12']}>
                 {items.map((item, idx) => (
-                    <div class="border-2 border-current border-dashed card card-compact" data-sb-field-path={`.items.${idx}`}>
-                        <div class="card-body">
-                            {image?.src && (
-                                <figure class="w-full aspect-[4/3] relative">
-                                    <img
-                                        src={image?.src}
-                                        alt={image?.alt || ''}
-                                        class="object-cover rounded"
-                                        sizes="(max-width: 767px) 100vw, (max-width: 1200px) 50vw, 600px"
-                                        data-sb-field-path=".image"
-                                    />
-                                </figure>
-                            )}
-                            {heading && (
-                                <h3 class="card-title" data-sb-field-path=".heading">
-                                    {heading}
-                                </h3>
-                            )}
-                            {body && <Markdown content={body} data-sb-field-path=".body" />}
-                        </div>
-                    </div>
+                    <FeaturedItem {...item} data-sb-field-path={`.items.${idx}`} />
                 ))}
             </div>
         )

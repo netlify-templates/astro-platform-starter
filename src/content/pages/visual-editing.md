@@ -8,7 +8,7 @@ sections:
       And a super compelling supporting paragraph that makes the user
       immediately want to click the button below.
     image:
-      src: /src/content/pages/_images/corgi.jpg
+      src: /src/content/pages/_images/corgi-hero.jpg
       alt: Corgi
     button:
       type: button
@@ -23,7 +23,7 @@ sections:
     authorName: Author Name
     authorTitle: Author title
     authorImage:
-      src: /src/content/pages/_images/corgi.jpg
+      src: /src/content/pages/_images/corgi-author.jpg
       alt: Corgi
     background: light
   - type: featuredItems

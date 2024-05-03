@@ -21,7 +21,7 @@ export const featuredItems: ObjectModel = {
                         name: 'image',
                         type: 'object',
                         fields: [
-                            { name: 'src', type: 'image', default: '/images/corgi-author.jpg' },
+                            { name: 'src', type: 'image', default: '/src/content/pages/_images/corgi-hero.jpg' },
                             { name: 'alt', type: 'string' }
                         ]
                     }

@@ -35,8 +35,16 @@ sections:
       - heading: Item Title
         body: Item text.
         image:
-          src: /src/content/pages/_images/corgi.jpg
+          src: /src/content/pages/_images/corgi-hero.jpg
           alt: Corgi
       - heading: Item Title
         body: Item text.
+        image:
+          src: /src/content/pages/_images/corgi-author.jpg
+          alt: Corgi
+      - heading: Item Title
+        body: Item text.
+        image:
+          src: /src/content/pages/_images/corgi.jpg
+          alt: Corgi
 ---

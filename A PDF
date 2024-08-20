@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to PDF Converter</title>
+</head>
+<body>
+    <h2>Image to PDF Converter</h2>
+    <input type="file" id="imageInput" accept="image/*"><br><br>
+    <button onclick="convertToPDF()">Convert to PDF</button>
+    <br><br>
+    <a id="downloadLink" style="display:none;">Download PDF</a>
+
+    <!-- jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        function convertToPDF() {
+            const { jsPDF } = window.jspdf;
+
+            const input = document.getElementById('imageInput').files[0];
+            if (!input) {
+                alert("Please select an image file first.");
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const img = new Image();
+                img.src = e.target.result;
+
+                img.onload = function() {
+                    const pdf = new jsPDF({
+                        orientation: 'portrait',
+                        unit: 'mm',
+                        format: [img.width * 0.264583, img.height * 0.264583] // convert px to mm
+                    });
+
+                    pdf.addImage(img, 'JPEG', 0, 0);
+                    
+                    const pdfBlob = pdf.output('blob');
+                    const pdfUrl = URL.createObjectURL(pdfBlob);
+
+                    const downloadLink = document.getElementById('downloadLink');
+                    downloadLink.href = pdfUrl;
+                    downloadLink.download = 'image_to_pdf.pdf';
+                    downloadLink.style.display = 'block';
+                    downloadLink.innerText = 'Download PDF';
+                };
+            };
+
+            reader.readAsDataURL(input);
+        }
+    </script>
+</body>
+</html>

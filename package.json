@@ -18,7 +18,7 @@
     "@netlify/functions": "^2.6.3",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
-    "astro": "^4.6.2",
+    "astro": "^4.14.4",
     "blobshape": "^1.0.0",
     "marked": "^12.0.1",
     "marked-shiki": "^1.1.0",
@@ -28,8 +28,8 @@
     "unique-names-generator": "^4.7.1"
   },
   "devDependencies": {
-    "@stackbit/cms-git": "^1.0.5",
-    "@stackbit/types": "^2.0.4",
+    "@stackbit/cms-git": "^1.0.6",
+    "@stackbit/types": "^2.0.5",
     "@types/blobshape": "^1.0.3",
     "@types/node": "^20.12.7",
     "daisyui": "^4.10.2"

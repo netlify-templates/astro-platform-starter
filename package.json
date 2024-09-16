@@ -10,7 +10,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/netlify": "^5.2.0",
+    "@astrojs/netlify": "^5.5.2",
     "@astrojs/react": "^3.3.0",
     "@astrojs/tailwind": "^5.1.0",
     "@fontsource/inter": "^5.0.18",
@@ -18,7 +18,7 @@
     "@netlify/functions": "^2.6.3",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
-    "astro": "^4.14.4",
+    "astro": "^4.15.6",
     "blobshape": "^1.0.0",
     "marked": "^12.0.1",
     "marked-shiki": "^1.1.0",
@@ -28,8 +28,8 @@
     "unique-names-generator": "^4.7.1"
   },
   "devDependencies": {
-    "@stackbit/cms-git": "^1.0.6",
-    "@stackbit/types": "^2.0.5",
+    "@stackbit/cms-git": "^1.0.9",
+    "@stackbit/types": "^2.0.7",
     "@types/blobshape": "^1.0.3",
     "@types/node": "^20.12.7",
     "daisyui": "^4.10.2"

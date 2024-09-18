@@ -9,7 +9,7 @@
                 "authorName": "Author Name",
                 "authorTitle": "Author title",
                 "authorImage": {
-                    "src": "/src/content/pages/_images/corgi-author.jpg",
+                    "src": "/src/content/_images/corgi-author.jpg",
                     "alt": "Corgi"
                 },
                 "background": "light"

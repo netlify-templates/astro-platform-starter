@@ -32,8 +32,13 @@
     }
 
     .markdown > p,
-    .markdown > pre {
+    .markdown > pre,
+    .markdown > ul {
         @apply my-6;
+    }
+
+    .markdown > ul {
+        @apply list-disc list-inside space-y-2;
     }
 
     .markdown > :first-child {

@@ -54,4 +54,14 @@ const pages = defineCollection({
     })
 });
 
-export const collections = { pages };
+const blog = defineCollection({
+    schema: z.object({
+        type: z.string(),
+        title: z.string(),
+        date: z.coerce.date(),
+        excerpt: z.string(),
+        image: imageSchema.optional(),
+    })
+});
+
+export const collections = { pages, blog };

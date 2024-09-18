@@ -6,6 +6,7 @@ import { button } from './.stackbit/models/button';
 import { featuredItems } from './.stackbit/models/featuredItems';
 import { hero } from './.stackbit/models/hero';
 import { page } from './.stackbit/models/page';
+import { post } from './.stackbit/models/post';
 import { quote } from './.stackbit/models/quote';
 
 export default defineStackbitConfig({
@@ -29,14 +30,13 @@ export default defineStackbitConfig({
         new GitContentSource({
             rootPath: __dirname,
             contentDirs: ['src/content'],
-            models: [button, featuredItems, hero, page, quote],
+            models: [button, featuredItems, hero, page, post, quote],
             assetsConfig: {
                 referenceType: 'static',
-                staticDir: 'src/content/pages',
+                staticDir: 'src/content',
                 uploadDir: '_images',
-                publicPath: '/src/content/pages/'
+                publicPath: '/src/content/'
             }
         })
-    ],
-    modelExtensions: [{ name: 'page', type: 'page', urlPath: '/{slug}' }]
+    ]
 });

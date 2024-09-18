@@ -1,0 +1,53 @@
+---
+import { Image } from 'astro:assets';
+import { type CollectionEntry, getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import { resolveImage } from '../../content/_resolveImage';
+
+export async function getStaticPaths() {
+    const blog = await getCollection('blog');
+    return blog.map((post) => {
+        return {
+            params: { slug: post.slug },
+            props: { post }
+        };
+    });
+}
+
+type Props = { post: CollectionEntry<'blog'> };
+
+const { post } = Astro.props;
+const { title, date, image } = post.data;
+const { Content } = await post.render();
+
+const resolvedImage = await resolveImage(image?.src);
+---
+
+<Layout title={title}>
+    <article data-sb-object-id={['src/content/blog/', post.id].join('')}>
+        {
+            resolvedImage && (
+                <figure class="w-full aspect-[4/3] relative mb-10">
+                    <Image
+                        src={resolvedImage}
+                        alt={image?.alt || ''}
+                        width={600}
+                        class="w-full h-full object-cover border-2 border-white rounded-lg"
+                        data-sb-field-path=".image"
+                    />
+                </figure>
+            )
+        }
+        <header class="mb-10">
+            <h1 data-sb-field-path="title">{title}</h1>
+            <p class="mt-6 italic" data-sb-field-path="date">
+                <FormattedDate date={date} />
+            </p>
+        </header>
+        <div class="markdown text-lg mb-10" data-sb-field-path="markdown_content">
+            <Content />
+        </div>
+    </article>
+    <script is:inline src="/preview-update.js"></script>
+</Layout>

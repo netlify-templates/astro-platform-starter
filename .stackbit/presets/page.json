@@ -19,7 +19,7 @@
                         "heading": "This is your main value proposition",
                         "body": "And a super compelling supporting paragraph that makes the user immediately want to click the button below.\n",
                         "image": {
-                            "src": "/src/content/pages/_images/corgi-hero.jpg",
+                            "src": "/src/content/_images/corgi-hero.jpg",
                             "alt": "Corgi"
                         },
                         "button": {
@@ -35,7 +35,7 @@
                         "authorName": "Author Name",
                         "authorTitle": "Author title",
                         "authorImage": {
-                            "src": "/src/content/pages/_images/corgi-author.jpg",
+                            "src": "/src/content/_images/corgi-author.jpg",
                             "alt": "Author Corgi"
                         },
                         "background": "light"

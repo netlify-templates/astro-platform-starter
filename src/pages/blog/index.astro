@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import PostPreview from '../../components/PostPreview.astro';
+
+const blog = (await getCollection('blog')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Layout title="Blog">
+    <div class="flex flex-col gap-12 sm:gap-16">
+        <header>
+            <h1>Blog</h1>
+        </header>
+        {blog.map((post) => <PostPreview {...post} />)}
+    </div>
+    <script is:inline src="/preview-update.js"></script>
+</Layout>

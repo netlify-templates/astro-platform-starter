@@ -13,7 +13,7 @@ export const hero: ObjectModel = {
             name: 'image',
             type: 'object',
             fields: [
-                { name: 'src', type: 'image', default: '/src/content/pages/_images/corgi-hero.jpg' },
+                { name: 'src', type: 'image', default: '/src/content/_images/corgi-hero.jpg' },
                 { name: 'alt', type: 'string' }
             ]
         },

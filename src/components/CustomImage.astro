@@ -1,0 +1,25 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+    _id?: string;
+    src: string;
+    width: number;
+    height: number;
+    alt?: string;
+    class?: string;
+    'data-sb-field-path'?: string;
+}
+
+const { _id, src, width, height, alt, class: className, 'data-sb-field-path': fieldPath } = Astro.props;
+
+const format = src?.includes('.svg') ? 'svg' : 'webp';
+const annotations: { [key: string]: string } = {};
+if (_id) {
+    annotations['data-sb-object-id'] = _id;
+} else if (fieldPath) {
+    annotations['data-sb-field-path'] = fieldPath;
+}
+---
+
+<Image src={src} width={width} height={height} alt={alt || ''} format={format} class:list={className} {...annotations} />

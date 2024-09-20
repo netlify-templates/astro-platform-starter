@@ -1,17 +1,17 @@
 ---
+import { type FeaturedItems } from '../types';
 import FeaturedItem from './FeaturedItem.astro';
 import Markdown from './Markdown.astro';
+import Section from './Section.astro';
 
-const { heading, body, items, background } = Astro.props;
+interface Props extends FeaturedItems {
+    'data-sb-field-path'?: string;
+}
 
-const bgClassMap = {
-    none: '',
-    light: 'px-8 py-12 bg-white text-neutral-900 rounded md:px-12 md:py-16',
-    primary: 'px-8 py-12 bg-primary text-neutral-900 rounded md:px-12 md:py-16'
-};
+const { heading, body, items, ...rest } = Astro.props;
 ---
 
-<div class={bgClassMap[background] ?? bgClassMap['none']} data-sb-field-path={Astro.props['data-sb-field-path']}>
+<Section {...rest}>
     {
         heading && (
             <h2 class="text-3xl font-bold text-center sm:text-4xl" data-sb-field-path=".heading">
@@ -24,9 +24,9 @@ const bgClassMap = {
         items?.length > 0 && (
             <div class:list={['grid gap-6', (heading || body) && 'mt-12', 'md:grid-cols-3 lg:gap-12']}>
                 {items.map((item, idx) => (
-                    <FeaturedItem {...item} data-sb-field-path={`.items.${idx}`} />
+                    <FeaturedItem {...item} background={Astro.props.background} data-sb-field-path={`.items.${idx}`} />
                 ))}
             </div>
         )
     }
-</div>
+</Section>

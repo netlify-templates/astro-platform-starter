@@ -1,32 +1,29 @@
 ---
-import { Image } from 'astro:assets';
+import { type Hero } from '../types';
 import Button from './Button.astro';
+import CustomImage from './CustomImage.astro';
 import Markdown from './Markdown.astro';
-import { resolveImage } from '../content/_resolveImage';
+import Section from './Section.astro';
 
-const { heading, body, image, button, layout, background } = Astro.props;
+interface Props extends Hero {
+    'data-sb-field-path'?: string;
+}
 
-const resolvedImage = await resolveImage(image?.src);
+const { heading, body, image, cta, layout, ...rest } = Astro.props;
 
 const layoutClassMap = {
     imgLeft: 'md:flex-row-reverse',
     imgRight: 'md:flex-row'
 };
 
-const bgClassMap = {
-    none: '',
-    light: 'px-8 py-12 bg-white text-neutral-900 rounded md:px-12 md:py-16',
-    primary: 'px-8 py-12 bg-primary text-neutral-900 rounded md:px-12 md:py-16'
-};
-
 const btnClassMap = {
-    none: 'btn-primary',
+    transparent: 'btn-primary',
     light: 'btn-primary',
     primary: 'btn-outline btn-accent'
 };
 ---
 
-<div class={bgClassMap[background] ?? bgClassMap['none']} data-sb-field-path={Astro.props['data-sb-field-path']}>
+<Section {...rest}>
     <div class:list={['flex flex-col gap-12 md:items-center', layoutClassMap[layout] ?? layoutClassMap['imgRight']]}>
         <div class="flex-1 w-full max-w-xl mx-auto space-y-6">
             {
@@ -38,21 +35,21 @@ const btnClassMap = {
             }
             {body && <Markdown content={body} class="sm:text-lg" data-sb-field-path=".body" />}
             {
-                button && (
+                cta && (
                     <Button
-                        {...button}
-                        class:list={['btn sm:btn-lg sm:btn-wide', btnClassMap[background] ?? btnClassMap['none']]}
-                        data-sb-field-path=".button"
+                        {...cta}
+                        class:list={['btn sm:btn-lg sm:btn-wide', btnClassMap[Astro.props.background] ?? btnClassMap['transparent']]}
+                        data-sb-field-path=".cta"
                     />
                 )
             }
         </div>
         {
-            resolvedImage && (
+            image?.src && (
                 <div class="w-full aspect-[4/3] flex-1 relative overflow-hidden rounded-lg">
-                    <Image src={resolvedImage} alt={image?.alt || ''} width={640} class="w-full h-full object-cover" data-sb-field-path=".image" />
+                    <CustomImage _id={image._id} src={image.src} alt={image.alt} width={640} height={480} class="w-full h-full object-cover" />
                 </div>
             )
         }
     </div>
-</div>
+</Section>

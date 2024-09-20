@@ -1,47 +1,45 @@
 ---
-import { Image } from 'astro:assets';
-import { resolveImage } from '../content/_resolveImage';
+import { type Quote } from '../types';
+import CustomImage from './CustomImage.astro';
+import Section from './Section.astro';
 
-const { quote, authorName, authorTitle, authorImage, background } = Astro.props;
+interface Props extends Quote {
+    'data-sb-field-path'?: string;
+}
 
-const resolvedAuthorImage = await resolveImage(authorImage?.src);
-
-const bgClassMap = {
-    none: '',
-    light: 'px-8 py-12 bg-white text-neutral-900 rounded md:px-12 md:py-16',
-    primary: 'px-8 py-12 bg-primary text-neutral-900 rounded md:px-12 md:py-16'
-};
+const { quote, author, ...rest } = Astro.props;
 ---
 
-<div class={bgClassMap[background] ?? bgClassMap['none']} data-sb-field-path={Astro.props['data-sb-field-path']}>
+<Section {...rest}>
     <blockquote class="flex flex-col items-center gap-8">
         <p class="text-xl text-center sm:text-2xl max-w-[45ch]" data-sb-field-path=".quote">
             {quote}
         </p>
         {
-            (authorName || authorTitle || resolvedAuthorImage) && (
-                <footer class="flex items-center gap-4">
-                    {resolvedAuthorImage && (
+            author && (
+                <footer class="flex items-center gap-4" data-sb-field-path=".author">
+                    {author.image?.src && (
                         <div class="w-16 sm:w-24 shrink-0 aspect-square">
-                            <Image
-                                src={resolvedAuthorImage}
-                                alt={authorImage?.alt || ''}
-                                width={96}
+                            <CustomImage
+                                _id={author.image._id}
+                                src={author.image.src}
+                                width={80}
+                                height={80}
+                                alt={author.image.alt}
                                 class="object-cover w-full h-full rounded-full"
-                                data-sb-field-path=".authorImage"
-                            />{' '}
+                            />
                         </div>
                     )}
-                    {(authorName || authorTitle) && (
-                        <div class={resolvedAuthorImage ? 'text-left' : 'text-center'}>
-                            {authorName && (
-                                <p class="sm:text-lg" data-sb-field-path=".authorName">
-                                    {authorName}
+                    {(author.name || author.title) && (
+                        <div class={author.image?.src ? 'text-left' : 'text-center'}>
+                            {author.name && (
+                                <p class="sm:text-lg" data-sb-field-path=".name">
+                                    {author.name}
                                 </p>
                             )}
-                            {authorTitle && (
-                                <p class="text-sm sm:text-base" data-sb-field-path=".authorName">
-                                    {authorTitle}
+                            {author.title && (
+                                <p class="text-sm sm:text-base" data-sb-field-path=".title">
+                                    {author.title}
                                 </p>
                             )}
                         </div>
@@ -50,4 +48,4 @@ const bgClassMap = {
             )
         }
     </blockquote>
-</div>
+</Section>

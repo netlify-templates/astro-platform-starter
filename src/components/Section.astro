@@ -1,0 +1,18 @@
+---
+import { type Section } from '../types';
+
+interface Props extends Section {
+    class?: string;
+    'data-sb-field-path'?: string;
+}
+
+const { background = 'transparent', class: className, 'data-sb-field-path': fieldPath } = Astro.props;
+
+const bgClassMap = {
+    transparent: '',
+    light: 'px-8 py-12 bg-white text-neutral-900 rounded md:px-12 md:py-16',
+    primary: 'px-8 py-12 bg-primary text-neutral-900 rounded md:px-12 md:py-16'
+};
+---
+
+<div class:list={[bgClassMap[background], className]} data-sb-field-path={fieldPath}><slot /></div>

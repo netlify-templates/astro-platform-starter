@@ -1,24 +1,27 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
+import { type Page } from '../types';
 import Layout from './../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import FeaturedItems from './../components/FeaturedItems.astro';
 import Quote from './../components/Quote.astro';
+import { fetchData, getPageById } from '../data/page';
 
 export async function getStaticPaths() {
-    const pages = await getCollection('pages');
-    return pages.map((page) => {
+    const data = await fetchData();
+    return data.map((page: Page) => {
+        const slug = page.slug.current === '/' ? undefined : page.slug.current;
         return {
-            params: { slug: page.slug },
-            props: { page }
+            params: { slug },
+            props: { id: page._id }
         };
     });
 }
 
-type Props = { page: CollectionEntry<'pages'> };
+const { id } = Astro.props;
+const pages = await getPageById(id);
+const page: Page = pages.length ? pages[0] : null;
 
-const { page } = Astro.props;
-const { title, sections } = page.data;
+const { _id, title, sections } = page || {};
 
 const componentMap = {
     featuredItems: FeaturedItems,
@@ -28,11 +31,11 @@ const componentMap = {
 ---
 
 <Layout title={title}>
-    <div class="flex flex-col w-full gap-16 sm:gap-24" data-sb-object-id={['src/content/pages/', page.id].join('')}>
+    <div class="flex flex-col w-full gap-16 sm:gap-24" data-sb-object-id={_id}>
         {
             sections?.length &&
                 sections.map((section, idx) => {
-                    const Component = componentMap[section.type];
+                    const Component = componentMap[section._type];
                     return <Component {...section} data-sb-field-path={`sections.${idx}`} />;
                 })
         }

@@ -33,5 +33,5 @@ export default defineStackbitConfig({
             dataset: process.env.SANITY_DATASET || 'production'
         })
     ],
-    modelExtensions: [hero, page]
+    modelExtensions: [hero, page, post]
 });

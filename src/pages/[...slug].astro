@@ -1,9 +1,9 @@
 ---
 import { type Page } from '../types';
-import Layout from './../layouts/Layout.astro';
+import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
-import FeaturedItems from './../components/FeaturedItems.astro';
-import Quote from './../components/Quote.astro';
+import FeaturedItems from '../components/FeaturedItems.astro';
+import Quote from '../components/Quote.astro';
 import { fetchData, getPageById } from '../data/page';
 
 export async function getStaticPaths() {
@@ -18,9 +18,7 @@ export async function getStaticPaths() {
 }
 
 const { id } = Astro.props;
-const pages = await getPageById(id);
-const page: Page = pages.length ? pages[0] : null;
-
+const page: Page = await getPageById(id);
 const { _id, title, sections } = page || {};
 
 const componentMap = {
@@ -30,15 +28,17 @@ const componentMap = {
 };
 ---
 
-<Layout title={title}>
-    <div class="flex flex-col w-full gap-16 sm:gap-24" data-sb-object-id={_id}>
-        {
-            sections?.length &&
-                sections.map((section, idx) => {
-                    const Component = componentMap[section._type];
-                    return <Component {...section} data-sb-field-path={`sections.${idx}`} />;
-                })
-        }
-    </div>
-    <script is:inline src="/preview-update.js"></script>
-</Layout>
+{
+    page && (
+        <Layout title={title}>
+            <div class="flex flex-col w-full gap-16 sm:gap-24" data-sb-object-id={_id}>
+                {sections?.length &&
+                    sections.map((section, idx) => {
+                        const Component = componentMap[section._type];
+                        return <Component {...section} data-sb-field-path={`sections.${idx}`} />;
+                    })}
+            </div>
+            <script is:inline src="/preview-update.js" />
+        </Layout>
+    )
+}

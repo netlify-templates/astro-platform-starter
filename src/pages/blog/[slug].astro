@@ -1,53 +1,60 @@
 ---
-import { Image } from 'astro:assets';
-import { type CollectionEntry, getCollection } from 'astro:content';
+import { type Post } from '../../types';
 import Layout from '../../layouts/Layout.astro';
+import CustomImage from '../../components/CustomImage.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
-import { resolveImage } from '../../content/_resolveImage';
+import Markdown from '../../components/Markdown.astro';
+import { fetchData, getPostById } from '../../data/post';
 
 export async function getStaticPaths() {
-    const blog = await getCollection('blog');
-    return blog.map((post) => {
+    const data = await fetchData();
+    return data.map((post: Post) => {
+        if (!post._id) return;
+        const slug = post.slug.current;
         return {
-            params: { slug: post.slug },
-            props: { post }
+            params: { slug },
+            props: { id: post._id }
         };
     });
 }
 
-type Props = { post: CollectionEntry<'blog'> };
-
-const { post } = Astro.props;
-const { title, date, image } = post.data;
-const { Content } = await post.render();
-
-const resolvedImage = await resolveImage(image?.src);
+const { id } = Astro.props;
+const post: Post = await getPostById(id);
+const { _id, title, publishDate, author, image, body } = post || {};
 ---
 
 <Layout title={title}>
-    <article data-sb-object-id={['src/content/blog/', post.id].join('')}>
+    <article data-sb-object-id={_id}>
         {
-            resolvedImage && (
-                <figure class="w-full aspect-[4/3] relative mb-10">
-                    <Image
-                        src={resolvedImage}
-                        alt={image?.alt || ''}
-                        width={600}
-                        class="w-full h-full object-cover border-2 border-white rounded-lg"
-                        data-sb-field-path=".image"
-                    />
+            image?.src && (
+                <figure class="w-full aspect-[4/3] relative mb-10 rounded-lg overflow-hidden">
+                    <CustomImage _id={image._id} src={image.src} alt={image.alt} width={640} height={480} class="w-full h-full object-cover" />
                 </figure>
             )
         }
-        <header class="mb-10">
+        <header class="mb-12">
             <h1 data-sb-field-path="title">{title}</h1>
-            <p class="mt-6 italic" data-sb-field-path="date">
-                <FormattedDate date={date} />
+            <p class="text-sm mt-6">
+                {
+                    publishDate && (
+                        <span>
+                            Published on <FormattedDate dateString={publishDate} class="italic" data-sb-field-path="publishDate" />
+                        </span>
+                    )
+                }
+                {
+                    author?.name && (
+                        <span>
+                            by{' '}
+                            <span class="italic" data-sb-field-path="author.name">
+                                {author.name}
+                            </span>
+                        </span>
+                    )
+                }
             </p>
         </header>
-        <div class="markdown text-lg mb-10" data-sb-field-path="markdown_content">
-            <Content />
-        </div>
+        {body && <Markdown content={body} class="markdown text-lg mb-10" data-sb-field-path="body" />}
     </article>
     <script is:inline src="/preview-update.js"></script>
 </Layout>

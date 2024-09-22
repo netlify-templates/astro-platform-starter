@@ -1,9 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
+import { type Post } from '../../types';
 import Layout from '../../layouts/Layout.astro';
 import PostPreview from '../../components/PostPreview.astro';
+import { fetchData } from '../../data/post';
 
-const blog = (await getCollection('blog')).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const posts: Post[] = await fetchData();
 ---
 
 <Layout title="Blog">
@@ -11,7 +12,7 @@ const blog = (await getCollection('blog')).sort((a, b) => b.data.date.getTime() 
         <header>
             <h1>Blog</h1>
         </header>
-        {blog.map((post) => <PostPreview {...post} />)}
+        {posts.map((post) => <PostPreview {...post} />)}
     </div>
     <script is:inline src="/preview-update.js"></script>
 </Layout>

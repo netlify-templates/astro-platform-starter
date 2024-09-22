@@ -50,7 +50,7 @@ export type Page = {
     _id: string;
     slug: Slug;
     title: string;
-    sections: Array<FeaturedItems | Hero>;
+    sections: Array<FeaturedItems | Hero | Quote>;
 }
 
 export type Person = {
@@ -58,6 +58,17 @@ export type Person = {
     name: string;
     title?: string;
     image?: CustomImage;
+}
+
+export type Post = {
+    _id: string;
+    slug: Slug;
+    title: string;
+    publishDate: string;
+    author?: Person;
+    excerpt?: string;
+    image?: CustomImage;
+    body?: string;
 }
 
 export type Quote = Section & {

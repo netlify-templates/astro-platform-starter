@@ -5,6 +5,7 @@ import customImage from './customImage'
 import hero from './hero'
 import page from './page'
 import person from './person'
+import post from './post'
 import quote from './quote'
 
 export const schemaTypes = [
@@ -15,5 +16,6 @@ export const schemaTypes = [
   hero,
   page,
   person,
+  post,
   quote,
 ]

@@ -12,7 +12,7 @@ export default defineType({
       name: 'content',
       title: 'Content',
       default: true,
-    }
+    },
   ],
   fields: [
     defineField({
@@ -39,11 +39,7 @@ export default defineType({
       title: 'Sections',
       description: 'The list containing the sections of a page',
       type: 'array',
-      of: [
-        {type: 'hero'},
-        {type: 'featuredItems'},
-        {type: 'quote'},
-      ],
+      of: [{type: 'hero'}, {type: 'featuredItems'}, {type: 'quote'}],
       group: 'content',
     }),
   ],

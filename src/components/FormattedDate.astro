@@ -1,10 +1,11 @@
 ---
-type Props = { date: Date };
+type Props = { dateString: string; class?: string; 'data-sb-field-path'?: string };
 
-const { date } = Astro.props;
+const { dateString, class: className, 'data-sb-field-path': fieldPath } = Astro.props;
+const date = new Date(dateString);
 ---
 
-<time datetime={date.toISOString()}>
+<time datetime={dateString} class={className} data-sb-field-path={fieldPath}>
     {
         date.toLocaleDateString('en-us', {
             year: 'numeric',

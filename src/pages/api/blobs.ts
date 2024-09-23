@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getStore } from '@netlify/blobs';
-import { uploadDisabled } from '../../utils';
+import { uploadDisabled } from '../../utils/general';
 
 export const prerender = false;
 

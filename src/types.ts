@@ -84,4 +84,3 @@ export type Section = {
 export type Slug = {
     current: string;
 }
-

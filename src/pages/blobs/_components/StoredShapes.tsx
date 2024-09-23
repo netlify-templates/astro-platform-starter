@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import ShapePreview from './ShapePreview.tsx';
-import { generateBlob } from '../../../utils';
 import type { BlobProps } from '../../../types.ts';
+import ShapePreview from './ShapePreview.tsx';
+import { generateBlob } from '../../../utils/general.ts';
 
 interface Props {
     lastMutationTime: number;
@@ -45,7 +45,7 @@ export default function StoredShapes(props: Props) {
         <>
             <h2 className="mb-4 text-xl text-center sm:text-xl">Objects in Blob Store</h2>
             <div className="w-full bg-white rounded-lg">
-                <div className="min-h-14 p-4 text-center">
+                <div className="p-4 text-center min-h-14">
                     {keys?.length ? (
                         <div className="space-y-1">
                             {keys.map((keyName) => (
@@ -68,7 +68,7 @@ export default function StoredShapes(props: Props) {
                     )}
                 </div>
                 {previewData && (
-                    <div className="p-4 aspect-square text-primary border-t border-neutral-200">
+                    <div className="p-4 border-t aspect-square text-primary border-neutral-200">
                         <ShapePreview {...previewData} />
                     </div>
                 )}

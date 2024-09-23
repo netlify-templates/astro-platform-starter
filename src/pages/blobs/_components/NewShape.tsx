@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
-import ShapePreview from './ShapePreview.tsx';
-import { generateBlob, uploadDisabled } from '../../../utils';
 import type { BlobProps } from '../../../types.ts';
+import ShapePreview from './ShapePreview.tsx';
+import { generateBlob, uploadDisabled } from '../../../utils/general.ts';
 
 interface Props {
     setLastMutationTime?: Dispatch<SetStateAction<number>>;
@@ -41,8 +41,8 @@ export default function NewShape(props: Props) {
     return (
         <>
             <h2 className="mb-4 text-xl text-center sm:text-xl">New Random Shape</h2>
-            <div className="w-full bg-white rounded-lg mb-6">
-                <div className="min-h-14 p-4 border-b border-neutral-200 text-neutral-900 text-center">
+            <div className="w-full mb-6 bg-white rounded-lg">
+                <div className="p-4 text-center border-b min-h-14 border-neutral-200 text-neutral-900">
                     {blobData && <span>{blobData.parameters?.name}</span>}
                 </div>
                 <div className="p-4 aspect-square text-primary">{blobData && <ShapePreview {...blobData} />}</div>

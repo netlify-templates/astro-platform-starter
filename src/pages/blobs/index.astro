@@ -1,9 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import ContextAlert from '../../components/ContextAlert.astro';
 import Markdown from '../../components/Markdown.astro';
 import ShapeEditor from './_components/ShapeEditor.tsx';
-import { uploadDisabled } from '../../utils';
-import ContextAlert from '../../components/ContextAlert.astro';
+import { uploadDisabled } from '../../utils/general';
 
 const explainer = `
 [Netlify Blobs](https://docs.netlify.com/blobs/overview/) provides an object store for any kind of data, be it JSON, binary, 

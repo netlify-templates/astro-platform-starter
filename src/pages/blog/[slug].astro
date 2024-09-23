@@ -24,17 +24,17 @@ const { _id, title, publishDate, author, image, body } = post || {};
 ---
 
 <Layout title={title}>
-    <article data-sb-object-id={_id}>
+    <article data-sb-object-id={_id} class="p-4 bg-white rounded text-neutral-900 md:p-12">
         {
             image?.src && (
                 <figure class="w-full aspect-[4/3] relative mb-10 rounded-lg overflow-hidden">
-                    <CustomImage _id={image._id} src={image.src} alt={image.alt} width={640} height={480} class="w-full h-full object-cover" />
+                    <CustomImage _id={image._id} src={image.src} alt={image.alt} width={1024} height={768} class="object-cover w-full h-full" />
                 </figure>
             )
         }
-        <header class="mb-12">
+        <header class="mb-12 text-center">
             <h1 data-sb-field-path="title">{title}</h1>
-            <p class="text-sm mt-6">
+            <p class="mt-6 text-sm">
                 {
                     publishDate && (
                         <span>
@@ -54,7 +54,7 @@ const { _id, title, publishDate, author, image, body } = post || {};
                 }
             </p>
         </header>
-        {body && <Markdown content={body} class="markdown text-lg mb-10" data-sb-field-path="body" />}
+        {body && <Markdown content={body} class="mx-auto mb-10 text-lg max-w-prose" data-sb-field-path="body" />}
     </article>
     <script is:inline src="/preview-update.js"></script>
 </Layout>

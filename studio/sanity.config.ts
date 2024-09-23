@@ -3,6 +3,7 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
 import {markdownSchema} from 'sanity-plugin-markdown'
+import { media } from 'sanity-plugin-media';
 
 export default defineConfig({
   name: 'default',
@@ -11,7 +12,7 @@ export default defineConfig({
   projectId: 'projectId',
   dataset: 'production',
 
-  plugins: [structureTool(), visionTool(), markdownSchema()],
+  plugins: [structureTool(), visionTool(), media(), markdownSchema()],
 
   schema: {
     types: schemaTypes,

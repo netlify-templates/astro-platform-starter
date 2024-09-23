@@ -9,7 +9,7 @@ type Props = Post;
 const { _id, slug, title, publishDate, excerpt, image } = Astro.props;
 ---
 
-<article class="flex flex-col gap-6 sm:flex-row sm:items-start" data-sb-object-id={_id}>
+<article class="flex flex-col gap-6 p-4 border-2 border-dashed rounded-md sm:flex-row sm:items-start" data-sb-object-id={_id}>
     {
         image?.src && (
             <figure class="w-full aspect-[4/3] relative sm:w-1/3 sm:shrink-0">
@@ -19,14 +19,14 @@ const { _id, slug, title, publishDate, excerpt, image } = Astro.props;
                     alt={image.alt}
                     width={600}
                     height={450}
-                    class="w-full h-full object-cover border-2 border-white rounded-lg"
+                    class="object-cover w-full h-full rounded-md"
                     data-sb-field-path="image"
                 />
             </figure>
         )
     }
     <header>
-        <h2 data-sb-field-path="title"><a class="no-underline" href={`/blog/${slug.current}/`}>{title}</a></h2>
+        <h2><a class="no-underline" href={`/blog/${slug.current}/`}><span data-sb-field-path="title">{title}</span></a></h2>
         {
             publishDate && (
                 <p class="mt-2 text-sm">

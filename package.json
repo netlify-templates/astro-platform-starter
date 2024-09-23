@@ -39,6 +39,7 @@
     "@stackbit/cms-git": "^1.0.10",
     "@stackbit/cms-sanity": "^0.2.67",
     "@stackbit/types": "^2.0.7",
+    "@stackbit/utils": "^0.4.28",
     "@types/blobshape": "^1.0.3",
     "@types/node": "^22.5.5",
     "configstore": "5.0.1",

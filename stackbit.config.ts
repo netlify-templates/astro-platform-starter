@@ -1,7 +1,7 @@
 import path from 'path';
 import { defineStackbitConfig } from '@stackbit/types';
 import { SanityContentSource } from '@stackbit/cms-sanity';
-
+import { Actions } from '@stackbit/utils';
 import { hero } from './.stackbit/models/hero';
 import { page } from './.stackbit/models/page';
 import { post } from './.stackbit/models/post';
@@ -11,6 +11,16 @@ export default defineStackbitConfig({
     nodeVersion: '18',
     ssgName: 'custom',
     devCommand: 'node_modules/.bin/astro dev --port {PORT} --hostname 127.0.0.1',
+    actions: [
+        Actions.GenerateContentFromPreset({
+          label: 'Generate content with AI',
+          modelsConfig: [
+            {
+              name: 'post',
+            },
+          ],
+        }),
+      ],
     experimental: {
         ssg: {
             name: 'Astro',

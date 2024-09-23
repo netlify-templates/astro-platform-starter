@@ -1,0 +1,36 @@
+{
+    "model": "post",
+    "srcType": "sanity",
+    "srcProjectId": "5d3gfgzo:production",
+    "presets": [
+        {
+            "label": "post",
+            "locale": null,
+            "metadata": {
+                "categories": [
+                    "post"
+                ],
+                "canDelete": true
+            },
+            "data": {
+                "title": "The Charm of Corgis: Why They’re Everyone’s Favorite Dogs",
+                "slug": "the-charm-of-corgis-why-they-re-everyone-s-favorite-dogs",
+                "publishDate": "2024-09-23T07:08:00.000Z",
+                "author": {
+                    "$$ref": "5b9aa410-7a9b-4037-aa83-727274041a95",
+                    "$$type": "person"
+                },
+                "excerpt": "Corgis are one of the most recognizable and beloved dog breeds, known for their short legs, long bodies, and expressive faces. Whether it’s their joyful demeanor or those adorable little wiggles when they walk, corgis have won the hearts of many dog lovers worldwide.\n",
+                "body": "Corgis are one of the most recognizable and beloved dog breeds, known for their short legs, long bodies, and expressive faces. Whether it’s their joyful demeanor or those adorable little wiggles when they walk, corgis have won the hearts of many dog lovers worldwide. Here are a few reasons why corgis are such a special breed:\n\n## 1. **A Royal Favorite**\n\nCorgis gained global fame thanks to Queen Elizabeth II, who adored them. Her lifelong love for the breed brought them into the spotlight, and they’ve remained a royal favorite ever since.\n\n## 2. **Small Size, Big Personality**\n\nDon’t let their small stature fool you! Corgis are packed with personality. They are known for being smart, confident, and a little bit sassy. They love being around their family and can be quite vocal, often using their barks to communicate their feelings.\n\n## 3. **Energetic and Playful**\n\nDespite their short legs, corgis are full of energy. They were originally bred for herding cattle, which means they have stamina and a playful side. Whether it’s chasing a ball or running around the yard, corgis love staying active.\n\n## 4. **Great with Families**\n\nCorgis are wonderful companions for families. Their affectionate and friendly nature makes them great with kids and other pets. Plus, they are highly trainable, making them easier to integrate into different family dynamics.\n\n## 5. **Those Corgi Butts!**\n\nLet’s be honest, one of the most endearing things about corgis is their fluffy behinds. It’s hard not to smile when you see a corgi wiggling around with their signature \"corgi butt.\" There’s even a popular social media hashtag, #corgibutt, dedicated to their adorable rear ends.\n\n## 6. **A Loyal Companion**\n\nCorgis are known for their loyalty. They form strong bonds with their owners and enjoy being part of the family. They’ll follow you around the house, always keeping an eye on what you’re doing, and offering companionship every step of the way.\n\nWhether it’s their cute appearance, lively spirit, or loyal nature, corgis have a unique ability to bring joy into any household. With their strong personalities and endless affection, it’s no wonder they’ve become one of the most popular dog breeds today!\n",
+                "image": {
+                    "$$type": "customImage",
+                    "image": {
+                        "$$ref": "image-d835e0b11dd77d42f428089af100db1428cfe750-1200x800-jpg",
+                        "$$type": "__asset_model"
+                    },
+                    "alt": "Corgi"
+                }
+            }
+        }
+    ]
+}

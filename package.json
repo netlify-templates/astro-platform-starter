@@ -7,7 +7,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "create-project": "node ./sanity-export/create-project.js"
+    "create-project": "node ./sanity-export/create-project.js",
+    "export": "node ./sanity-export/export.js"
   },
   "dependencies": {
     "@astrojs/netlify": "^5.5.3",

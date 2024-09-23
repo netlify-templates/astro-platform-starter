@@ -8,6 +8,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "create-project": "node ./sanity-export/create-project.js",
+    "import": "node ./sanity-export/import.js",
     "export": "node ./sanity-export/export.js"
   },
   "dependencies": {

@@ -23,9 +23,9 @@ All commands are run from the root of the project, from a terminal:
 
 ## Developing Locally
 
-| Prerequisites             |
-| :------------------------ |
-| [Node.js](https://nodejs.org/) v18.14+. |
+| Prerequisites                                                                |
+| :--------------------------------------------------------------------------- |
+| [Node.js](https://nodejs.org/) v18.14+.                                      |
 | (optional) [nvm](https://github.com/nvm-sh/nvm) for Node version management. |
 
 1. Clone this repository, then run `npm install` in its root directory.

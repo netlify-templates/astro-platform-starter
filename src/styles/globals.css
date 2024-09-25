@@ -3,48 +3,48 @@
 @tailwind utilities;
 
 @layer base {
-    h1 {
-        @apply text-4xl font-bold tracking-tight sm:text-5xl;
-    }
+  h1 {
+    @apply text-4xl font-bold tracking-tight sm:text-5xl;
+  }
 
-    h2 {
-        @apply text-2xl font-bold sm:text-3xl;
-    }
+  h2 {
+    @apply text-2xl font-bold sm:text-3xl;
+  }
 
-    a {
-        @apply underline transition hover:opacity-80;
-    }
+  a {
+    @apply underline transition hover:opacity-80;
+  }
 
-    pre {
-        @apply p-6 overflow-x-auto rounded-lg;
-    }
+  pre {
+    @apply p-6 overflow-x-auto rounded-lg;
+  }
 
-    :not(pre) > code {
-        @apply px-1 py-0.5 font-mono rounded bg-[#1f1f1f] text-[#F67280];
-        font-size: 0.9em;
-    }
+  :not(pre) > code {
+    @apply px-1 py-0.5 font-mono rounded bg-[#1f1f1f] text-[#F67280];
+    font-size: 0.9em;
+  }
 }
 
 @layer components {
-    .markdown > h1,
-    .markdown > h2 {
-        @apply mt-12 mb-6;
-    }
+  .markdown > h1,
+  .markdown > h2 {
+    @apply mt-12 mb-6;
+  }
 
-    .markdown > p,
-    .markdown > pre {
-        @apply my-6;
-    }
+  .markdown > p,
+  .markdown > pre {
+    @apply my-6;
+  }
 
-    .markdown > :first-child {
-        @apply mt-0;
-    }
+  .markdown > :first-child {
+    @apply mt-0;
+  }
 
-    .markdown > :last-child {
-        @apply mb-0;
-    }
+  .markdown > :last-child {
+    @apply mb-0;
+  }
 
-    .btn:disabled {
-        @apply text-neutral-400 bg-neutral-700;
-    }
+  .btn:disabled {
+    @apply text-neutral-400 bg-neutral-700;
+  }
 }

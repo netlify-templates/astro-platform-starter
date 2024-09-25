@@ -12,8 +12,8 @@ export default {
     },
     colors: {
       neutral: {
-        '000': '#ffffff',
         light: {
+          '000': '#ffffff',
           100: '#f6f6f7',
           200: '#e9ebed',
           300: '#d1d5da',

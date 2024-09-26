@@ -12,6 +12,9 @@ export default defineConfig({
         })
     ],
     server: {
+        hmr: { path: '/vite-hmr/' }
+    },
+    server: {
         port: 3000
     },
     output: 'hybrid',

@@ -1,9 +1,59 @@
 ---
-
+import { Icon } from 'astro-icon/components';
 ---
 
-<footer class="pt-16 pb-12 sm:pt-24 sm:pb-16">
-    <p class="text-sm">
-        <a href="https://docs.netlify.com/frameworks/astro/" class="decoration-dashed text-primary underline-offset-8"> Astro on Netlify </a>
-    </p>
+<footer class="bg-neutral-dark-800 text-neutral-dark-200 py-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center justify-between border-b border-neutral-dark-400 pb-8">
+      <a href="https://www.netlify.com/">
+        <Icon name="logo-mark" class="block w-14" />
+      </a>
+      <ul class="flex items-center gap-4">
+        <li>
+          <a href="https://github.com/netlify" target="_blank" rel="noopener noreferrer">
+            <Icon name="github" class="block w-5" />
+          </a>
+        </li>
+        <li>
+          <a href="https://www.youtube.com/@NetlifyApp" target="_blank" rel="noopener noreferrer">
+            <Icon name="youtube" class="block w-5" />
+          </a>
+        </li>
+        <li>
+          <a href="https://twitter.com/netlify" target="_blank" rel="noopener noreferrer">
+            <Icon name="twitter" class="block w-5" />
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www.linkedin.com/company/netlify"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon name="linkedin" class="block w-5" />
+          </a>
+        </li>
+        <li>
+          <a href="https://answers.netlify.com/" target="_blank" rel="noopener noreferrer">
+            <Icon name="discourse" class="block w-5" />
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="pt-4 text-sm flex items-center justify-between text-neutral-dark-100">
+      <ul class="flex items-center gap-4">
+        <li>
+          <a href="https://docs.netlify.com/frameworks/astro/"> Astro on Netlify </a>
+        </li>
+        <li>
+          <a href="https://docs.netlify.com/"> Documentation </a>
+        </li>
+        <li>
+          <a href="https://developers.netlify.com/guides/"> Developer Guides </a>
+        </li>
+      </ul>
+      <p>© 2024 Netlify</p>
+    </div>
+  </div>
 </footer>

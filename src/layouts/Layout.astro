@@ -26,13 +26,15 @@ const { title } = Astro.props;
       rel="stylesheet"
     />
   </head>
-  <body class="antialiased text-white bg-[#355C7D]">
-    <div class="flex flex-col min-h-screen px-6 bg-grid-pattern sm:px-12">
-      <div class="flex flex-col w-full max-w-5xl mx-auto grow">
+  <body class="bg-blue-900">
+    <div
+      class="flex flex-col min-h-screen justify-between bg-gradient-to-b via-[15rem] from-neutral-dark-800 to-blue-900 via-neutral-dark-800 text-neutral-light-000"
+    >
+      <div>
         <Header />
-        <main class="grow"><slot /></main>
-        <Footer />
+        <main><slot /></main>
       </div>
+      <Footer />
     </div>
   </body>
 </html>

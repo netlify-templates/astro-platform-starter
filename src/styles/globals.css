@@ -15,4 +15,14 @@
   h1 {
     @apply text-4xl;
   }
+
+  svg {
+    @apply h-auto
+      w-full;
+  }
+
+  img,
+  svg {
+    @apply max-w-full;
+  }
 }

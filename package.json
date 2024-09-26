@@ -16,7 +16,7 @@
     "@fontsource/inter": "^5.1.0",
     "@netlify/blobs": "^8.0.1",
     "@netlify/functions": "^2.6.3",
-    "@types/react": "^18.3.7",
+    "@types/react": "^18.3.9",
     "@types/react-dom": "^18.2.25",
     "astro": "^4.15.9",
     "blobshape": "^1.0.0",
@@ -31,7 +31,7 @@
     "@stackbit/cms-git": "^1.0.13",
     "@stackbit/types": "^2.1.0",
     "@types/blobshape": "^1.0.3",
-    "@types/node": "^20.5.5",
+    "@types/node": "^22.7.2",
     "daisyui": "^4.12.10"
   }
 }

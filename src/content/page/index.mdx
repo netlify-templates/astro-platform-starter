@@ -1,22 +1,14 @@
 ---
-import Button from '@/components/Button.astro';
-import ContextAlert from '@/components/ContextAlert.astro';
-import Markdown from '@/components/Markdown.astro';
-import Layout from '@/layouts/Layout.astro';
+title: Netlify Platform Starter for Astro
+---
 
-const explainer = `
+import Button from '@/components/Button.astro';
+
 An Astro website can go way beyond static pages - on the right platform.
 
 Netlify supports not only [Streaming SSR](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming) and fast [Edge Middleware](https://docs.astro.build/en/guides/middleware/), but also [on-demand revalidation](https://www.netlify.com/blog/cache-tags-and-purge-api-on-netlify/) and [stale-while-revalidate](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/).
 Any page or data can be rebuilt only when needed, without site visitors ever getting a performance hit.
-`;
----
 
-<Layout title="Welcome to Astro.">
-  <ContextAlert class="mb-4" />
-  <h1 class="mb-10">Netlify Platform Starter for Astro</h1>
-  <Markdown content={explainer} class="text-lg mb-10" />
-  <p class="mb-8">
-    <Button href="https://docs.netlify.com/frameworks/astro/">Read the docs</Button>
-  </p>
-</Layout>
+<Button href="https://docs.netlify.com/frameworks/astro/" size="lg">
+  Read the docs
+</Button>

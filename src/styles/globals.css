@@ -13,7 +13,9 @@
   }
 
   h1 {
-    @apply text-4xl;
+    @apply font-bold
+      mb-12
+      text-5xl;
   }
 
   svg {
@@ -24,5 +26,23 @@
   img,
   svg {
     @apply max-w-full;
+  }
+}
+
+@layer components {
+  .prose {
+    @apply max-w-2xl;
+  }
+
+  .prose > p {
+    @apply mb-6;
+  }
+  .prose > *:last-child {
+    @apply mb-0;
+  }
+
+  .prose > p:first-child {
+    @apply mb-6
+      text-2xl;
   }
 }

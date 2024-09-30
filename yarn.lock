@@ -737,6 +737,11 @@
   resolved "https://registry.yarnpkg.com/@netlify/blobs/-/blobs-8.0.1.tgz#ba8b7279cbc511ffcc452fb482e0c66644c65c3a"
   integrity sha512-IrZHVqillU0x12eDbsap4Ba6poi+4IdVCYjZa+tA0eD95TaSbSqfw1zNkO27MiKw0pOjPB6+RXFK4pdfOs/qUQ==
 
+"@netlify/edge-functions@^2.11.0":
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/@netlify/edge-functions/-/edge-functions-2.11.0.tgz#31697e37d10958717f7c9c08df4b906342096a86"
+  integrity sha512-DZrDHdPX44Cj7T9geKdiIwHB6OScL7QFL10voC8TApgEwY/NhKfABBGF2cbUIfbAh3IAMBeikelT8PU0MqYnyg==
+
 "@netlify/functions@^2.8.0", "@netlify/functions@^2.8.1":
   version "2.8.1"
   resolved "https://registry.yarnpkg.com/@netlify/functions/-/functions-2.8.1.tgz#67cd94f929551e156225fb50d2efba603b97e138"

@@ -1,0 +1,81 @@
+---
+title: Netlify Edge Functions
+subheading: Add dynamic functionality to statically-rendered pages.
+---
+
+Edge functions are a powerful feature of Netlify that allow you to add dynamic functionality to your statically-rendered pages.
+
+## Dynamic content
+
+Here is an example where we use the `geo` object from the edge function to dynamically generate content based on your current location.
+
+```ts title="netlify/edge-functions/geo-rewrite.ts"
+import type { Config, Context } from '@netlify/edge-functions';
+import { HTMLRewriter, type TextChunk } from 'https://ghuc.cc/worker-tools/html-rewriter/index.ts';
+
+class ElementHandler {
+  public buffer = '';
+
+  constructor(private geo: Context['geo'] & { postalCode?: string }) {
+    this.geo = geo;
+  }
+
+  text(text: TextChunk) {
+    this.buffer += text.text;
+
+    if (text.lastInTextNode) {
+      const textToReplace = this.buffer
+        .replace(/\[city\]/gi, this.geo?.city || '<unknown>')
+        .replace(/* and so on ...*/);
+      text.replace(textToReplace, { html: true });
+      this.buffer = '';
+    } else {
+      text.remove();
+    }
+  }
+}
+
+export default async (_request: Request, context: Context) => {
+  const response = await context.next();
+  return new HTMLRewriter().on('*', new ElementHandler(context.geo)).transform(response);
+};
+
+export const config: Config = {
+  path: '<path(s)-to-run-edge-function>',
+  onError: 'bypass',
+};
+```
+
+### Your current location
+
+We're running this edge function on this page. If it's working, the values below will be replaced with your current location.
+
+```json
+{
+  "city": "[city]",
+  "country": { "code": "[country-code]", "name": "[country-name]" },
+  "subdivision": { "code": "[subdivision-code]", "name": "[subdivision-name]" },
+  "timezone": "[timezone]",
+  "latitude": "[latitude]",
+  "longitude": "[longitude]",
+  "postalCode": "[postal-code]"
+}
+```
+
+## Rewrite URLs
+
+There are plenty of other use cases for edge functions. For example, if you wanted to serve a different HTML page to users in Australia, you could do something like this:
+
+```ts
+import type { Config, Context } from '@netlify/edge-functions';
+
+export default (request: Request, context: Context) => {
+  const newPagePath =
+    context.geo?.country?.code === 'AU' ? '<path-for-australia>' : '<path-for-rest-of-world>';
+  return new URL(newPagePath, request.url);
+};
+
+export const config: Config = {
+  path: '<your-path>',
+};
+```

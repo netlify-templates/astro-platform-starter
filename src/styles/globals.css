@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+  ::selection {
+    @apply bg-teal-200
+      text-blue-900;
+  }
+
   h1,
   h2,
   h3,

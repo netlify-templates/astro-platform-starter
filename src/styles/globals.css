@@ -30,20 +30,6 @@
       text-3xl;
   }
 
-  ul {
-    @apply mb-4
-      list-disc
-      pl-4;
-  }
-
-  li {
-    @apply mb-2;
-  }
-
-  li:last-child {
-    @apply mb-0;
-  }
-
   a {
     @apply decoration-neutral-light-000
       duration-300
@@ -107,6 +93,19 @@
   .prose > p:first-child {
     @apply mb-6
       text-2xl;
+  }
+
+  .prose ul {
+    @apply list-disc
+      pl-4;
+  }
+
+  .prose li {
+    @apply mb-2;
+  }
+
+  .prose li:last-child {
+    @apply mb-0;
   }
 
   .btn {

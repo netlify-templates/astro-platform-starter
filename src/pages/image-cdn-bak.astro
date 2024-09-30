@@ -1,8 +1,8 @@
 ---
 import { Image } from 'astro:assets';
-import { getEntry } from 'astro:content';
 import corgi from '../assets/corgi.jpg';
-import ContextAlert from '../components/ContextAlert.astro';
+// import ContextAlert from '../components/ContextAlert.astro';
+import { getEntry } from 'astro:content';
 import Markdown from '../components/Markdown.astro';
 import Layout from '../layouts/Layout.astro';
 import { getNetlifyContext } from '../utils';
@@ -22,6 +22,21 @@ const sampleImageSrcSet = [640, 1280, 2048]
   })
   .join(', ');
 const sizes = '(max-width: 1024px) 100vw, 1024px';
+
+const astroImageSnippet = `
+## Using the built-in Astro &lt;Image /&gt; component
+
+Astro's \`Image\` component will automatically use Netlify Image CDN to serve optimized images.
+
+~~~jsx
+---
+import { Image } from 'astro:assets';
+import corgi from '../assets/corgi.jpg';
+---
+// Later in your markup...
+<Image src={corgi} alt="Corgi" /* ... additional props */ />
+~~~
+`;
 
 const originalVsCdnSnippet = `
 ## Original vs. optimized image: can you tell the difference?
@@ -51,11 +66,11 @@ detection, so format is set to WebP.
 <Layout title="Image CDN">
   <div class="flex flex-col gap-12 sm:gap-16">
     <section class="space-y-8">
-      <ContextAlert
+      <!-- <ContextAlert
         addedChecksFunction={(ctx) => {
           return ctx === 'dev' ? devModeWarning : null;
         }}
-      />
+      /> -->
       <h1>Image CDN</h1>
     </section>
     <section>
@@ -99,25 +114,27 @@ detection, so format is set to WebP.
   </div>
 </Layout>
 
-<!-- <script>
-    const images = document.querySelectorAll<HTMLImageElement>('.diff img');
+<script>
+  const images = document.querySelectorAll<HTMLImageElement>('.diff img');
 
-    images.forEach((image) => {
-        if (image.complete) {
-            showImageSize(image);
-        } else {
-            image.addEventListener('load', () => {
-                showImageSize(image);
-            });
-        }
-    });
-
-    function showImageSize(image: HTMLImageElement) {
-        const imageEntry = window?.performance?.getEntriesByName(image.currentSrc)?.[0] as PerformanceResourceTiming;
-        if (imageEntry && imageEntry.encodedBodySize) {
-            const imageOverlay = image.previousElementSibling;
-            imageOverlay.classList.remove('hidden');
-            imageOverlay.textContent = `Size: ${Math.ceil(imageEntry.encodedBodySize / 1024)}KB`;
-        }
+  images.forEach((image) => {
+    if (image.complete) {
+      showImageSize(image);
+    } else {
+      image.addEventListener('load', () => {
+        showImageSize(image);
+      });
     }
-</script> -->
+  });
+
+  function showImageSize(image: HTMLImageElement) {
+    const imageEntry = window?.performance?.getEntriesByName(
+      image.currentSrc,
+    )?.[0] as PerformanceResourceTiming;
+    if (imageEntry && imageEntry.encodedBodySize) {
+      const imageOverlay = image.previousElementSibling;
+      imageOverlay.classList.remove('hidden');
+      imageOverlay.textContent = `Size: ${Math.ceil(imageEntry.encodedBodySize / 1024)}KB`;
+    }
+  }
+</script>

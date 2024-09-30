@@ -1,0 +1,56 @@
+---
+type ImageProps = astroHTML.JSX.ImgHTMLAttributes & {
+  caption: string;
+};
+
+interface Props {
+  leftImg: ImageProps;
+  rightImg: ImageProps;
+}
+
+const { leftImg, rightImg } = Astro.props;
+---
+
+<div class="grid grid-cols-2 gap-4" data-image-diff>
+  <figure class="relative">
+    <img {...leftImg} />
+    <figcaption>{leftImg.caption}</figcaption>
+    <span
+      data-image-diff-size
+      class="hidden absolute py-1.5 px-2.5 text-sm rounded-lg bg-neutral-900/70 top-2.5 left-2.5 bg-neutral-light-800/70 text-sm"
+    ></span>
+  </figure>
+  <figure class="relative">
+    <img {...rightImg} />
+    <figcaption>{rightImg.caption}</figcaption>
+    <span
+      data-image-diff-size
+      class="hidden absolute py-1.5 px-2.5 text-sm rounded-lg bg-neutral-900/70 top-2.5 right-2.5 bg-neutral-light-800/70 text-sm"
+    ></span>
+  </figure>
+</div>
+
+<script>
+  const images = document.querySelectorAll<HTMLImageElement>('[data-image-diff] img');
+
+  images.forEach((image) => showImageSize(image));
+
+  function showImageSize(image: HTMLImageElement) {
+    if (!image.complete) {
+      image.addEventListener('load', () => showImageSize(image));
+      return;
+    }
+
+    const imageEntry = window?.performance?.getEntriesByName(
+      image.currentSrc,
+    )?.[0] as PerformanceResourceTiming;
+    if (imageEntry && imageEntry.encodedBodySize) {
+      const imageOverlay = image.parentElement?.querySelector('[data-image-diff-size]');
+      if (!imageOverlay) {
+        return;
+      }
+      imageOverlay.classList.remove('hidden');
+      imageOverlay.textContent = `Size: ${Math.ceil(imageEntry.encodedBodySize / 1024)}KB`;
+    }
+  }
+</script>

@@ -5,6 +5,7 @@ subheading: The Netlify Image CDN brings the ability to automatically optimize l
 
 import { Image } from 'astro:assets';
 import corgi from '../../assets/corgi.jpg';
+import ImageDiff from '../../components/ImageDiff.astro';
 
 ## Using the built-in Astro image component
 
@@ -33,11 +34,30 @@ A regular `<img />` tag is shown below to demonstrate a framework-agnostic examp
 
 ```html
 <!-- Left: the original image -->
-<img src="/images/corgi.jpg" alt="Corgi" />
+<img src="/images/corgi.jpg" alt="full-size corgi image" />
 
 <!-- Right: using Netlify Image CDN endpoint for a responsive image -->
-<img srcset="${sampleImageSrcSet}" sizes="${sizes}" alt="Corgi" />
+<img
+  srcset="
+    /.netlify/images?url=/images/corgi.jpg&w=640   640w,
+    /.netlify/images?url=/images/corgi.jpg&w=1280 1280w,
+    /.netlify/images?url=/images/corgi.jpg&w=2048 2048w
+  "
+  sizes="(max-width: 1024px) 100vw, 1024px"
+  alt="optimized corgi image"
+/>
 ```
+
+<ImageDiff
+  leftImg={{ src: '/images/corgi.jpg', alt: 'full-size corgi image', caption: 'Original image' }}
+  rightImg={{
+    srcset:
+      '/.netlify/images?url=/images/corgi.jpg&w=640 640w, /.netlify/images?url=/images/corgi.jpg&w=1280 1280w, /.netlify/images?url=/images/corgi.jpg&w=2048 2048w',
+    sizes: '(max-width: 1024px) 100vw, 1024px',
+    alt: 'optimized corgi image',
+    caption: 'Optimized image served from the CDN',
+  }}
+/>
 
 ## Local development
 

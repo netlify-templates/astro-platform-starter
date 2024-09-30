@@ -30,18 +30,6 @@
       text-3xl;
   }
 
-  a {
-    @apply decoration-neutral-light-000
-      duration-300
-      transition-colors
-      underline
-      underline-offset-4;
-  }
-
-  a:hover {
-    @apply decoration-teal-200;
-  }
-
   svg {
     @apply h-auto
       w-full;
@@ -106,6 +94,18 @@
 
   .prose li:last-child {
     @apply mb-0;
+  }
+
+  .prose a:not(.btn) {
+    @apply decoration-neutral-light-000
+      duration-300
+      transition-all
+      underline
+      underline-offset-4;
+  }
+
+  .prose a:hover {
+    @apply decoration-teal-200;
   }
 
   .btn {

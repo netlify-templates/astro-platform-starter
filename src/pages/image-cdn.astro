@@ -15,26 +15,3 @@ const { title } = page.data;
     <Content />
   </div>
 </Layout>
-
-<!-- <script>
-    const images = document.querySelectorAll<HTMLImageElement>('.diff img');
-
-    images.forEach((image) => {
-        if (image.complete) {
-            showImageSize(image);
-        } else {
-            image.addEventListener('load', () => {
-                showImageSize(image);
-            });
-        }
-    });
-
-    function showImageSize(image: HTMLImageElement) {
-        const imageEntry = window?.performance?.getEntriesByName(image.currentSrc)?.[0] as PerformanceResourceTiming;
-        if (imageEntry && imageEntry.encodedBodySize) {
-            const imageOverlay = image.previousElementSibling;
-            imageOverlay.classList.remove('hidden');
-            imageOverlay.textContent = `Size: ${Math.ceil(imageEntry.encodedBodySize / 1024)}KB`;
-        }
-    }
-</script> -->

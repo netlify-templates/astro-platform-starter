@@ -30,6 +30,13 @@
       text-3xl;
   }
 
+  h3 {
+    @apply font-bold
+      mb-2
+      mt-12
+      text-2xl;
+  }
+
   svg {
     @apply h-auto
       w-full;

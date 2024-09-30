@@ -15,8 +15,8 @@
     "@astrojs/tailwind": "^5.1.1",
     "@fontsource/inter": "^5.1.0",
     "@netlify/blobs": "^8.0.1",
-    "@netlify/functions": "^2.6.3",
-    "@types/react": "^18.3.9",
+    "@netlify/functions": "^2.8.2",
+    "@types/react": "^18.3.10",
     "@types/react-dom": "^18.2.25",
     "astro": "^4.15.9",
     "blobshape": "^1.0.0",
@@ -28,10 +28,10 @@
     "unique-names-generator": "^4.7.1"
   },
   "devDependencies": {
-    "@stackbit/cms-git": "^1.0.13",
+    "@stackbit/cms-git": "^1.0.15",
     "@stackbit/types": "^2.1.0",
     "@types/blobshape": "^1.0.3",
-    "@types/node": "^22.7.2",
+    "@types/node": "^22.7.4",
     "daisyui": "^4.12.10"
   }
 }

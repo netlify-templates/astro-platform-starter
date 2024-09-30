@@ -66,6 +66,16 @@
       border-neutral-light-000
       rounded-lg;
   }
+
+  select {
+    @apply bg-neutral-light-100
+      border
+      border-neutral-light-000
+      rounded-md
+      px-4
+      py-2
+      text-neutral-dark-900;
+  }
 }
 
 @layer components {

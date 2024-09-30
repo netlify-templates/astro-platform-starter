@@ -3,14 +3,14 @@ import NewShape from './NewShape.tsx';
 import StoredShapes from './StoredShapes.tsx';
 
 export default function ShapeEditor() {
-  const [lastMutationTime, setLastMutationTime] = useState<number>(null);
+  const [lastMutationTime, setLastMutationTime] = useState<number>(Date.now());
 
   return (
-    <div className="flex flex-col gap-8 md:flex-row">
-      <div className="flex-1">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
         <NewShape setLastMutationTime={setLastMutationTime} />
       </div>
-      <div className="flex-1">
+      <div>
         <StoredShapes lastMutationTime={lastMutationTime} />
       </div>
     </div>

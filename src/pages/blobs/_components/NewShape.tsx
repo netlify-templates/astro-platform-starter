@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import type { BlobProps } from '@/types.ts';
+import { generateBlob, uploadDisabled } from '@/utils';
 import type { Dispatch, SetStateAction } from 'react';
+import { useEffect, useState } from 'react';
 import ShapePreview from './ShapePreview.tsx';
-import { generateBlob, uploadDisabled } from '../../../utils';
-import type { BlobProps } from '../../../types.ts';
 
 interface Props {
-  setLastMutationTime?: Dispatch<SetStateAction<number>>;
+  setLastMutationTime: Dispatch<SetStateAction<number>>;
 }
 
 export default function NewShape(props: Props) {
@@ -19,6 +19,10 @@ export default function NewShape(props: Props) {
   };
 
   const uploadBlob = async () => {
+    if (!blobData) {
+      console.error('No blob data to upload');
+      return;
+    }
     const response = await fetch('/api/blobs', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -39,15 +43,13 @@ export default function NewShape(props: Props) {
   }, [blobData]);
 
   return (
-    <>
-      <h2 className="mb-4 text-xl text-center sm:text-xl">New Random Shape</h2>
+    <div className="text-center">
+      <h3>New Random Shape</h3>
       <div className="w-full bg-white rounded-lg mb-6">
-        <div className="min-h-14 p-4 border-b border-neutral-200 text-neutral-900 text-center">
-          {blobData && <span>{blobData.parameters?.name}</span>}
+        <div className="text-center mb-6 mt-4">
+          {blobData && <code>{blobData.parameters?.name}</code>}
         </div>
-        <div className="p-4 aspect-square text-primary">
-          {blobData && <ShapePreview {...blobData} />}
-        </div>
+        {blobData && <ShapePreview {...blobData} />}
       </div>
       <div className="flex flex-wrap justify-center gap-4">
         <button className="btn btn-primary" onClick={randomizeBlob}>
@@ -61,6 +63,6 @@ export default function NewShape(props: Props) {
           Upload
         </button>
       </div>
-    </>
+    </div>
   );
 }

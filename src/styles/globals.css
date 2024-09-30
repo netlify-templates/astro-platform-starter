@@ -44,6 +44,18 @@
     @apply mb-0;
   }
 
+  a {
+    @apply decoration-neutral-light-000
+      duration-300
+      transition-colors
+      underline
+      underline-offset-4;
+  }
+
+  a:hover {
+    @apply decoration-teal-200;
+  }
+
   svg {
     @apply h-auto
       w-full;
@@ -60,6 +72,18 @@
       px-1
       py-0.5
       text-teal-300;
+  }
+
+  figcaption {
+    @apply italic
+      mt-2
+      text-sm;
+  }
+
+  figure img {
+    @apply border-2
+      border-neutral-light-000
+      rounded-lg;
   }
 }
 

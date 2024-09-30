@@ -1,0 +1,48 @@
+---
+title: Netlify Image CDN
+subheading: The Netlify Image CDN brings the ability to automatically optimize local and remote images.
+---
+
+import { Image } from 'astro:assets';
+import corgi from '../../assets/corgi.jpg';
+
+## Using the built-in Astro image component
+
+Astro's `<Image />` component will automatically use Netlify Image CDN to serve optimized images.
+
+```astro
+---
+import { Image } from 'astro:assets';
+import corgi from '../assets/corgi.jpg';
+---
+
+<Image src={corgi} alt="Corgi" /* ... additional props */ />
+```
+
+<figure>
+  <Image src={corgi} alt="Corgi" />
+  <figcaption>
+    Credit: photo by [Alvan Nee](https://unsplash.com/@alvannee) on
+    [Unsplash](https://unsplash.com/photos/long-coated-white-and-brown-dog-lvFlpqEvuRM)
+  </figcaption>
+</figure>
+
+## Original vs. optimized image: can you tell the difference?
+
+A regular `<img />` tag is shown below to demonstrate a framework-agnostic example.
+
+```html
+<!-- Left: the original image -->
+<img src="/images/corgi.jpg" alt="Corgi" />
+
+<!-- Right: using Netlify Image CDN endpoint for a responsive image -->
+<img srcset="${sampleImageSrcSet}" sizes="${sizes}" alt="Corgi" />
+```
+
+## Local development
+
+TODO
+
+## unpic-img
+
+Aside from Astro's `Image` or rolling your own `<img />` tags, you can also use the excellent [unpic-img](https://unpic.pics/) package.

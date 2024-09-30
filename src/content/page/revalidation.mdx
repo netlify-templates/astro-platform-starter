@@ -1,0 +1,33 @@
+---
+title: Revalidating Server Content
+subheading: This is a server-rendered page. The date it was last dynamically-rendered is shown above.
+---
+
+## Response headers
+
+This page was rendered with the following headers:
+
+```js
+{
+  "Cache-Control": "public, max-age=0, must-revalidate",
+  "Netlify-CDN-Cache-Control": "public, max-age=31536000, must-revalidate",
+  "Cache-Tag": "/revalidation,all-ssr-pages"
+}
+```
+
+This gets interpreted differently by the browser and CDN:
+
+- **Browsers:** a non-cacheable page, must be revalidated on every request
+- **CDN:** cacheable for up to a year, though it will be automatically purged and revalidated on new deployments by default
+
+## Cache tags
+
+The `Cache-Tag` header, in tandem with the [purge API](https://docs.netlify.com/platform/caching/#on-demand-invalidation), allows a developer to invalidate any
+content at will (pages, JSON responses, etc.) based on the tags associated with them.
+
+Tags are completely up to you to decide on, and allow for powerful caching patterns.
+
+## Stale-While-Revalidate
+
+In real-world applications, you may want to use [stale-while-revalidate](https://docs.netlify.com/platform/caching/#stale-while-revalidate-directive) as well, so that end-users don't experience
+a performance hit as pages are being rebuilt.

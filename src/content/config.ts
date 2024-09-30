@@ -4,6 +4,7 @@ const pageCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
+    subheading: z.string().optional(),
   }),
 });
 

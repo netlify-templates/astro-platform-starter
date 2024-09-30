@@ -18,6 +18,27 @@
       text-5xl;
   }
 
+  h2 {
+    @apply font-bold
+      mb-4
+      mt-12
+      text-3xl;
+  }
+
+  ul {
+    @apply mb-4
+      list-disc
+      pl-4;
+  }
+
+  li {
+    @apply mb-2;
+  }
+
+  li:last-child {
+    @apply mb-0;
+  }
+
   svg {
     @apply h-auto
       w-full;
@@ -27,6 +48,14 @@
   svg {
     @apply max-w-full;
   }
+
+  code {
+    @apply bg-neutral-dark-800
+      rounded-md
+      px-1
+      py-0.5
+      text-teal-300;
+  }
 }
 
 @layer components {
@@ -34,9 +63,14 @@
     @apply max-w-2xl;
   }
 
-  .prose > p {
+  .prose p,
+  .prose ul,
+  .prose ol,
+  .prose blockquote,
+  .prose .expressive-code {
     @apply mb-6;
   }
+
   .prose > *:last-child {
     @apply mb-0;
   }
@@ -44,5 +78,22 @@
   .prose > p:first-child {
     @apply mb-6
       text-2xl;
+  }
+
+  .btn {
+    @apply bg-teal-200
+      duration-300
+      font-bold
+      hover:bg-teal-100
+      inline-block
+      px-4
+      py-2
+      rounded-md
+      text-blue-900
+      transition-colors;
+  }
+
+  .btn.btn-lg {
+    @apply px-8 py-4;
   }
 }

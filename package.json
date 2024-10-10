@@ -28,7 +28,7 @@
     "unique-names-generator": "^4.7.1"
   },
   "devDependencies": {
-    "@stackbit/cms-git": "^1.0.15",
+    "@stackbit/cms-git": "^1.0.16",
     "@stackbit/types": "^2.1.0",
     "@types/blobshape": "^1.0.3",
     "@types/node": "^22.7.4",

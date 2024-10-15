@@ -12,15 +12,15 @@
   "dependencies": {
     "@astrojs/netlify": "^5.5.3",
     "@astrojs/react": "^3.6.2",
-    "@astrojs/tailwind": "^5.1.1",
+    "@astrojs/tailwind": "^5.1.2",
     "@fontsource/inter": "^5.1.0",
-    "@netlify/blobs": "^8.0.1",
+    "@netlify/blobs": "^8.1.0",
     "@netlify/functions": "^2.8.2",
-    "@types/react": "^18.3.10",
-    "@types/react-dom": "^18.2.25",
-    "astro": "^4.15.9",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "astro": "^4.16.3",
     "blobshape": "^1.0.0",
-    "marked": "^14.1.2",
+    "marked": "^14.1.3",
     "marked-shiki": "^1.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -28,10 +28,10 @@
     "unique-names-generator": "^4.7.1"
   },
   "devDependencies": {
-    "@stackbit/cms-git": "^1.0.16",
-    "@stackbit/types": "^2.1.0",
+    "@stackbit/cms-git": "^1.0.17",
+    "@stackbit/types": "^2.1.1",
     "@types/blobshape": "^1.0.3",
-    "@types/node": "^22.7.4",
-    "daisyui": "^4.12.10"
+    "@types/node": "^22.7.5",
+    "daisyui": "^4.12.13"
   }
 }

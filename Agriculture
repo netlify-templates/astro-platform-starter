@@ -1,0 +1,16 @@
+agriculture-website/
+├── public/
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   └── main.js
+│   └── index.html
+├── server/
+│   ├── models/
+│   │   └── crop.js
+│   ├── routes/
+│   │   └── api.js
+│   └── server.js
+├── .env
+└── package.json
+

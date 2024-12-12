@@ -1,51 +1,116 @@
-# Astro on Netlify Platform Starter
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rifa - Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        form { max-width: 300px; margin: 0 auto; text-align: left; }
+        input { width: 100%; margin: 10px 0; padding: 10px; }
+        button { width: 100%; padding: 10px; background-color: blue; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: darkblue; }
+    </style>
+</head>
+<body>
+    <h1>Bem-vindo à Rifa</h1>
+    <form id="login-form">
+        <h2>Login</h2>
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+        <label for="password">Senha:</label>
+        <input type="password" id="password" required>
+        <button type="submit">Entrar</button>
+    </form>
 
-[Live Demo](https://astro-platform-starter.netlify.app/)
+    <form id="register-form" style="display: none;">
+        <h2>Cadastro</h2>
+        <label for="reg-email">Email:</label>
+        <input type="email" id="reg-email" required>
+        <label for="reg-password">Senha:</label>
+        <input type="password" id="reg-password" required>
+        <button type="submit">Cadastrar</button>
+    </form>
 
-A modern starter based on Astro.js, Tailwind, daisyUI, and [Netlify Core Primitives](https://docs.netlify.com/core/overview/#develop) (Edge Functions, Image CDN, Blob Store).
+    <p id="toggle-form" style="cursor: pointer; color: blue;">Ainda não tem conta? Cadastre-se</p>
 
-## Astro Commands
+    <script>
+        const toggleForm = document.getElementById('toggle-form');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const adminEmail = "seu-email@exemplo.com"; // Seu email para acesso ao sorteio
 
-All commands are run from the root of the project, from a terminal:
+        toggleForm.onclick = () => {
+            loginForm.style.display = loginForm.style.display === "none" ? "block" : "none";
+            registerForm.style.display = registerForm.style.display === "none" ? "block" : "none";
+            toggleForm.textContent = loginForm.style.display === "none" ? "Já tem conta? Faça login" : "Ainda não tem conta? Cadastre-se";
+        };
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+        // Login Simples (Exemplo)
+        loginForm.onsubmit = (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
 
-## Deploying to Netlify
+            // Verificar email e senha localmente
+            const user = JSON.parse(localStorage.getItem(email));
+            if (user && user.password === password) {
+                alert("Login realizado com sucesso!");
+                if (email === adminEmail) {
+                    window.location.href = "admin.html"; // Página do administrador
+                } else {
+                    window.location.href = "rifa.html"; // Página do usuário
+                }
+            } else {
+                alert("Email ou senha incorretos.");
+            }
+        };
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/astro-platform-starter)
+        // Cadastro Simples
+        registerForm.onsubmit = (e) => {
+            e.preventDefault();
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
 
-## Developing Locally
+            if (localStorage.getItem(email)) {
+                alert("Este email já está cadastrado.");
+            } else {
+                localStorage.setItem(email, JSON.stringify({ email, password }));
+                alert("Cadastro realizado com sucesso! Faça login.");
+                toggleForm.click();
+            }
+        };
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Sorteio</title>
+</head>
+<body>
+    <h1>Painel do Administrador</h1>
+    <p>Somente o administrador pode realizar o sorteio.</p>
+    <button id="draw-btn" style="display: none;">Realizar Sorteio</button>
+    <div class="winner" id="winner" style="margin-top: 20px;"></div>
 
-| Prerequisites             |
-| :------------------------ |
-| [Node.js](https://nodejs.org/) v18.14+. |
-| (optional) [nvm](https://github.com/nvm-sh/nvm) for Node version management. |
+    <script>
+        const drawButton = document.getElementById('draw-btn');
+        const winnerDiv = document.getElementById('winner');
 
-1. Clone this repository, then run `npm install` in its root directory.
+        // Permitir sorteio apenas em 25 de dezembro
+        const today = new Date();
+        if (today.getMonth() === 11 && today.getDate() === 25) {
+            drawButton.style.display = "block";
+        }
 
-2. For the starter to have full functionality locally (e.g. edge functions, blob store), please ensure you have an up-to-date version of Netlify CLI. Run:
-
-```
-npm install netlify-cli@latest -g
-```
-
-3. Link your local repository to the deployed Netlify site. This will ensure you're using the same runtime version for both local development and your deployed site.
-
-```
-netlify link
-```
-
-4. Then, run the Astro.js development server via Netlify CLI:
-
-```
-netlify dev
-```
-
-If your browser doesn't navigate to the site automatically, visit [localhost:8888](http://localhost:8888).
+        // Realizar sorteio
+        drawButton.onclick = () => {
+            const winner = 5; // Número fixo
+            winnerDiv.textContent = `O ganhador é o número ${winner}! Parabéns!`;
+        };
+    </script>
+</body>
+</html>

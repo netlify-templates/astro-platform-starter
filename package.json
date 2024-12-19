@@ -15,7 +15,7 @@
     "@astrojs/tailwind": "^5.1.0",
     "@fontsource/inter": "^5.0.18",
     "@netlify/blobs": "^8.1.0",
-    "@netlify/functions": "^2.8.2",
+    "@netlify/functions": "^3.0.0",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
     "astro": "^4.6.2",

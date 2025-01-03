@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page - Bất Động Sản</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background: url('https://via.placeholder.com/1920x500') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            padding: 50px 20px;
+        }
+        header h1 {
+            font-size: 3em;
+            margin: 0;
+        }
+        header p {
+            font-size: 1.2em;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .features, .form-section {
+            margin-bottom: 40px;
+        }
+        .features h2, .form-section h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .features .feature {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .features img {
+            width: 200px;
+            height: auto;
+            border-radius: 10px;
+        }
+        .features .description {
+            flex: 1;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, textarea, button {
+            padding: 10px;
+            font-size: 1em;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Dự Án Bất Động Sản Cao Cấp</h1>
+    <p>Cơ hội đầu tư sinh lời cao với vị trí đắc địa và thiết kế hiện đại</p>
+</header>
+
+<div class="container">
+    <section class="features">
+        <h2>Điểm Nổi Bật Của Dự Án</h2>
+        <div class="feature">
+            <img src="https://via.placeholder.com/200" alt="Feature 1">
+            <div class="description">
+                <h3>Vị Trí Đắc Địa</h3>
+                <p>Dự án tọa lạc tại trung tâm thành phố, kết nối dễ dàng với các tiện ích.</p>
+            </div>
+        </div>
+        <div class="feature">
+            <img src="https://via.placeholder.com/200" alt="Feature 2">
+            <div class="description">
+                <h3>Thiết Kế Hiện Đại</h3>
+                <p>Không gian sống sang trọng, tối ưu hóa ánh sáng và gió tự nhiên.</p>
+            </div>
+        </div>
+        <div class="feature">
+            <img src="https://via.placeholder.com/200" alt="Feature 3">
+            <div class="description">
+                <h3>Tiện Ích Đầy Đủ</h3>
+                <p>Hệ thống tiện ích nội khu đa dạng, đáp ứng mọi nhu cầu sống.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="form-section">
+        <h2>Liên Hệ Ngay</h2>
+        <form action="https://formsubmit.co/your-email@example.com" method="POST">
+            <input type="text" name="name" placeholder="Họ và Tên" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="tel" name="phone" placeholder="Số Điện Thoại" required>
+            <textarea name="message" rows="4" placeholder="Nhu cầu của bạn"></textarea>
+            <button type="submit">Gửi Thông Tin</button>
+        </form>
+    </section>
+</div>
+
+</body>
+</html>

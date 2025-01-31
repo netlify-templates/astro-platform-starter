@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothing Store</title>
+    <style>
+        /* Basic CSS Styling - You'll want to expand on this */
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background-color: #f0f0f0;
+            padding: 10px;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-around; /* Distribute links evenly */
+        }
+        nav li {
+            display: inline;
+        }
+        nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px; /* Add some padding around links */
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+            gap: 20px;
+            padding: 20px;
+        }
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#men">Men</a></li>
+            <li><a href="#women">Women</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="men">
+        <h2>Men's Clothing</h2>
+        <div class="product-grid">
+            <div class="product">
+                <img src="placeholder.jpg" alt="Men's Shirt">  <h3>Shirt</h3>
+                <p>Price: $29.99</p>
+                <button>Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="placeholder.jpg" alt="Men's Pants">  <h3>Pant

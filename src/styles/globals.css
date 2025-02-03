@@ -1,50 +1,65 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin "daisyui";
 
-@layer base {
-    h1 {
-        @apply text-4xl font-bold tracking-tight sm:text-5xl;
-    }
-
-    h2 {
-        @apply text-2xl font-bold sm:text-3xl;
-    }
-
-    a {
-        @apply underline transition hover:opacity-80;
-    }
-
-    pre {
-        @apply p-6 overflow-x-auto rounded-lg;
-    }
-
-    :not(pre) > code {
-        @apply px-1 py-0.5 font-mono rounded bg-[#1f1f1f] text-[#F67280];
-        font-size: 0.9em;
-    }
+@plugin "daisyui/theme" {
+    name: lofi;
+    --color-primary: #f67280;
+    --color-primary-content: #1f1f1f;
+    --color-secondary: #c06c84;
+    --color-info: #f67280;
+    --color-info-content: #1f1f1f;
 }
 
-@layer components {
-    .markdown > h1,
-    .markdown > h2 {
-        @apply mt-12 mb-6;
-    }
+h1 {
+    @apply text-4xl font-bold tracking-tight sm:text-5xl;
+}
 
-    .markdown > p,
-    .markdown > pre {
-        @apply my-6;
-    }
+h1 {
+    @apply text-4xl font-bold tracking-tight sm:text-5xl;
+}
 
-    .markdown > :first-child {
-        @apply mt-0;
-    }
+h2 {
+    @apply text-2xl font-bold sm:text-3xl;
+}
 
-    .markdown > :last-child {
-        @apply mb-0;
-    }
+a {
+    @apply underline transition hover:opacity-80;
+}
 
-    .btn:disabled {
-        @apply text-neutral-400 bg-neutral-700;
-    }
+pre {
+    @apply p-6 overflow-x-auto rounded-lg;
+}
+
+:not(pre) > code {
+    @apply px-1 py-0.5 font-mono rounded-sm bg-[#1f1f1f] text-[#F67280];
+    font-size: 0.9em;
+}
+
+.markdown > h1,
+.markdown > h2 {
+    @apply mt-12 mb-6;
+}
+
+.markdown > p,
+.markdown > pre {
+    @apply my-6;
+}
+
+.markdown > :first-child {
+    @apply mt-0;
+}
+
+.markdown > :last-child {
+    @apply mb-0;
+}
+
+.btn:disabled {
+    @apply text-neutral-400 bg-neutral-700;
+}
+
+.btn {
+    @apply no-underline;
+}
+.bg-grid-pattern {
+    background-image: linear-gradient(to bottom, theme('colors.neutral.950 / 0%'), theme('colors.neutral.950 / 100%')), url('/images/noise.png');
 }

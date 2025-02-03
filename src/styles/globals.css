@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 @plugin "daisyui";
-
+@theme {
+    --font-display: 'Inter', 'sans-serif';
+}
 @plugin "daisyui/theme" {
     name: lofi;
     --color-primary: #f67280;

@@ -4,12 +4,18 @@
     --font-display: 'Inter', 'sans-serif';
 }
 @plugin "daisyui/theme" {
-    name: lofi;
+    name: black;
+    default: true;
     --color-primary: #f67280;
     --color-primary-content: #1f1f1f;
     --color-secondary: #c06c84;
     --color-info: #f67280;
     --color-info-content: #1f1f1f;
+    --radius-selector: 0.25rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.25rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
 }
 
 h1 {

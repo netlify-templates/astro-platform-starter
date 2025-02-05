@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Bharat Global Services - Premier IT Consultancy Solutions with Global Expertise">
+    <meta name="keywords" content="IT Consultancy, Cloud Solutions, Cybersecurity, Digital Transformation">
+    <title>Bharat Global Services | IT Consultancy Experts</title>
+    <style>
+        /* Custom Color Scheme */
+        :root {
+            --primary-blue: #003366;
+            --accent-orange: #FF6B35;
+            --neutral-white: #FFFFFF;
+            --dark-gray: #2E2E2E;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--dark-gray);
+        }
+
+        /* Header Styles */
+        header {
+            background: var(--primary-blue);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--neutral-white);
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--neutral-white);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-orange);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 51, 102, 0.9), rgba(0, 51, 102, 0.8)),
+                        url('https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1920') center/cover;
+            color: var(--neutral-white);
+            padding: 8rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            padding: 2rem;
+            background: var(--neutral-white);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Client Logos */
+        .clients {
+            padding: 4rem 2rem;
+            background: #f8f9fa;
+            text-align: center;
+        }
+
+        .client-logos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .client-logo {
+            height: 40px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .client-logo:hover {
+            opacity: 1;
+        }
+
+        /* Team Section */
+        .team {
+            padding: 4rem 2rem;
+            background: var(--primary-blue);
+            color: var(--neutral-white);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .member-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            background: #ddd;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 4rem 2rem;
+            background: #f8f9fa;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background: var(--accent-orange);
+            color: var(--neutral-white);
+            padding: 1rem 3rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #FF5722;
+        }
+
+        footer {
+            background: var(--primary-blue);
+            color: var(--neutral-white);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: left;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: var(--neutral-white);
+            text-decoration: none;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu {
+                display: block;
+                color: var(--neutral-white);
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <div class="logo-icon">BGS</div>
+                <span>Bharat Global Services</span>
+            </a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#services">Services</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="mobile-menu">☰</div>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h1>Empowering Global Digital Transformation</h1>
+        <p>Strategic IT Solutions for Tomorrow's Challenges</p>
+        <button>Schedule Consultation</button>
+    </section>
+
+    <section class="services" id="services">
+        <h2>Our Expertise</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Cloud Solutions</h3>
+                <p>End-to-end cloud migration and management services</p>
+            </div>
+            <div class="service-card">
+                <h3>Cybersecurity</h3>
+                <p>Comprehensive digital protection strategies</p>
+            </div>
+            <div class="service-card">
+                <h3>AI & Automation</h3>
+                <p>Smart solutions for business optimization</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="clients">
+        <h3>Trusted By Leading Organizations</h3>
+        <div class="client-logos">
+            <!-- Add actual client logos here -->
+            <img src="client1.png" class="client-logo" alt="Client 1">
+            <img src="client2.png" class="client-logo" alt="Client 2">
+            <img src="client3.png" class="client-logo" alt="Client 3">
+        </div>
+    </section>
+
+    <section class="team" id="about">
+        <h2>Leadership Team</h2>
+        <div class="team-grid">
+            <div class="team-member">
+                <div class="member-photo"></div>
+                <h4>Rahul Sharma</h4>
+                <p>CEO & Founder</p>
+            </div>
+            <div class="team-member">
+                <div class="member-photo"></div>
+                <h4>Priya Patel</h4>
+                <p>CTO</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2>Get In Touch</h2>
+        <form class="contact-form">
+            <input type="text" placeholder="Full Name" required>
+            <input type="email" placeholder="Business Email" required>
+            <textarea rows="6" placeholder="How can we assist you?" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <h4>Bharat Global Services</h4>
+                <p>Mumbai | Delhi | Bangalore</p>
+                <p>contact@bharatglobalservices.in</p>
+                <p>+91 22 1234 5678</p>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <p><a href="#services">Services</a></p>
+                <p><a href="#about">About Us</a></p>
+                <p><a href="#contact">Careers</a></p>
+            </div>
+            <div>
+                <h4>Connect With Us</h4>
+                <div class="social-links">
+                    <a href="#">LinkedIn</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Facebook</a>
+                </div>
+            </div>
+        </div>
+        <p style="margin-top: 2rem;">&copy; 2023 Bharat Global Services. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Crunchyroll - Watch Anime</title>
+		<style>
+			/* Disable scrolling/selection */
+			* {
+				user-select: none;
+				-webkit-user-select: none;
+			}
+
+			body {
+				margin: 0;
+				background: #121212;
+				font-family: Arial, sans-serif;
+				color: white;
+				cursor: default;
+			}
+
+			/* Crunchyroll Clone */
+			.cr-header {
+				background: #f47521;
+				padding: 15px;
+				text-align: center;
+			}
+
+			.cr-logo {
+				width: 200px;
+			}
+
+			.login-box {
+				width: 350px;
+				margin: 50px auto;
+				padding: 30px;
+				background: #1e1e1e;
+				border-radius: 5px;
+			}
+
+			input {
+				width: 100%;
+				padding: 12px;
+				margin: 10px 0;
+				background: #2a2a2a;
+				border: 1px solid #333;
+				color: white;
+			}
+
+			/* Minecraft Popup */
+			.mc-popup {
+				display: none;
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background: #fff;
+				color: #000;
+				padding: 25px;
+				border-radius: 8px;
+				text-align: center;
+				z-index: 1000;
+			}
+
+			.mc-logo {
+				width: 180px;
+			}
+
+			/* System Freeze Overlay */
+			.freeze-overlay {
+				display: none;
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.8);
+				z-index: 2000;
+			}
+
+			/* Fake Disk Error */
+			.disk-error {
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background: #0047ab;
+				color: white;
+				padding: 30px;
+				font-family: 'Courier New';
+				white-space: pre;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!-- Stage 1: Crunchyroll Login -->
+		<div class="cr-header">
+			<img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Crunchyroll_Logo.png" class="cr-logo">
+		</div>
+		<div class="login-box">
+			<h2>Sign In to Continue</h2>
+			<input type="email" placeholder="Email">
+			<input type="password" placeholder="Password">
+			<button onclick="triggerUpdate()" style="
+      width: 100%;
+      padding: 12px;
+      background: #f47521;
+      color: white;
+      border: none;
+      cursor: pointer;
+    ">
+				Sign In
+			</button>
+		</div>
+
+		<!-- Stage 2: Minecraft Update Popup -->
+		<div class="mc-popup" id="mcPopup">
+			<img src="https://i.imgur.com/3QZwX7C.png" class="mc-logo">
+			<h3>Minecraft Launcher Update Required</h3>
+			<p>Version 2.8.1 - Security Patch</p>
+			<button onclick="crashSystem()" style="
+      padding: 10px 20px;
+      background: #60b060;
+      color: white;
+      border: none;
+      cursor: pointer;
+    ">
+				Install Now
+			</button>
+		</div>
+
+		<!-- Stage 3: System Freeze -->
+		<div class="freeze-overlay" id="freezeOverlay"></div>
+		<div class="disk-error" id="diskError" style="display: none;">
+			Windows - Delayed Write Failed
+
+			Windows was unable to save all the data for the file \Device\Harddisk1\DR1.
+			The data has been lost.
+		</div>
+
+		<script>
+			// Disable right-click/F12/CTRL keys
+			document.addEventListener('contextmenu', e => e.preventDefault());
+			document.addEventListener('keydown', e => {
+				if (e.key === 'F12' || e.ctrlKey) e.preventDefault();
+			});
+
+			let isFrozen = false;
+
+			function triggerUpdate() {
+				document.getElementById('mcPopup').style.display = 'block';
+			}
+
+			function crashSystem() {
+				// Trigger freeze
+				document.getElementById('mcPopup').style.display = 'none';
+				document.getElementById('freezeOverlay').style.display = 'block';
+				isFrozen = true;
+
+				// Make clicks/keys do nothing
+				document.addEventListener('click', freezeBehavior);
+				document.addEventListener('keydown', freezeBehavior);
+
+				// Show disk error after 10 seconds
+				setTimeout(() => {
+					document.getElementById('diskError').style.display = 'block';
+				}, 10000);
+			}
+
+			function freezeBehavior(e) {
+				if (!isFrozen) return;
+				e.preventDefault();
+				e.stopPropagation();
+				// Simulate lag by moving error randomly
+				if (Math.random() < 0.3) {
+					document.getElementById('diskError').style.left = `${Math.random() * 100}%`;
+				}
+			}
+		</script>
+	</body>
+
+</html>

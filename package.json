@@ -30,6 +30,6 @@
   "devDependencies": {
     "@types/blobshape": "^1.0.3",
     "@types/node": "^20.12.7",
-    "daisyui": "^4.10.2"
+    "daisyui": "^5.0.0"
   }
 }

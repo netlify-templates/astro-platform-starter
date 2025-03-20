@@ -1,7 +1,7 @@
 ---
 import { Marked } from 'marked';
 import markedShiki from 'marked-shiki';
-import { getHighlighter } from 'shiki';
+import { highlighterPromise } from '../utils/highlighter';
 
 interface Props {
     content: string;
@@ -10,14 +10,7 @@ interface Props {
 
 const { content, class: className } = Astro.props;
 
-// `getHighlighter` is async, it initializes the internal and
-// loads the languages and themes specified.
-// Then later you can use `highlighter.codeToHtml` synchronously
-// with the loaded themes and languages.
-const highlighter = await getHighlighter({
-    langs: ['jsx', 'js'],
-    themes: ['min-dark']
-});
+const highlighter = await highlighterPromise;
 const html = await new Marked()
     .use(
         markedShiki({

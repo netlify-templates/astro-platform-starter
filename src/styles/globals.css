@@ -1,6 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+    --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-primary: #f67280;
+    --color-primary-content: #101828;
+    --color-complementary: #355c7d;
+    --background-image-noise: linear-gradient(
+            to bottom,
+            color-mix(in oklab, var(--color-gray-950) 0%, transparent),
+            color-mix(in oklab, var(--color-gray-950) 100%, transparent)
+        ),
+        url('/images/noise.png');
+}
 
 @layer base {
     h1 {
@@ -11,7 +22,7 @@
         @apply text-2xl font-bold sm:text-3xl;
     }
 
-    a {
+    a:not(.btn) {
         @apply underline transition hover:opacity-80;
     }
 
@@ -20,31 +31,48 @@
     }
 
     :not(pre) > code {
-        @apply px-1 py-0.5 font-mono rounded bg-[#1f1f1f] text-[#F67280];
+        @apply px-1 py-0.5 font-mono rounded bg-gray-900 text-primary;
         font-size: 0.9em;
     }
 }
 
 @layer components {
-    .markdown > h1,
-    .markdown > h2 {
-        @apply mt-12 mb-6;
+    .markdown {
+        > * {
+            @apply my-6;
+        }
+
+        :where(h1, h2) {
+            @apply mt-12 mb-6;
+        }
+
+        > :first-child {
+            @apply mt-0;
+        }
+
+        > :last-child {
+            @apply mb-0;
+        }
     }
 
-    .markdown > p,
-    .markdown > pre {
-        @apply my-6;
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 bg-primary text-primary-content cursor-pointer text-center font-semibold no-underline transition-colors;
+        padding: var(--btn-py, 0.875rem) var(--btn-px, 1.25rem);
+        font-size: var(--btn-font-size, 0.875rem);
+        border-radius: var(--btn-border-radius, 0.25rem);
+
+        &:hover {
+            @apply bg-primary/85;
+        }
+
+        &:disabled {
+            @apply text-gray-400 bg-gray-700;
+        }
     }
 
-    .markdown > :first-child {
-        @apply mt-0;
-    }
-
-    .markdown > :last-child {
-        @apply mb-0;
-    }
-
-    .btn:disabled {
-        @apply text-neutral-400 bg-neutral-700;
+    .btn-lg {
+        --btn-font-size: 1.125rem;
+        --btn-px: 1.5rem;
+        --btn-py: 1.125rem;
     }
 }

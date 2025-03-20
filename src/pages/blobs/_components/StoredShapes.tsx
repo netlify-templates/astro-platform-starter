@@ -45,15 +45,15 @@ export default function StoredShapes(props: Props) {
         <>
             <h2 className="mb-4 text-xl text-center sm:text-xl">Objects in Blob Store</h2>
             <div className="w-full bg-white rounded-lg">
-                <div className="min-h-14 p-4 text-center">
+                <div className="p-4 text-center min-h-14">
                     {keys?.length ? (
                         <div className="space-y-1">
                             {keys.map((keyName) => (
                                 <button
                                     key={keyName}
                                     className={
-                                        'btn btn-ghost btn-sm btn-block text-neutral-900 font-normal' +
-                                        (selectedKey === keyName ? ' bg-base-content/20 pointer-events-none' : '')
+                                        'inline-flex items-center justify-center w-full px-4 py-1.5 rounded-sm text-sm text-gray-900 cursor-pointer text-center transition hover:bg-complementary/20' +
+                                        (selectedKey === keyName ? ' bg-complementary/20 pointer-events-none' : '')
                                     }
                                     onClick={() => {
                                         getBlobByKey(keyName);
@@ -64,11 +64,11 @@ export default function StoredShapes(props: Props) {
                             ))}
                         </div>
                     ) : (
-                        <span className="text-neutral-900">Please upload some shapes!</span>
+                        <span className="text-gray-900">Please upload some shapes!</span>
                     )}
                 </div>
                 {previewData && (
-                    <div className="p-4 aspect-square text-primary border-t border-neutral-200">
+                    <div className="p-4 border-t border-gray-200 aspect-square text-primary">
                         <ShapePreview {...previewData} />
                     </div>
                 )}

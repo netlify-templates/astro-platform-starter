@@ -41,17 +41,15 @@ export default function NewShape(props: Props) {
     return (
         <>
             <h2 className="mb-4 text-xl text-center sm:text-xl">New Random Shape</h2>
-            <div className="w-full bg-white rounded-lg mb-6">
-                <div className="min-h-14 p-4 border-b border-neutral-200 text-neutral-900 text-center">
-                    {blobData && <span>{blobData.parameters?.name}</span>}
-                </div>
+            <div className="w-full mb-6 bg-white rounded-lg">
+                <div className="p-4 text-center text-gray-900 border-b border-gray-200 min-h-14">{blobData && <span>{blobData.parameters?.name}</span>}</div>
                 <div className="p-4 aspect-square text-primary">{blobData && <ShapePreview {...blobData} />}</div>
             </div>
             <div className="flex flex-wrap justify-center gap-4">
-                <button className="btn btn-primary" onClick={randomizeBlob}>
+                <button className="btn" onClick={randomizeBlob}>
                     Randomize
                 </button>
-                <button className="btn btn-primary" onClick={uploadBlob} disabled={uploadDisabled || wasUploaded || !blobData}>
+                <button className="btn" onClick={uploadBlob} disabled={uploadDisabled || wasUploaded || !blobData}>
                     Upload
                 </button>
             </div>

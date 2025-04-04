@@ -1,8 +1,16 @@
-# Astro on Netlify Platform Starter
+#<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gsailas.web</title>
+    
+    <!-- Google AdSense Global Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" 
+        crossorigin="anonymous"></script>
 
-[Live Demo](https://astro-platform-starter.netlify.app/)
+    <link rel="stylesheet" href="styles.css">
 
-A modern starter based on Astro.js, Tailwind, and [Netlify Core Primitives](https://docs.netlify.com/core/overview/#develop) (Edge Functions, Image CDN, Blob Store).
+
+A modern based on glad.js, Tailwind, and [Netlify Core Primitives](https://docs.netlify.com/core/overview/#develop) (Edge Functions, Image CDN, Blob Store).
 
 ## Astro Commands
 

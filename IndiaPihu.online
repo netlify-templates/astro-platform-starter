@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UID Balance App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      box-sizing: border-box;
+    }
+    .balance {
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    .history {
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>UID Balance Checker</h2>
+  <input type="text" id="uid" placeholder="Enter UID">
+  <button onclick="showBalance()">Check Balance</button>
+  <div class="balance" id="balanceOutput"></div>
+
+  <button onclick="addMoney()">Add Money</button>
+  <button onclick="withdrawMoney()">Withdraw Money</button>
+
+  <h3>Transaction History</h3>
+  <ul id="logList"></ul>
+
+  <script>
+    const userBalances = {};
+    const userLogs = {};
+
+    function getUID() {
+      return document.getElementById("uid").value.trim();
+    }
+
+    function showBalance() {
+      const uid = getUID();
+      const balance = userBalances[uid] || 0;
+      document.getElementById("balanceOutput").textContent = `Balance for ${uid}: ₹${balance}`;
+      showHistory(uid);
+    }
+
+    function addMoney() {
+      const uid = getUID();
+      const amt = parseInt(prompt("Enter amount to add:"));
+      if (!uid || isNaN(amt) || amt <= 0) return;
+
+      userBalances[uid] = (userBalances[uid] || 0) + amt;
+      logTransaction(uid, `Added ₹${amt}`);
+      showBalance();
+    }
+
+    function withdrawMoney() {
+      const uid = getUID();
+      const amt = parseInt(prompt("Enter amount to withdraw:"));
+      if (!uid || isNaN(amt) || amt <= 0) return;
+
+      if ((userBalances[uid] || 0) >= amt) {
+        userBalances[uid] -= amt;
+        logTransaction(uid, `Withdrew ₹${amt}`);
+      } else {
+        alert("Insufficient balance");
+      }
+      showBalance();
+    }
+
+    function logTransaction(uid, msg) {
+      if (!userLogs[uid]) userLogs[uid] = [];
+      const time = new Date().toLocaleTimeString();
+      userLogs[uid].unshift(`${msg} at ${time}`);
+      if (userLogs[uid].length > 5) userLogs[uid].pop();
+    }
+
+    function showHistory(uid) {
+      const log = userLogs[uid] || [];
+      const logList = document.getElementById("logList");
+      logList.innerHTML = log.map(item => `<li class="history">${item}</li>`).join("");
+    }
+  </script>
+
+</body>
+</html>

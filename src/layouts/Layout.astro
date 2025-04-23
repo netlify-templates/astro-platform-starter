@@ -4,14 +4,11 @@ import '@fontsource-variable/inter/wght.css';
 import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-
 interface Props {
     title: string;
 }
-
 const { title } = Astro.props;
 ---
-
 <!doctype html>
 <html lang="en">
     <head>
@@ -30,5 +27,9 @@ const { title } = Astro.props;
                 <Footer />
             </div>
         </div>
+        
+        <!-- Start of HubSpot Embed Code -->
+        <script type="text/javascript" id="hs-script-loader" async defer src="//js-na2.hs-scripts.com/242610851.js"></script>
+        <!-- End of HubSpot Embed Code -->
     </body>
 </html>

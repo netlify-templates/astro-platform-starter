@@ -1,0 +1,311 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Best Connection - Flappy Game</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: sans-serif;
+      background: linear-gradient(to bottom, #005baa, #00aaff);
+      touch-action: manipulation;
+    }
+    #gameCanvas {
+      display: block;
+      background: #b3e5fc;
+      margin: 0 auto;
+      width: 100vw;
+      height: 100vh;
+    }
+    #score {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+  <div id="score">Score: 0</div>  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    const birdImg = new Image();
+    birdImg.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/BestConnectionLogo.png/600px-BestConnectionLogo.png'; // Placeholder logo URL
+
+    let bird = { x: 80, y: 250, width: 60, height: 40, velocity: 0 };
+    const gravity = 0.5;
+    const jump = -8;
+    const pipeWidth = 60;
+    const pipeGap = 180;
+    let pipes = [];
+    let score = 0;
+    let gameOver = false;
+
+    function drawBird() {
+      ctx.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
+    }
+
+    function drawPipe(pipe) {
+      ctx.fillStyle = '#00796b';
+      ctx.fillRect(pipe.x, 0, pipeWidth, pipe.top);
+      ctx.fillRect(pipe.x, pipe.top + pipeGap, pipeWidth, height);
+    }
+
+    function resetGame() {
+      bird.y = height / 2;
+      bird.velocity = 0;
+      pipes = [];
+      score = 0;
+      scoreEl.textContent = 'Score: 0';
+      gameOver = false;
+    }
+
+    function update() {
+      bird.velocity += gravity;
+      bird.y += bird.velocity;
+
+      if (bird.y + bird.height > height || bird.y < 0) {
+        gameOver = true;
+      }
+
+      if (pipes.length === 0 || pipes[pipes.length - 1].x < width / 2) {
+        const top = Math.random() * (height / 2);
+        pipes.push({ x: width, top });
+      }
+
+      pipes.forEach(pipe => {
+        pipe.x -= 2;
+
+        // Collision detection
+        if (
+          bird.x < pipe.x + pipeWidth &&
+          bird.x + bird.width > pipe.x &&
+          (bird.y < pipe.top || bird.y + bird.height > pipe.top + pipeGap)
+        ) {
+          gameOver = true;
+        }
+
+        // Score tracking
+        if (!pipe.scored && pipe.x + pipeWidth < bird.x) {
+          score++;
+          pipe.scored = true;
+          scoreEl.textContent = `Score: ${score}`;
+        }
+      });
+
+      pipes = pipes.filter(pipe => pipe.x + pipeWidth > 0);
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      drawBird();
+      pipes.forEach(drawPipe);
+    }
+
+    function loop() {
+      if (!gameOver) {
+        update();
+        draw();
+        requestAnimationFrame(loop);
+      } else {
+        ctx.fillStyle = 'white';
+        ctx.font = '32px sans-serif';
+        ctx.fillText('Game Over', width / 2 - 80, height / 2);
+        ctx.font = '16px sans-serif';
+        ctx.fillText('Tap to Restart', width / 2 - 60, height / 2 + 30);
+      }
+    }
+
+    function jumpBird() {
+      if (gameOver) {
+        resetGame();
+        loop();
+      } else {
+        bird.velocity = jump;
+      }
+    }
+
+    canvas.addEventListener('mousedown', jumpBird);
+    canvas.addEventListener('touchstart', jumpBird);
+
+    window.addEventListener('resize', () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+      resetGame();
+    });
+
+    resetGame();
+    loop();
+  </script></body>
+</html><!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Best Connection - Flappy Game</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: sans-serif;
+      background: linear-gradient(to bottom, #005baa, #00aaff);
+      touch-action: manipulation;
+    }
+    #gameCanvas {
+      display: block;
+      background: #b3e5fc;
+      margin: 0 auto;
+      width: 100vw;
+      height: 100vh;
+    }
+    #score {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+  <div id="score">Score: 0</div>  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreEl = document.getElementById('score');
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    const birdImg = new Image();
+    birdImg.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/BestConnectionLogo.png/600px-BestConnectionLogo.png'; // Placeholder logo URL
+
+    let bird = { x: 80, y: 250, width: 60, height: 40, velocity: 0 };
+    const gravity = 0.5;
+    const jump = -8;
+    const pipeWidth = 60;
+    const pipeGap = 180;
+    let pipes = [];
+    let score = 0;
+    let gameOver = false;
+
+    function drawBird() {
+      ctx.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
+    }
+
+    function drawPipe(pipe) {
+      ctx.fillStyle = '#00796b';
+      ctx.fillRect(pipe.x, 0, pipeWidth, pipe.top);
+      ctx.fillRect(pipe.x, pipe.top + pipeGap, pipeWidth, height);
+    }
+
+    function resetGame() {
+      bird.y = height / 2;
+      bird.velocity = 0;
+      pipes = [];
+      score = 0;
+      scoreEl.textContent = 'Score: 0';
+      gameOver = false;
+    }
+
+    function update() {
+      bird.velocity += gravity;
+      bird.y += bird.velocity;
+
+      if (bird.y + bird.height > height || bird.y < 0) {
+        gameOver = true;
+      }
+
+      if (pipes.length === 0 || pipes[pipes.length - 1].x < width / 2) {
+        const top = Math.random() * (height / 2);
+        pipes.push({ x: width, top });
+      }
+
+      pipes.forEach(pipe => {
+        pipe.x -= 2;
+
+        // Collision detection
+        if (
+          bird.x < pipe.x + pipeWidth &&
+          bird.x + bird.width > pipe.x &&
+          (bird.y < pipe.top || bird.y + bird.height > pipe.top + pipeGap)
+        ) {
+          gameOver = true;
+        }
+
+        // Score tracking
+        if (!pipe.scored && pipe.x + pipeWidth < bird.x) {
+          score++;
+          pipe.scored = true;
+          scoreEl.textContent = `Score: ${score}`;
+        }
+      });
+
+      pipes = pipes.filter(pipe => pipe.x + pipeWidth > 0);
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      drawBird();
+      pipes.forEach(drawPipe);
+    }
+
+    function loop() {
+      if (!gameOver) {
+        update();
+        draw();
+        requestAnimationFrame(loop);
+      } else {
+        ctx.fillStyle = 'white';
+        ctx.font = '32px sans-serif';
+        ctx.fillText('Game Over', width / 2 - 80, height / 2);
+        ctx.font = '16px sans-serif';
+        ctx.fillText('Tap to Restart', width / 2 - 60, height / 2 + 30);
+      }
+    }
+
+    function jumpBird() {
+      if (gameOver) {
+        resetGame();
+        loop();
+      } else {
+        bird.velocity = jump;
+      }
+    }
+
+    canvas.addEventListener('mousedown', jumpBird);
+    canvas.addEventListener('touchstart', jumpBird);
+
+    window.addEventListener('resize', () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+      resetGame();
+    });
+
+    resetGame();
+    loop();
+  </script></body>
+</html>

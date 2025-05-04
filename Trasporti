@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trasporti Interattivi</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="welcome-screen" id="welcome">
+    <h1>Benvenuto nel mondo dei trasporti!</h1>
+    <button onclick="startSite()">Inizia</button>
+    <select id="lang-select" onchange="setLanguage(this.value)">
+      <option value="it">Italiano</option>
+      <option value="en">English</option>
+    </select>
+  </div>
+
+  <div class="main-content" id="main" style="display:none;">
+    <h2 id="choose">Scegli un mezzo di trasporto</h2>
+    <div class="vehicles">
+      <img src="img/bicicletta.png" class="vehicle" id="bicicletta" alt="Bicicletta">
+      <img src="img/auto.png" class="vehicle" id="auto" alt="Auto">
+      <img src="img/camion.png" class="vehicle" id="camion" alt="Camion">
+      <img src="img/aereo.png" class="vehicle" id="aereo" alt="Aereo">
+      <img src="img/nave.png" class="vehicle" id="nave" alt="Nave">
+    </div>
+    <div id="info-box"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

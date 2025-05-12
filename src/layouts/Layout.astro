@@ -21,10 +21,16 @@ const { title } = Astro.props;
         <meta name="generator" content={Astro.generator} />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="preload" as="font" type="font/woff2" href={interWoff2} crossorigin />
+<!-- Start of SUPSIS Embed Code --> 
+<script>window.supsis=window.supsis||function(){(supsis.q=supsis.q||[]).push(arguments)};supsis.l=+new Date;</script>
+<script src="https://borahub.visitor.supsis.live/static/js/loader.js" type="text/javascript" async defer></script>
+<!-- End of SUPSIS Embed Code --> 
+
     </head>
     <body class="antialiased text-white bg-complementary">
         <div class="flex flex-col min-h-screen px-6 bg-noise sm:px-12">
             <div class="flex flex-col w-full max-w-5xl mx-auto grow">
+
                 <Header />
                 <main class="grow"><slot /></main>
                 <Footer />

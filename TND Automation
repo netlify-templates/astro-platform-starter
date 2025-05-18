@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TND Automation - รับออกแบบเครื่องจักรครบวงจร</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            color: #374151; /* text-gray-700 */
+        }
+        .hero-section {
+            /* Updated background image for Hero Section using an uploaded image */
+            background-image: url('uploaded:Screenshot 2025-04-10 234519.png-cd48ac0e-e1d1-491c-9821-33b985ba1fcd'); /* Automation Assembly Machine */
+            background-size: cover;
+            background-position: center;
+        }
+        .section-title {
+            @apply text-3xl md:text-4xl font-bold text-center mb-4 text-blue-800; /* Darker blue for titles */
+        }
+        .section-subtitle {
+            @apply text-lg text-center text-gray-600 mb-12;
+        }
+        .card {
+            @apply bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl;
+        }
+        .card-icon {
+            @apply w-16 h-16 text-blue-700 mb-4; /* Adjusted icon color */
+        }
+        .btn {
+            @apply px-8 py-3 rounded-lg font-semibold transition-colors duration-300;
+        }
+        .btn-primary {
+            @apply bg-blue-700 text-white hover:bg-blue-800; /* Adjusted button color */
+        }
+        .btn-secondary {
+            @apply bg-gray-200 text-blue-800 hover:bg-gray-300;
+        }
+        .nav-link {
+            @apply text-gray-700 hover:text-blue-700 px-3 py-2 rounded-md text-sm font-medium transition-colors;
+        }
+        .nav-link-active {
+            @apply text-blue-700 bg-blue-100;
+        }
+        .footer-link {
+            @apply text-gray-400 hover:text-white transition-colors;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        #mobileMenu.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#home" class="flex-shrink-0">
+                        <span class="text-2xl font-bold text-blue-700">TND Automation</span>
+                    </a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="nav-link nav-link-active">หน้าแรก</a>
+                        <a href="#services" class="nav-link">บริการของเรา</a>
+                        <a href="#about" class="nav-link">เกี่ยวกับเรา</a>
+                        <a href="#expertise" class="nav-link">ความเชี่ยวชาญ</a>
+                        <a href="#contact" class="nav-link">ติดต่อเรา</a>
+                    </div>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobileMenuButton" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500" aria-expanded="false">
+                        <span class="sr-only">เปิดเมนูหลัก</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobileMenu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="block nav-link nav-link-active">หน้าแรก</a>
+                <a href="#services" class="block nav-link">บริการของเรา</a>
+                <a href="#about" class="block nav-link">เกี่ยวกับเรา</a>
+                <a href="#expertise" class="block nav-link">ความเชี่ยวชาญ</a>
+                <a href="#contact" class="block nav-link">ติดต่อเรา</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero-section text-white relative">
+        <div class="absolute inset-0 bg-black opacity-60"></div> <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 lg:py-48 text-center relative z-10">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                TND Automation: <span class="text-sky-300">ออกแบบและสร้างเครื่องจักร</span> ตอบโจทย์ทุกอุตสาหกรรม
+            </h1>
+            <p class="text-lg sm:text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+                เราเชี่ยวชาญด้านการออกแบบเครื่องจักรกล ระบบอัตโนมัติ และโซลูชันทางวิศวกรรมครบวงจร
+            </p>
+            <div>
+                <a href="#services" class="btn btn-primary mr-0 mb-2 sm:mr-4 sm:mb-0">ดูบริการของเรา</a>
+                <a href="#contact" class="btn btn-secondary">ปรึกษาผู้เชี่ยวชาญ</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="section-title">บริการออกแบบเครื่องจักรของเรา</h2>
+            <p class="section-subtitle">เรามุ่งมั่นสร้างสรรค์นวัตกรรมเครื่องจักรที่ตอบสนองความต้องการเฉพาะของลูกค้า</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card text-center p-8">
+                    <div class="flex justify-center">
+                        <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">ออกแบบเครื่องจักรตามสั่ง (Custom Machine Design)</h3>
+                    <p class="text-gray-600">รับออกแบบและพัฒนาเครื่องจักรกลเฉพาะทางสำหรับกระบวนการผลิตและอุตสาหกรรมต่างๆ</p>
+                </div>
+                <div class="card text-center p-8">
+                     <div class="flex justify-center">
+                        <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 17.25v-.228a4.5 4.5 0 00-.12-1.03l-2.268-9.64a3.375 3.375 0 00-3.285-2.602H7.923a3.375 3.375 0 00-3.285 2.602l-2.268 9.64a4.5 4.5 0 00-.12 1.03v.228m19.5 0a3 3 0 01-3 3H5.25a3 3 0 01-3-3m19.5 0a3 3 0 00-3-3H5.25a3 3 0 00-3 3m16.5 0h.008v.008h-.008v-.008zm-3 0h.008v.008h-.008v-.008z" /></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">ระบบอัตโนมัติ (Automation Systems)</h3>
+                    <p class="text-gray-600">พัฒนาระบบควบคุมอัตโนมัติ PLC, HMI และ Robotics เพื่อเพิ่มประสิทธิภาพการผลิต</p>
+                </div>
+                <div class="card text-center p-8">
+                     <div class="flex justify-center">
+                        <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L1.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.25 12L17 13.75M17 13.75L15.75 12M17 13.75L18.25 15M17 13.75L19 12.25" /></svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">สร้างเครื่องต้นแบบ (Prototyping)</h3>
+                    <p class="text-gray-600">บริการสร้างเครื่องจักรต้นแบบ ทดสอบ และปรับปรุงก่อนการผลิตจริง</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-16 md:py-24 bg-gray-100">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <img src="uploaded:Screenshot 2025-04-11 001111.png-5081eb59-826e-403d-97e4-ed9bc8074d65" alt="" class="rounded-lg shadow-xl object-cover w-full h-auto max-h-[450px]">
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-blue-800 mb-4">เกี่ยวกับ TND Automation</h2>
+                    <p class="text-gray-700 mb-4 leading-relaxed">
+                        TND Automation คือทีมวิศวกรผู้เชี่ยวชาญด้านการออกแบบและสร้างสรรค์เครื่องจักรกลและระบบอัตโนมัติ ด้วยประสบการณ์และความมุ่งมั่นในการนำเสนอโซลูชันที่ตอบโจทย์และสร้างมูลค่าเพิ่มให้กับลูกค้าในทุกกลุ่มอุตสาหกรรม
+                    </p>
+                    <p class="text-gray-700 mb-6 leading-relaxed">
+                        เราเชื่อมั่นในการทำงานร่วมกับลูกค้าอย่างใกล้ชิด เพื่อทำความเข้าใจความต้องการและเป้าหมายทางธุรกิจอย่างแท้จริง นำไปสู่การพัฒนาเครื่องจักรที่มีประสิทธิภาพสูงสุด คุ้มค่า และยั่งยืน
+                    </p>
+                    <a href="#contact" class="btn btn-primary">ติดต่อสอบถามเพิ่มเติม</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="expertise" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="section-title">ความเชี่ยวชาญและเทคโนโลยีของเรา</h2>
+            <p class="section-subtitle">เราใช้เครื่องมือและเทคโนโลยีที่ทันสมัยในการออกแบบและพัฒนาเครื่องจักร</p>
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="p-4">
+                    <div class="flex justify-center mb-3">
+                        <i class="fas fa-drafting-compass fa-3x text-blue-600"></i>
+                    </div>
+                    <h4 class="font-semibold text-lg text-gray-700">CAD/CAM Design</h4>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-center mb-3">
+                        <i class="fas fa-robot fa-3x text-blue-600"></i>
+                    </div>
+                    <h4 class="font-semibold text-lg text-gray-700">Robotics & Automation</h4>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-center mb-3">
+                        <i class="fas fa-cogs fa-3x text-blue-600"></i>
+                    </div>
+                    <h4 class="font-semibold text-lg text-gray-700">PLC Programming</h4>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-center mb-3">
+                        <i class="fas fa-tools fa-3x text-blue-600"></i>
+                    </div>
+                    <h4 class="font-semibold text-lg text-gray-700">Precision Manufacturing</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 md:py-24 bg-blue-700 text-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold mb-4">ต้องการเครื่องจักรที่ออกแบบมาเพื่อคุณโดยเฉพาะ?</h2>
+            <p class="text-lg mb-8 max-w-2xl mx-auto">
+                ให้ TND Automation เป็นผู้ช่วยของคุณ ติดต่อเราเพื่อรับคำปรึกษาฟรี!
+            </p>
+            <a href="#contact" class="btn bg-white text-blue-700 hover:bg-gray-100">ปรึกษาเราเลย</a>
+        </div>
+    </section>
+
+    <section id="contact" class="py-16 md:py-24 bg-gray-100">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="section-title">ติดต่อ TND Automation</h2>
+            <p class="section-subtitle">เราพร้อมให้คำปรึกษาและบริการด้านการออกแบบเครื่องจักร</p>
+            <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-xl">
+                <form action="#" method="POST">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">ชื่อ-นามสกุล</label>
+                            <input type="text" name="name" id="name" autocomplete="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="กรอกชื่อ-นามสกุล">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">อีเมล</label>
+                            <input type="email" name="email" id="email" autocomplete="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="example@email.com">
+                        </div>
+                    </div>
+                     <div class="mb-6">
+                        <label for="company" class="block text-sm font-medium text-gray-700">ชื่อบริษัท (ถ้ามี)</label>
+                        <input type="text" name="company" id="company" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="ชื่อบริษัทของคุณ">
+                    </div>
+                    <div class="mb-6">
+                        <label for="phone" class="block text-sm font-medium text-gray-700">เบอร์โทรศัพท์</label>
+                        <input type="tel" name="phone" id="phone" autocomplete="tel" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="08x-xxx-xxxx">
+                    </div>
+                    <div class="mb-6">
+                        <label for="subject" class="block text-sm font-medium text-gray-700">หัวข้อที่ต้องการติดต่อ</label>
+                        <input type="text" name="subject" id="subject" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="เช่น สอบถามบริการออกแบบเครื่องจักร">
+                    </div>
+                    <div class="mb-6">
+                        <label for="message" class="block text-sm font-medium text-gray-700">รายละเอียด / ความต้องการ</label>
+                        <textarea id="message" name="message" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="อธิบายรายละเอียดเครื่องจักรที่ท่านต้องการ..."></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary w-full md:w-auto">ส่งข้อความ</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-gray-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h5 class="text-xl font-bold text-white mb-4">TND Automation</h5>
+                    <p class="text-sm">
+                        [ที่อยู่บริษัทของคุณ]
+                    </p>
+                    <p class="text-sm mt-2">โทร: [เบอร์โทรศัพท์บริษัท]</p>
+                    <p class="text-sm">อีเมล: [อีเมลบริษัท]</p>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold text-white mb-4">ลิงก์ด่วน</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#services" class="footer-link">บริการของเรา</a></li>
+                        <li><a href="#about" class="footer-link">เกี่ยวกับเรา</a></li>
+                        <li><a href="#expertise" class="footer-link">ความเชี่ยวชาญ</a></li>
+                        <li><a href="#" class="footer-link">ผลงานของเรา (ถ้ามี)</a></li>
+                        <li><a href="#" class="footer-link">นโยบายความเป็นส่วนตัว</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold text-white mb-4">ติดตามเรา</h5>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube fa-lg"></i></a>
+                        </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-sm">
+                <p>&copy; <span id="currentYear"></span> TND Automation. สงวนลิขสิทธิ์.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIcons = mobileMenuButton.querySelectorAll('svg');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuIcons[0].classList.toggle('hidden'); // Toggle burger icon
+            menuIcons[1].classList.toggle('hidden'); // Toggle close icon
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    // Close mobile menu after click
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                        menuIcons[0].classList.remove('hidden');
+                        menuIcons[1].classList.add('hidden');
+                    }
+                    // Update active nav link
+                    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('nav-link-active'));
+                    if (!this.classList.contains('footer-link')) {
+                         this.classList.add('nav-link-active');
+                    }
+                }
+            });
+        });
+
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Active Nav Link on Scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navDesktopLinks = document.querySelectorAll('nav .hidden.md\\:block .nav-link'); // Desktop nav links
+        const navMobileLinks = document.querySelectorAll('#mobileMenu .nav-link'); // Mobile nav links
+
+        function updateActiveLink(scrollPos) {
+            let currentSectionId = 'home'; // Default to home
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                // Check if section is in viewport (considering nav offset)
+                if (scrollPos >= sectionTop - 80 && scrollPos < sectionTop + sectionHeight - 80) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+             // If scrolled to the very bottom and last section is not fully in view, make it active
+            const totalPageHeight = document.body.scrollHeight;
+            const viewportHeight = window.innerHeight;
+            if (scrollPos + viewportHeight >= totalPageHeight - 80) { // 80px buffer from bottom
+                currentSectionId = sections[sections.length - 1].getAttribute('id');
+            }
+
+
+            [...navDesktopLinks, ...navMobileLinks].forEach(link => {
+                link.classList.remove('nav-link-active');
+                if (link.getAttribute('href').substring(1) === currentSectionId) {
+                    link.classList.add('nav-link-active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', () => {
+            updateActiveLink(window.pageYOffset);
+        });
+        // Initial call to set active link on page load
+        updateActiveLink(window.pageYOffset);
+
+    </script>
+
+</body>
+</html>

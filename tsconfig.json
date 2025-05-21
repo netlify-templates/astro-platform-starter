@@ -1,9 +1,435 @@
-{
-    "extends": "astro/tsconfigs/base",
-    "include": [".astro/types.d.ts", "**/*"],
-    "exclude": ["dist"],
-    "compilerOptions": {
-        "jsx": "react-jsx",
-        "jsxImportSource": "react"
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tabla de Posiciones - vMix</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React, ReactDOM & Babel CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-blue-900 text-yellow-300 p-6">
+  <div id="root"></div>
+
+  <script type="text/babel">
+
+    const { useState, useRef, useEffect } = React;
+
+    const STORAGE_KEY = "tablaPosicionesData";
+
+    // Mapa de escudos predeterminados según nombre, las URLs pueden ser directas a imágenes accesibles
+    const escudosPredeterminados = {
+      "Always Ready": "https://upload.wikimedia.org/wikipedia/en/9/9f/Always_Readys_bolivian_football_club_logo.png",
+      "Bolívar": "https://upload.wikimedia.org/wikipedia/en/9/97/Club_Bol%C3%ADvar_logo.svg",
+      "The Strongest": "https://upload.wikimedia.org/wikipedia/en/6/60/The_Strongest_logo.png",
+      "Blooming": "https://upload.wikimedia.org/wikipedia/en/7/75/Blooming_logo.svg",
+      "ABB": "https://dummyimage.com/100x100/0000ff/fff&text=ABB",
+      "Fc Universitario": "https://dummyimage.com/100x100/ff0000/fff&text=FC+U",
+      "Guabirá": "https://upload.wikimedia.org/wikipedia/en/1/1a/Club_Guabira_logo.png",
+      "Independiente": "https://dummyimage.com/100x100/008000/fff&text=Independiente",
+      "San Antonio": "https://dummyimage.com/100x100/ffa500/fff&text=San+Antonio",
+      "Real Tomayapo": "https://dummyimage.com/100x100/800080/fff&text=Tomayapo",
+      "Nacional Potosí": "https://upload.wikimedia.org/wikipedia/en/1/16/Club_Nacional_Potosi.png",
+      "Real Oruro": "https://dummyimage.com/100x100/008080/fff&text=Real+Oruro",
+      "GV San José": "https://dummyimage.com/100x100/000000/fff&text=GV+San+Jose",
+      "Oriente Petrolero": "https://upload.wikimedia.org/wikipedia/en/3/39/Oriente_Petrolero_logo.svg",
+      "Wilstermann": "https://upload.wikimedia.org/wikipedia/en/b/b0/Cd_wilstermann_logo.png",
+      "Aurora": "https://upload.wikimedia.org/wikipedia/en/7/74/Aurora_Logo.png"
+    };
+
+    function TablaPosiciones() {
+      // Estado para datos de equipos
+      const [equipos, setEquipos] = useState(() => {
+        try {
+          const localData = localStorage.getItem(STORAGE_KEY);
+          if (localData) {
+            const savedEquipos = JSON.parse(localData);
+            // Asegurar que se asignen escudos predeterminados donde no hay personalizado
+            return savedEquipos.map(equipo => ({
+              ...equipo,
+              escudo: equipo.escudo && equipo.escudo.startsWith("data:image") 
+                ? equipo.escudo 
+                : escudosPredeterminados[equipo.nombre] || "/api/placeholder/100/100"
+            }));
+          }
+        } catch {
+          // ignorar errores
+        }
+        // Datos iniciales por defecto si no hay guardados
+        const equiposIniciales = [
+          { nombre: "Always Ready", posicion: 1, pj: 8, g: 6, e: 2, p: 0, pts: 20},
+          { nombre: "Bolívar", posicion: 2, pj: 7, g: 6, e: 0, p: 1, pts: 18},
+          { nombre: "The Strongest", posicion: 3, pj: 8, g: 5, e: 1, p: 2, pts: 16},
+          { nombre: "Blooming", posicion: 4, pj: 8, g: 5, e: 1, p: 2, pts: 16},
+          { nombre: "ABB", posicion: 5, pj: 8, g: 3, e: 3, p: 2, pts: 12},
+          { nombre: "Fc Universitario", posicion: 6, pj: 8, g: 3, e: 2, p: 3, pts: 11},
+          { nombre: "Guabirá", posicion: 7, pj: 8, g: 3, e: 1, p: 4, pts: 10},
+          { nombre: "Independiente", posicion: 8, pj: 8, g: 2, e: 3, p: 3, pts: 9},
+          { nombre: "San Antonio", posicion: 9, pj: 8, g: 2, e: 3, p: 3, pts: 9},
+          { nombre: "Real Tomayapo", posicion: 10, pj: 8, g: 1, e: 5, p: 2, pts: 8},
+          { nombre: "Nacional Potosí", posicion: 11, pj: 6, g: 2, e: 1, p: 3, pts: 7},
+          { nombre: "Real Oruro", posicion: 12, pj: 8, g: 1, e: 4, p: 3, pts: 7},
+          { nombre: "GV San José", posicion: 13, pj: 8, g: 2, e: 1, p: 3, pts: 7},
+          { nombre: "Oriente Petrolero", posicion: 14, pj: 7, g: 1, e: 3, p: 3, pts: 6},
+          { nombre: "Wilstermann", posicion: 15, pj: 8, g: 1, e: 0, p: 7, pts: 3},
+          { nombre: "Aurora", posicion: 16, pj: 8, g: 2, e: 2, p: 4, pts: 8 }
+        ];
+        // Asignar escudos predeterminados
+        return equiposIniciales.map(equipo => ({
+          ...equipo,
+          escudo: escudosPredeterminados[equipo.nombre] || "/api/placeholder/100/100"
+        }));
+      });
+
+      const [loading, setLoading] = useState(false);
+      const [lastUpdated, setLastUpdated] = useState(() => {
+        const storedDate = localStorage.getItem(STORAGE_KEY + "-lastUpdated");
+        return storedDate ? new Date(storedDate) : null;
+      });
+      const [autoUpdate, setAutoUpdate] = useState(false);
+      const [updateInterval, setUpdateInterval] = useState(60);
+      const [currentIndex, setCurrentIndex] = useState(0);
+      const [viewMode, setViewMode] = useState("single");
+      const [searchTerm, setSearchTerm] = useState("");
+      const fileInputRef = useRef(null);
+
+      // Demo fetchData que simula actualización sin API real
+      // Aquí reemplaza con tu API real si la tienes y ajusta mapeo para fusionar escudos manteniendo personalizados
+      const fetchData = async () => {
+        setLoading(true);
+        try {
+          await new Promise(res => setTimeout(res, 900));
+          // Simular puntos cambiando aleatoriamente para mostrar actualización
+          const equiposActualizados = equipos.map(e => ({
+            ...e,
+            pts: e.pts + Math.floor(Math.random() * 2)
+          }));
+          // Asegurar que se mantengan las imágenes personalizadas o predeterminadas
+          const equiposConEscudos = equiposActualizados.map(nuevo => {
+            const old = equipos.find(e => e.nombre === nuevo.nombre);
+            if (old && old.escudo && old.escudo.startsWith("data:image")) {
+              return { ...nuevo, escudo: old.escudo };
+            }
+            return { ...nuevo, escudo: escudosPredeterminados[nuevo.nombre] || "/api/placeholder/100/100" };
+          });
+
+          setEquipos(equiposConEscudos);
+          setLastUpdated(new Date());
+          saveToStorage(equiposConEscudos);
+        } catch {
+          alert("No se pudieron cargar los datos en vivo.");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      const saveToStorage = (dataEquipos) => {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(dataEquipos));
+          localStorage.setItem(STORAGE_KEY + "-lastUpdated", new Date().toISOString());
+        } catch {}
+      };
+
+      useEffect(() => {
+        let timer;
+        if (autoUpdate) {
+          timer = setInterval(fetchData, updateInterval * 1000);
+        }
+        return () => { if (timer) clearInterval(timer); };
+      }, [autoUpdate, updateInterval, equipos]);
+
+      useEffect(() => {
+        fetchData();
+      }, []);
+
+      const getFormattedDateTime = (date) => {
+        if (!date) return "Nunca";
+        return new Intl.DateTimeFormat('es-BO', {
+          day: '2-digit', month: '2-digit', year: 'numeric',
+          hour: '2-digit', minute: '2-digit', second: '2-digit'
+        }).format(date);
+      };
+
+      const nextTeam = () => setCurrentIndex((currentIndex + 1) % equipos.length);
+      const previousTeam = () => setCurrentIndex((currentIndex - 1 + equipos.length) % equipos.length);
+
+      const handleImageUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          if (!file.type.startsWith("image/")) {
+            alert("Selecciona un archivo de imagen válido.");
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const newEquipos = [...equipos];
+            newEquipos[currentIndex] = { ...newEquipos[currentIndex], escudo: e.target.result };
+            setEquipos(newEquipos);
+            saveToStorage(newEquipos);
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+
+      const triggerFileInput = () => {
+        if (fileInputRef.current) fileInputRef.current.click();
+      };
+
+      const handleIntervalChange = (e) => setUpdateInterval(parseInt(e.target.value, 10));
+      const handleManualUpdate = () => fetchData();
+
+      const filteredEquipos = equipos.filter(e => e.nombre.toLowerCase().includes(searchTerm.toLowerCase()));
+      const selectTeam = (index) => { setCurrentIndex(index); setViewMode("single"); };
+      const equipoActual = equipos[currentIndex];
+
+      return (
+        <div className="flex flex-col items-center w-full max-w-4xl mx-auto bg-blue-900 text-yellow-300 p-6 rounded-lg drop-shadow-lg">
+          <h2 className="text-3xl font-extrabold mb-6 text-yellow-300 select-none">Tabla de Posiciones - División Profesional 2025</h2>
+
+          <div className="w-full bg-blue-800 rounded-lg p-5 mb-6 shadow-inner">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-5">
+              <div className="flex items-center mb-3 md:mb-0">
+                <label className="inline-flex items-center cursor-pointer mr-6">
+                  <input
+                    type="checkbox"
+                    checked={autoUpdate}
+                    onChange={() => setAutoUpdate(!autoUpdate)}
+                    className="sr-only peer"
+                  />
+                  <div className="relative w-12 h-6 bg-blue-700 rounded-full peer peer-checked:bg-yellow-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+                  <span className="ml-4 text-sm font-medium text-yellow-300 select-none">Actualización Automática</span>
+                </label>
+
+                <div className="flex items-center ml-6">
+                  <span className="mr-2 text-sm select-none">Cada</span>
+                  <select
+                    value={updateInterval}
+                    onChange={handleIntervalChange}
+                    disabled={!autoUpdate}
+                    className="bg-blue-700 text-yellow-300 rounded p-1 border border-yellow-500 cursor-pointer"
+                  >
+                    <option value="30">30 segundos</option>
+                    <option value="60">1 minuto</option>
+                    <option value="300">5 minutos</option>
+                    <option value="600">10 minutos</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex items-center">
+                <button
+                  onClick={handleManualUpdate}
+                  disabled={loading}
+                  className={`flex items-center px-5 py-2 rounded font-bold ${loading ? 'bg-blue-700 cursor-not-allowed' : 'bg-yellow-500 text-blue-900 hover:bg-yellow-400'}`}
+                  aria-label="Actualizar Tabla de Posiciones"
+                  title="Actualizar Tabla de Posiciones"
+                >
+                  {loading ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-yellow-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      <span>Cargando...</span>
+                    </>
+                  ) : (
+                    <span>Actualizar Ahora</span>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <div className="text-xs text-yellow-200 text-center md:text-right select-none">
+              Última actualización: {getFormattedDateTime(lastUpdated)}
+            </div>
+          </div>
+
+          <div className="flex justify-center mb-6 space-x-3">
+            <button
+              onClick={() => setViewMode("single")}
+              className={`px-5 py-3 rounded font-bold ${viewMode === "single" ? "bg-yellow-500 text-blue-900 shadow-lg" : "bg-blue-800 text-yellow-300 border border-yellow-500"} transition-colors duration-300`}
+              aria-pressed={viewMode === "single"}
+              aria-label="Modo Vista Equipo Individual"
+            >
+              Equipo Individual
+            </button>
+            <button
+              onClick={() => setViewMode("table")}
+              className={`px-5 py-3 rounded font-bold ${viewMode === "table" ? "bg-yellow-500 text-blue-900 shadow-lg" : "bg-blue-800 text-yellow-300 border border-yellow-500"} transition-colors duration-300`}
+              aria-pressed={viewMode === "table"}
+              aria-label="Modo Vista Tabla Completa"
+            >
+              Tabla Completa
+            </button>
+          </div>
+
+          {viewMode === "table" && (
+            <div className="w-full mb-6">
+              <input
+                type="text"
+                placeholder="Buscar equipo..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full p-3 rounded bg-blue-800 text-yellow-300 border border-yellow-500 placeholder-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
+                aria-label="Buscar equipo"
+              />
+            </div>
+          )}
+
+          {loading && viewMode === "table" && (
+            <div className="w-full bg-blue-800 p-5 rounded-lg mb-6 flex items-center justify-center select-none">
+              <svg className="animate-spin h-6 w-6 mr-4 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              </svg>
+              <span>Cargando datos...</span>
+            </div>
+          )}
+
+          {viewMode === "single" ? (
+            <>
+              <div className="flex justify-center mb-6 space-x-4 select-none">
+                <button
+                  onClick={previousTeam}
+                  className="bg-yellow-500 text-blue-900 px-5 py-2 rounded hover:bg-yellow-400 font-bold transition"
+                  aria-label="Equipo Anterior"
+                >
+                  Anterior
+                </button>
+                <button
+                  onClick={nextTeam}
+                  className="bg-yellow-500 text-blue-900 px-5 py-2 rounded hover:bg-yellow-400 font-bold transition"
+                  aria-label="Equipo Siguiente"
+                >
+                  Siguiente
+                </button>
+              </div>
+
+              <div className="bg-blue-800 p-6 rounded-lg shadow-md w-full max-w-2xl">
+                <div className="flex items-center mb-6">
+                  <div className="w-20 h-20 mr-5 relative group shrink-0 rounded-md overflow-hidden border border-yellow-400 bg-blue-900 cursor-pointer" title="Cambiar escudo" onClick={triggerFileInput}>
+                    <img
+                      src={equipoActual.escudo}
+                      alt={`Escudo de ${equipoActual.nombre}`}
+                      className="w-full h-full object-contain"
+                      draggable={false}
+                    />
+                    <div className="absolute bottom-1 right-1 bg-blue-800 bg-opacity-90 text-yellow-300 text-xs p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                      </svg>
+                    </div>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleImageUpload}
+                      className="hidden"
+                      accept="image/*"
+                      aria-label={`Cambiar escudo de ${equipoActual.nombre}`}
+                    />
+                  </div>
+                  <h3 className="text-2xl font-bold text-yellow-300 select-text">
+                    {equipoActual.posicion}. {equipoActual.nombre}
+                  </h3>
+                </div>
+                <div className="stats grid grid-cols-5 gap-4 w-full text-center select-none">
+                  <div className="stat p-4 bg-blue-700 rounded text-yellow-300">
+                    <div className="font-semibold text-lg">PJ</div>
+                    <div className="text-xl">{equipoActual.pj}</div>
+                  </div>
+                  <div className="stat p-4 bg-blue-700 rounded text-yellow-300">
+                    <div className="font-semibold text-lg">G</div>
+                    <div className="text-xl">{equipoActual.g}</div>
+                  </div>
+                  <div className="stat p-4 bg-blue-700 rounded text-yellow-300">
+                    <div className="font-semibold text-lg">E</div>
+                    <div className="text-xl">{equipoActual.e}</div>
+                  </div>
+                  <div className="stat p-4 bg-blue-700 rounded text-yellow-300">
+                    <div className="font-semibold text-lg">P</div>
+                    <div className="text-xl">{equipoActual.p}</div>
+                  </div>
+                  <div className="stat p-4 bg-blue-700 rounded text-yellow-300">
+                    <div className="font-semibold text-lg">Pts</div>
+                    <div className="text-xl font-bold">{equipoActual.pts}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5 text-sm text-yellow-200 select-none">
+                Equipo {currentIndex + 1} de {equipos.length}
+              </div>
+            </>
+          ) : (
+            <div className="w-full overflow-x-auto rounded-lg shadow-lg">
+              <table className="w-full table-auto bg-blue-800 rounded-lg shadow-md border border-yellow-500">
+                <thead>
+                  <tr className="bg-blue-700 text-yellow-300 select-none">
+                    <th className="p-3 text-left">Pos</th>
+                    <th className="p-3 text-left">Equipo</th>
+                    <th className="p-3 text-center">PJ</th>
+                    <th className="p-3 text-center">G</th>
+                    <th className="p-3 text-center">E</th>
+                    <th className="p-3 text-center">P</th>
+                    <th className="p-3 text-center">Pts</th>
+                    <th className="p-3 text-center">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredEquipos.length === 0 ? (
+                    <tr>
+                      <td colSpan="8" className="text-center p-6 text-yellow-300 select-none">
+                        No se encontraron equipos para &quot;{searchTerm}&quot;
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredEquipos.map((equipo, index) => (
+                      <tr
+                        key={equipo.nombre}
+                        className={index % 2 === 0 ? "bg-blue-800" : "bg-blue-900"}
+                      >
+                        <td className="p-3 text-left font-bold">{equipo.posicion}</td>
+                        <td className="p-3 text-left">
+                          <div className="flex items-center space-x-3">
+                            <img
+                              src={equipo.escudo}
+                              alt={`Escudo de ${equipo.nombre}`}
+                              className="w-10 h-10 object-contain rounded"
+                              draggable={false}
+                            />
+                            <span className="select-text">{equipo.nombre}</span>
+                          </div>
+                        </td>
+                        <td className="p-3 text-center">{equipo.pj}</td>
+                        <td className="p-3 text-center">{equipo.g}</td>
+                        <td className="p-3 text-center">{equipo.e}</td>
+                        <td className="p-3 text-center">{equipo.p}</td>
+                        <td className="p-3 text-center font-bold">{equipo.pts}</td>
+                        <td className="p-3 text-center">
+                          <button
+                            onClick={() => selectTeam(equipos.findIndex(e => e.nombre === equipo.nombre))}
+                            className="bg-yellow-500 text-blue-900 px-3 py-1 rounded text-xs hover:bg-yellow-400 transition"
+                            aria-label={`Ver detalles del equipo ${equipo.nombre}`}
+                          >
+                            Ver Detalle
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      );
     }
-}
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<TablaPosiciones />);
+
+  </script>
+</body>
+</html>

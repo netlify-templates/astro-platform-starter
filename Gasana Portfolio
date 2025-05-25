@@ -1,0 +1,45 @@
+export default function GasanaartPortfolio() { return ( <div className="min-h-screen bg-white text-gray-800 p-6 md:p-12 font-sans"> <div className="max-w-4xl mx-auto"> <header className="mb-10"> <h1 className="text-4xl md:text-5xl font-bold text-center text-purple-700">Gasanaart</h1> <p className="text-center text-lg md:text-xl mt-2 text-gray-600">Bringing Ideas to Life – Social Media Content & Design</p> </header>
+
+<section className="mb-12">
+      <h2 className="text-2xl font-semibold text-purple-600 mb-4">About Me</h2>
+      <p className="text-gray-700 leading-relaxed">
+        I’m a passionate social media content creator, focused on visual storytelling and digital creativity. As the founder of <strong>Gasanaart</strong>, I help individuals and small businesses express their identity through clean, modern, and engaging social media content.
+        I create posts, manage content plans, and support online growth using tools like Canva, CapCut, and Meta Business Suite.
+      </p>
+    </section>
+
+    <section className="mb-12">
+      <h2 className="text-2xl font-semibold text-purple-600 mb-4">What I Offer</h2>
+      <ul className="list-disc list-inside space-y-2 text-gray-700">
+        <li>Instagram/Facebook content design</li>
+        <li>Creative captions & hashtag strategy</li>
+        <li>Post scheduling & page management</li>
+        <li>Basic video editing for reels (CapCut)</li>
+        <li>Content calendar & strategy planning</li>
+      </ul>
+    </section>
+
+    <section className="mb-12">
+      <h2 className="text-2xl font-semibold text-purple-600 mb-4">Sample Projects</h2>
+      <div className="space-y-6">
+        <div>
+          <h3 className="font-semibold text-lg text-gray-800">Instagram Post Design – Fashion Brand</h3>
+          <p className="text-gray-700">“Style that speaks before you do.” A pastel-toned design promoting new arrivals with elegant font and smooth layout.</p>
+        </div>
+        <div>
+          <h3 className="font-semibold text-lg text-gray-800">Content Plan – Local Café</h3>
+          <ul className="list-disc list-inside ml-4 text-gray-700">
+            <li>Monday: Morning coffee promo (Image + caption)</li>
+            <li>Wednesday: Behind-the-scenes (Reel)</li>
+            <li>Friday: Customer review post</li>
+            <li>Sunday: Story poll – Favorite drink?</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section className="mb-12">
+      <h2 className="text-2xl font-semibold text-purple-600 mb-4">Contact</h2>
+      <p className="text-gray-700">
+        Let’s work together! Reach
+

@@ -1,9 +1,106 @@
-{
-    "extends": "astro/tsconfigs/base",
-    "include": [".astro/types.d.ts", "**/*"],
-    "exclude": ["dist"],
-    "compilerOptions": {
-        "jsx": "react-jsx",
-        "jsxImportSource": "react"
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>It's Your Special Day</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Open+Sans&display=swap');
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: linear-gradient(to bottom right, #ffe6e6, #fcd5ce);
+      margin: 0;
+      padding: 0;
+      color: #333;
     }
-}
+    .container {
+      max-width: 700px;
+      margin: 60px auto;
+      background: #fffafa;
+      padding: 40px;
+      border-radius: 25px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      color: #c9184a;
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      font-size: 20px;
+      margin-bottom: 30px;
+      color: #6a4c93;
+    }
+    .heart {
+      font-size: 48px;
+      color: #e63946;
+      animation: pulse 1.5s infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    .message {
+      text-align: left;
+      margin-top: 30px;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+    .details {
+      background: #fff0f5;
+      padding: 20px;
+      margin: 30px auto;
+      border-radius: 15px;
+      font-size: 18px;
+      width: 85%;
+    }
+    .button {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 14px 28px;
+      background-color: #ff6f91;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 12px;
+      transition: background 0.3s;
+    }
+    .button:hover {
+      background-color: #e85d75;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="heart">💖</div>
+    <h1>Selamat Ulang Tahun</h1>
+    <div class="subtitle">Untuk yang selalu ada di hati,</div>
+
+    <div class="message">
+      <p>Selamat ulang tahun, sayangku 🎂💖</p>
+      <p>Kamu minta ucapan spesial kan? Nah, mungkin ini bisa dibilang cukup spesial — walaupun nggak pakai fireworks atau karpet merah. Tapi dari hati, ya.</p>
+      <p>Selamat bertambah usia, semoga segala urusanmu — baik kuliah maupun hidupmu secara umum — dimudahkan dan dilancarkan. Tuhan punya rencana terbaik, jadi jangan terlalu keras pada diri sendiri.</p>
+      <p>Makasih sudah jadi partner, teman cerita, pelipur lara, dan mood booster terbaik dede yang gabutan ini. Semoga hubungan kita terus kuat, entah sebagai apa pun bentuknya ke depan.</p>
+      <p>Doa terbaik juga buat PMO kita — semoga juara yaa! Dan semoga mimpi kita tercapai: jadi dokter yang bisa banggakan banyak orang (dan diri sendiri pastinya).</p>
+      <p>Dan ya... maaf kalau aku belum sempurna. Tapi yang sempurna itu cuma milik tuhan kan? 😜</p>
+      <p>I love you. Always. 💐✨</p>
+    </div>
+
+    <div class="details">
+      <p><strong>Acara:</strong> Romantic Dinner (iyaa agak alay sih 😅)</p>
+      <p><strong>Tanggal:</strong> Selasa, 3 Juni 2025</p>
+      <p><strong>Waktu:</strong> 19:00 WIB</p>
+      <p><strong>Tempat:</strong> Bebas request, yang penting bareng kamu</p>
+      <p><strong>Dresscode:</strong> Cream kali yaa, biar serasi</p>
+      <p><em>*Dinner bisa saja berubah tergantung cuaca, semoga langit mendukung malam itu 🌧️❤️</em></p>
+    </div>
+
+    <a href="https://wa.me/6282187678910?text=Oke%20sayang%2C%20aku%20akan%20datang%20%F0%9F%98%8D" class="button">Aku Datang! 💌</a>
+  </div>
+</body>
+</html>
+

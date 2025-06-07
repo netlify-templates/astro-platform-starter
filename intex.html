@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario: Cómic sobre Evasión de Impuestos</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: auto; padding: 20px; background: #f4f4f4; }
+    h1 { color: #333; }
+    form { background: #fff; padding: 20px; border-radius: 8px; }
+    .question { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 5px; }
+    input[type="submit"] { padding: 10px 20px; background: #007BFF; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+    input[type="submit"]:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+  <h1>Formulario: Cómic sobre Evasión de Impuestos</h1>
+  <form name="comic-impuestos" method="POST" data-netlify="true">
+    
+    <!-- Pregunta 1: Verdadero/Falso -->
+    <div class="question">
+      <label>1. El protagonista del cómic evita pagar impuestos para comprar un auto nuevo.</label>
+      <input type="radio" name="q1" value="Verdadero" required> Verdadero<br>
+      <input type="radio" name="q1" value="Falso"> Falso<br>
+      <input type="radio" name="q1" value="No se menciona"> No se menciona
+    </div>
+
+    <!-- Pregunta 2: Concepto -->
+    <div class="question">
+      <label>2. ¿Qué es la evasión de impuestos?</label>
+      <input type="radio" name="q2" value="Eludir legalmente impuestos"> Eludir legalmente impuestos<br>
+      <input type="radio" name="q2" value="No declarar ingresos para no pagar"> No declarar ingresos para no pagar<br>
+      <input type="radio" name="q2" value="Pagar impuestos adelantados"> Pagar impuestos adelantados
+    </div>
+
+    <!-- Pregunta 3: Situación hipotética -->
+    <div class="question">
+      <label>3. Si el personaje declara menos ingresos de los reales, ¿qué está haciendo?</label>
+      <input type="radio" name="q3" value="Evasión"> Evasión<br>
+      <input type="radio" name="q3" value="Planificación fiscal"> Planificación fiscal<br>
+      <input type="radio" name="q3" value="Error contable"> Error contable
+    </div>
+
+    <!-- Pregunta 4 -->
+    <div class="question">
+      <label>4. ¿Qué castigo enfrenta el protagonista al final del cómic?</label>
+      <input type="radio" name="q4" value="Multa económica"> Multa económica<br>
+      <input type="radio" name="q4" value="Cárcel"> Cárcel<br>
+      <input type="radio" name="q4" value="Pierde su negocio"> Pierde su negocio
+    </div>
+
+    <!-- Pregunta 5 -->
+    <div class="question">
+      <label>5. ¿Por qué el personaje justifica su evasión?</label>
+      <input type="radio" name="q5" value="Porque cree que paga mucho"> Porque cree que paga mucho<br>
+      <input type="radio" name="q5" value="Porque quiere ayudar al gobierno"> Porque quiere ayudar al gobierno<br>
+      <input type="radio" name="q5" value="No conoce la ley"> No conoce la ley
+    </div>
+
+    <!-- Pregunta 6 -->
+    <div class="question">
+      <label>6. ¿Cuál es el mensaje central del cómic?</label>
+      <input type="radio" name="q6" value="Evadir es útil"> Evadir es útil<br>
+      <input type="radio" name="q6" value="Evitar impuestos es legal"> Evitar impuestos es legal<br>
+      <input type="radio" name="q6" value="Evitar impuestos tiene consecuencias"> Evitar impuestos tiene consecuencias
+    </div>
+
+    <!-- Pregunta 7 -->
+    <div class="question">
+      <label>7. ¿Quién investiga la evasión del personaje?</label>
+      <input type="radio" name="q7" value="Su contadora"> Su contadora<br>
+      <input type="radio" name="q7" value="Autoridades fiscales"> Autoridades fiscales<br>
+      <input type="radio" name="q7" value="La prensa"> La prensa
+    </div>
+
+    <!-- Pregunta 8 -->
+    <div class="question">
+      <label>8. ¿Cuál fue la causa del error que cometió el personaje?</label>
+      <input type="radio" name="q8" value="Desconocimiento"> Desconocimiento<br>
+      <input type="radio" name="q8" value="Intención deliberada"> Intención deliberada<br>
+      <input type="radio" name="q8" value="Problema tecnológico"> Problema tecnológico
+    </div>
+
+    <!-- Pregunta 9 -->
+    <div class="question">
+      <label>9. ¿Qué instrumento usó el personaje para evadir?</label>
+      <input type="radio" name="q9" value="Factura falsa"> Factura falsa<br>
+      <input type="radio" name="q9" value="Sociedad offshore"> Sociedad offshore<br>
+      <input type="radio" name="q9" value="Donación benéfica"> Donación benéfica
+    </div>
+
+    <!-- Pregunta 10 -->
+    <div class="question">
+      <label>10. ¿Qué aprendizaje se sugiere para el lector?</label>
+      <input type="radio" name="q10" value="Buscar vacíos legales"> Buscar vacíos legales<br>
+      <input type="radio" name="q10" value="Ser transparente con el fisco"> Ser transparente con el fisco<br>
+      <input type="radio" name="q10" value="Evitar hablar de impuestos"> Evitar hablar de impuestos
+    </div>
+
+    <!-- Pregunta 11 -->
+    <div class="question">
+      <label>11. ¿Qué rol cumple la contadora en el cómic?</label>
+      <input type="radio" name="q11" value="Ayuda a evadir"> Ayuda a evadir<br>
+      <input type="radio" name="q11" value="Advierte sobre consecuencias"> Advierte sobre consecuencias<br>
+      <input type="radio" name="q11" value="Es cómplice"> Es cómplice
+    </div>
+
+    <!-- Pregunta 12 -->
+    <div class="question">
+      <label>12. ¿Cuál fue la reacción del personaje cuando lo descubren?</label>
+      <input type="radio" name="q12" value="Niega todo"> Niega todo<br>
+      <input type="radio" name="q12" value="Acepta y coopera"> Acepta y coopera<br>
+      <input type="radio" name="q12" value="Culpa al contador"> Culpa al contador
+    </div>
+
+    <!-- Pregunta 13 -->
+    <div class="question">
+      <label>13. ¿Qué rol cumple el Estado en el cómic?</label>
+      <input type="radio" name="q13" value="Controlador"> Controlador<br>
+      <input type="radio" name="q13" value="Educador y sancionador"> Educador y sancionador<br>
+      <input type="radio" name="q13" value="No participa"> No participa
+    </div>
+
+    <!-- Pregunta 14 -->
+    <div class="question">
+      <label>14. ¿Qué consecuencias sociales se mencionan?</label>
+      <input type="radio" name="q14" value="Falta de servicios públicos"> Falta de servicios públicos<br>
+      <input type="radio" name="q14" value="Pérdida de empleos"> Pérdida de empleos<br>
+      <input type="radio" name="q14" value="Aumento del comercio"> Aumento del comercio
+    </div>
+
+    <!-- Pregunta 15 -->
+    <div class="question">
+      <label>15. ¿Qué consejo final da el autor del cómic?</label>
+      <input type="radio" name="q15" value="Buscar un buen contador"> Buscar un buen contador<br>
+      <input type="radio" name="q15" value="Cumplir las leyes fiscales"> Cumplir las leyes fiscales<br>
+      <input type="radio" name="q15" value="No dejar rastro"> No dejar rastro
+    </div>
+
+    <input type="submit" value="Enviar respuestas">
+  </form>
+</body>
+</html>

@@ -13,7 +13,7 @@
     "@astrojs/netlify": "^6.2.3",
     "@astrojs/react": "^4.2.1",
     "@fontsource-variable/inter": "^5.2.5",
-    "@netlify/blobs": "^8.2.0",
+    "@netlify/blobs": "^10.0.1",
     "@netlify/functions": "^2.8.2",
     "@tailwindcss/vite": "^4.0.14",
     "@types/react": "^18.2.79",

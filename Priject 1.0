@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advertisement Web Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .headline {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .subheadline {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .product-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px auto;
+            border-radius: 8px;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            color: #fff;
+            background-color: #e91e63;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #d81b60;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            margin-top: 40px;
+        }
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            .headline {
+                font-size: 1.5em;
+            }
+            .cta-button {
+                padding: 12px 24px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Our Amazing Offer!</h1>
+    </header>
+    
+    <div class="container">
+        <div class="headline">Discover the Best Product for You</div>
+        <div class="subheadline">Limited time offer! Don't miss out on this exclusive deal.</div>
+        <img src="https://via.placeholder.com/600x400" alt="Product Image" class="product-image" />
+        <a href="https://yourwebsite.com" class="cta-button">Buy Now</a>
+    </div>
+    
+    <footer>
+        &copy; 2024 Your Company Name. All rights reserved.
+    </footer>
+</body>
+</html>

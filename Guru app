@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guru App (India) - Official Download</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #f3f4f6, #e5e7eb);
+      color: #111827;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: 60px auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 2rem;
+      color: #2563eb;
+    }
+    p {
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+    .download-button {
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 1.2rem;
+      background-color: #2563eb;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+    .download-button:hover {
+      background-color: #1d4ed8;
+    }
+    .note {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📲 Guru App (India)</h1>
+    <p>Chat, Reels, AI Image – sab kuch ek hi app mein

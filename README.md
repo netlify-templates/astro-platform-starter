@@ -1,51 +1,66 @@
-# Astro on Netlify Platform Starter
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Coin Tap Game</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #87ceeb, #ffffff);
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 100px;
+    }
 
-[Live Demo](https://astro-platform-starter.netlify.app/)
+    h1 {
+      color: #333;
+    }
 
-A modern starter based on Astro.js, Tailwind, and [Netlify Core Primitives](https://docs.netlify.com/core/overview/#develop) (Edge Functions, Image CDN, Blob Store).
+    #coin {
+      font-size: 100px;
+      cursor: pointer;
+      animation: bounce 0.3s;
+    }
 
-## Astro Commands
+    @keyframes bounce {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
 
-All commands are run from the root of the project, from a terminal:
+    #score {
+      font-size: 32px;
+      margin-top: 20px;
+      color: #444;
+    }
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+    .footer {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>💰 Coin Tap Game</h1>
+  <div id="coin" onclick="collectCoin()">🪙</div>
+  <div id="score">Coins: 0</div>
 
-## Deploying to Netlify
+  <div class="footer">Created by YOU | Earn & Have Fun</div>
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/astro-platform-starter)
+  <audio id="sound" src="https://www.soundjay.com/button/sounds/button-4.mp3" preload="auto"></audio>
 
-## Developing Locally
+  <script>
+    let coins = 0;
+    const scoreDisplay = document.getElementById("score");
+    const sound = document.getElementById("sound");
 
-| Prerequisites                                                                |
-| :--------------------------------------------------------------------------- |
-| [Node.js](https://nodejs.org/) v18.14+.                                      |
-| (optional) [nvm](https://github.com/nvm-sh/nvm) for Node version management. |
-
-1. Clone this repository, then run `npm install` in its root directory.
-
-2. For the starter to have full functionality locally (e.g. edge functions, blob store), please ensure you have an up-to-date version of Netlify CLI. Run:
-
-```
-npm install netlify-cli@latest -g
-```
-
-3. Link your local repository to the deployed Netlify site. This will ensure you're using the same runtime version for both local development and your deployed site.
-
-```
-netlify link
-```
-
-4. Then, run the Astro.js development server via Netlify CLI:
-
-```
-netlify dev
-```
-
-If your browser doesn't navigate to the site automatically, visit [localhost:8888](http://localhost:8888).
+    function collectCoin() {
+      coins++;
+      scoreDisplay.innerText = "Coins: " + coins;
+      sound.play();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Luxoro - Curating Everyday Luxury</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 0; background: #fff; color: #333; }
+        header { background: black; color: gold; padding: 20px; text-align: center; }
+        h1 { margin: 0; font-size: 24px; }
+        section { padding: 20px; text-align: center; }
+        .product { border: 1px solid #ddd; padding: 10px; margin: 10px auto; max-width: 300px; border-radius: 10px; }
+        .product img { max-width: 100%; border-radius: 10px; }
+        .button { background: gold; color: black; padding: 10px 20px; border: none; border-radius: 5px; text-decoration: none; display: inline-block; margin-top: 10px; font-weight: bold; }
+        footer { background: #111; color: #ccc; text-align: center; padding: 10px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Luxoro</h1>
+        <p>Curating Everyday Luxury</p>
+    </header>
+    <section>
+        <h2>Featured Products</h2>
+        <div class="product">
+            <img src="https://via.placeholder.com/300x300?text=Luxury+Watch" alt="Luxury Watch" />
+            <h3>Luxury Minimalist Watch</h3>
+            <p>PKR 2500</p>
+            <a href="https://wa.me/923278368235" class="button">Order on WhatsApp</a>
+        </div>
+        <div class="product">
+            <img src="https://via.placeholder.com/300x300?text=Phone+Cover" alt="Phone Cover" />
+            <h3>Elegant Phone Cover</h3>
+            <p>PKR 950</p>
+            <a href="https://wa.me/923278368235" class="button">Order on WhatsApp</a>
+        </div>
+        <div class="product">
+            <img src="https://via.placeholder.com/300x300?text=Minimal+Ring" alt="Minimal Ring" />
+            <h3>Minimalist Ring</h3>
+            <p>PKR 650</p>
+            <a href="https://wa.me/923278368235" class="button">Order on WhatsApp</a>
+        </div>
+    </section>
+    <section>
+        <h2>Contact Us</h2>
+        <p>Email: miansibi123@gmail.com</p>
+        <a href="https://wa.me/923278368235" class="button">Chat on WhatsApp</a>
+    </section>
+    <footer>
+        &copy; 2025 Luxoro. All rights reserved.
+    </footer>
+</body>
+</html>
+

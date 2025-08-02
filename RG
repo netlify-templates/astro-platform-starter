@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Up Game Online</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-lg">
+    <h1 class="text-2xl font-bold text-center mb-6">Top Up Game Online</h1>
+    <form id="topupForm" class="space-y-4">
+      <div>
+        <label class="block font-semibold mb-1">Pilih Game</label>
+        <select id="game" class="w-full border border-gray-300 rounded p-2">
+          <option value="Mobile Legends">Mobile Legends</option>
+          <option value="Free Fire">Free Fire</option>
+          <option value="PUBG Mobile">PUBG Mobile</option>
+        </select>
+      </div><div>
+    <label class="block font-semibold mb-1">User ID</label>
+    <input type="text" id="userId" class="w-full border border-gray-300 rounded p-2" placeholder="Masukkan ID game kamu" required />
+  </div>
+
+  <div>
+    <label class="block font-semibold mb-1">Nominal Top Up</label>
+    <select id="nominal" class="w-full border border-gray-300 rounded p-2">
+      <option value="5000">Rp5.000</option>
+      <option value="10000">Rp10.000</option>
+      <option value="20000">Rp20.000</option>
+      <option value="50000">Rp50.000</option>
+      <option value="100000">Rp100.000</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="block font-semibold mb-1">Jumlah Pembelian</label>
+    <input type="number" id="jumlah" class="w-full border border-gray-300 rounded p-2" min="1" value="1" required />
+  </div>
+
+  <div>
+    <label class="block font-semibold mb-1">Metode Pembayaran</label>
+    <select id="payment" class="w-full border border-gray-300 rounded p-2">
+      <option value="Dana">Dana</option>
+      <option value="OVO">OVO</option>
+      <option value="Gopay">Gopay</option>
+      <option value="Bank Transfer">Bank Transfer</option>
+    </select>
+  </div>
+
+  <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Top Up Sekarang</button>
+</form>
+
+  </div>  <div class="max-w-xl mx-auto mt-6 p-6 bg-white rounded-xl shadow">
+    <h2 class="text-xl font-bold mb-4">Riwayat Transaksi</h2>
+    <ul id="history" class="space-y-2 text-sm text-gray-700">
+      <li class="text-gray-500">Belum ada transaksi.</li>
+    </ul>
+  </div>  <script>
+    const form = document.getElementById('topupForm');
+    const historyList = document.getElementById('history');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const game = document.getElementById('game').value;
+      const userId = document.getElementById('userId').value;
+      const nominal = parseInt(document.getElementById('nominal').value);
+      const jumlah = parseInt(document.getElementById('jumlah').value);
+      const payment = document.getElementById('payment').value;
+      const total = nominal * jumlah;
+
+      const detail = `Top Up ${game} untuk ID ${userId}, jumlah ${jumlah}x Rp${nominal.toLocaleString()} via ${payment} = Total Rp${total.toLocaleString()}`;
+
+      alert(`Pembayaran diproses melalui ${payment}.\n\n${detail}`);
+
+      const li = document.createElement('li');
+      li.textContent = detail;
+
+      if (historyList.children[0].textContent === "Belum ada transaksi.") {
+        historyList.innerHTML = "";
+      }
+
+      historyList.prepend(li);
+    });
+  </script></body>
+</html>

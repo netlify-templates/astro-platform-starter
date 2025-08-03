@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enjoy Discus</title>
+
+  <style>
+    /* === STYLE UTAMA === */
+    #language-toggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      background: #eee;
+      padding: 5px 10px;
+      border-radius: 5px;
+      z-index: 1001;
+      font-size: 18px;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+    }
+
+    .header {
+      text-align: center;
+      padding: 20px;
+      background-color: #0ef805;
+      color: white;
+    }
+
+    .logo {
+      width: 100px;
+    }
+
+    .title {
+      font-size: 36px;
+      margin: 10px 0;
+    }
+
+    .tagline {
+      font-size: 18px;
+      font-weight: 300;
+    }
+
+    .nav {
+      background-color: #333;
+    }
+
+    .menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .menu li {
+      position: relative;
+    }
+
+    .menu > li > a {
+      display: block;
+      padding: 12px 20px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .menu li a:hover, .menu li a.active {
+      background-color: #00080f;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      background: #444;
+      top: 100%;
+      left: 0;
+      min-width: 160px;
+      z-index: 10;
+    }
+
+    .menu li:hover .dropdown {
+      display: block;
+    }
+
+    .dropdown li a {
+      padding: 10px;
+      display: block;
+      color: white;
+    }
+
+    .main-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .artikel h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .artikel p {
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .post {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 40px;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .post img {
+      max-width: 300px;
+      width: 100%;
+      border-radius: 10px;
+      margin-right: 20px;
+      margin-bottom: 10px;
+    }
+
+    .post h3 {
+      margin-top: 0;
+      font-size: 22px;
+    }
+
+    .post-content {
+      flex: 1;
+    }
+
+    @media (max-width: 768px) {
+      .post {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .post img {
+        margin: 0 0 15px 0;
+      }
+
+      .post-content {
+        width: 100%;
+      }
+    }
+
+    /* === CHATBOT === */
+    #chatbot-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 320px;
+      max-height: 500px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    #chatbot-header {
+      background: #007bff;
+      color: white;
+      padding: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    #chatbot-messages {
+      padding: 10px;
+      overflow-y: auto;
+      flex: 1;
+      max-height: 300px;
+    }
+
+    .chatbot-message {
+      margin: 5px 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      max-width: 80%;
+      font-size: 14px;
+    }
+
+    .bot {
+      background: #f1f1f1;
+      align-self: flex-start;
+    }
+
+    .user {
+      background: #007bff;
+      color: white;
+      align-self: flex-end;
+    }
+
+    #chatbot-input {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    #chatbot-input input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      font-size: 14px;
+    }
+
+    #chatbot-input button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 0 15px;
+      cursor: pointer;
+    }
+
+    #chatbot-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #007bff;
+      color: white;
+      border-radius: 50%;
+      width: 55px;
+      height: 55px;
+      border: none;
+      font-size: 24px;
+      z-index: 999;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+<div id="language-toggle">🇮🇩 / 🇬🇧</div>
+<header class="header">
+  <img src="logo.png" alt="Logo Enjoy Discus" class="logo" />
+  <h1 class="title">Enjoy Discus</h1>
+  <p class="tagline">Tempatnya Genetik Discus Terbaik</p>
+</header>
+
+<nav class="nav">
+  <ul class="menu">
+    <li><a href="#" class="active">Home</a></li>
+    <li><a href="#">Services</a></li>
+    <li>
+      <a href="#">About Us</a>
+      <ul class="dropdown">
+        <li><a href="#">Overview</a></li>
+        <li><a href="#">Our Team</a></li>
+        <li><a href="#">Join Us</a></li>
+        <li><a href="#">Partners</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="https://wa.me/6282249120180?text=Halo%20saya%20tertarik%20dengan%20ikan%20discus%20Anda" target="_blank">
+        Chat WhatsApp
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<main class="main-content">
+  <section class="artikel">
+    <h2 data-id="welcome">Selamat Datang di Enjoy Discus</h2>
+    <p data-id="intro">
+      Enjoy Discus adalah Farm Discus terbaik di Depok untuk Anda yang mencari ikan discus berkualitas premium. Kami menyediakan berbagai macam varian discus genetik unggulan.
+    </p>
+    <h3 data-id="why">Kenapa Memilih Ikan Discus?</h3>
+    <p data-id="why-desc">
+      Ikan discus dikenal karena warna-warninya yang cantik dan gerakannya yang elegan. Cocok untuk penghias akuarium rumah atau kantor Anda.
+    </p>
+    <article class="post">
+      <img src="tiger.png" alt="Jenis Ikan Discus" />
+      <div class="post-content">
+        <h3 data-id="tips">Mengenal Jenis-Jenis Ikan Discus Populer</h3>
+        <p data-id="tips-desc">Ada banyak jenis ikan discus yang populer di kalangan pecinta ikan hias, seperti Red Marlboro, Blue Diamond, dan Pigeon Blood. Masing-masing memiliki warna dan karakteristik unik yang membuatnya menarik untuk dipelihara.</p>
+        <p><a href="berita2.html" class="read-more">Baca Selengkapnya →</a></p>
+      </div>
+    </article>
+    <article class="post">
+      <img src="phantera.png" alt="Perawatan Ikan Discus" />
+      <div class="post-content">
+        <h3 data-id="tips">Tips Merawat Ikan Discus</h3>
+        <p data-id="tips-desc">Merawat ikan discus memerlukan perhatian terhadap suhu, kualitas air, dan pemberian pakan yang seimbang. Ikan ini sensitif terhadap perubahan lingkungan, jadi pastikan air tetap bersih dan teratur diganti.</p>
+        <p><a href="berita2.html" class="read-more">Baca Selengkapnya →</a></p>
+      </div>
+    </article>
+  </section>
+</main>
+
+<button id="chatbot-toggle">💬</button>
+<div id="chatbot-container">
+  <div id="chatbot-header">Enjoy Discus Bot</div>
+  <div id="chatbot-messages"></div>
+  <div id="chatbot-input">
+    <input type="text" id="user-input" placeholder="Tulis pertanyaan..." />
+    <button onclick="sendMessage()">➤</button>
+  </div>
+</div>
+
+<script>
+const translations = {
+  id: {
+    welcome: "Selamat Datang di Enjoy Discus",
+    intro: "Enjoy Discus adalah Farm Discus terbaik di Depok untuk Anda yang mencari ikan discus berkualitas premium. Kami menyediakan berbagai macam varian discus genetik unggulan.",
+    why: "Kenapa Memilih Ikan Discus?",
+    "why-desc": "Ikan discus dikenal karena warna-warninya yang cantik dan gerakannya yang elegan. Cocok untuk penghias akuarium rumah atau kantor Anda.",
+    tips: "Tips Merawat Ikan Discus",
+    "tips-desc": "Merawat ikan discus memerlukan perhatian terhadap suhu, kualitas air, dan pemberian pakan yang seimbang. Ikan ini sensitif terhadap perubahan lingkungan, jadi pastikan air tetap bersih dan teratur diganti.",
+  },
+  en: {
+    welcome: "Welcome to Enjoy Discus",
+    intro: "Enjoy Discus is the best Discus Fish Farm in Depok for those looking for premium quality discus fish. We provide a variety of top genetic discus variants.",
+    why: "Why Choose Discus Fish?",
+    "why-desc": "Discus fish are known for their beautiful colors and elegant movements. Perfect for decorating your home or office aquarium.",
+    tips: "Tips for Caring for Discus Fish",
+    "tips-desc": "Caring for discus fish requires attention to temperature, water quality, and balanced feeding. These fish are sensitive to environmental changes, so make sure the water stays clean and changed regularly.",
+  }
+};
+
+function updateLanguage(lang) {
+  document.querySelectorAll("[data-id]").forEach((el) => {
+    const key = el.getAttribute("data-id");
+    if (translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+  localStorage.setItem("lang", lang);
+}
+
+document.getElementById("language-toggle").onclick = function () {
+  const currentLang = localStorage.getItem("lang") || "id";
+  const nextLang = currentLang === "id" ? "en" : "id";
+  updateLanguage(nextLang);
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+  const savedLang = localStorage.getItem("lang") || "id";
+  updateLanguage(savedLang);
+});
+</script>
+</body>
+</html>

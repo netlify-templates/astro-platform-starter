@@ -1,0 +1,17 @@
+---
+export interface Props {
+    class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class={`bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg p-4 ${className}`}>
+    <div class="flex items-center gap-2">
+        <span class="text-2xl">🍽️</span>
+        <div>
+            <strong>DinnaFind is Live!</strong> 
+            <span class="ml-2">Visit us at <a href="https://dinnafind.com" class="underline font-semibold">dinnafind.com</a></span>
+        </div>
+    </div>
+</div>

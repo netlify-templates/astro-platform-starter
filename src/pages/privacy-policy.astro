@@ -1,0 +1,344 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Privacy Policy Content Data
+const policyData = {
+    lastUpdated: 'January 2025',
+    companyName: 'DinnaFind',
+    companyEmail: 'privacy@dinnafind.com',
+    companyAddress: 'DinnaFind Inc., 123 Restaurant Row, Foodie City, FC 12345',
+    companyPhone: '+1 (555) 123-4567'
+};
+
+const dataCollection = {
+    personalInfo: [
+        { label: 'Account Information', details: 'Name, email address, phone number, and profile information when you create an account' },
+        { label: 'Profile Data', details: 'Favorite restaurants, dining history, and preferences' },
+        { label: 'Contact Information', details: 'Information you provide for customer support or feedback' }
+    ],
+    locationInfo: [
+        { label: 'Precise Location', details: 'Your exact location (with permission) to provide nearby restaurant recommendations' },
+        { label: 'Coarse Location', details: 'General area information for broader location-based services' }
+    ],
+    usageInfo: [
+        { label: 'App Activity', details: 'Restaurants viewed, searches performed, reviews written, and reservations made' },
+        { label: 'Device Information', details: 'Device type, operating system, app version, and crash reports' },
+        { label: 'Analytics Data', details: 'How you interact with the app, features used, and performance metrics' }
+    ],
+    userContent: [
+        { label: 'Reviews and Ratings', details: 'Restaurant reviews, photos, and ratings you submit' },
+        { label: 'User Content', details: 'Comments, feedback, and other content you create' },
+        { label: 'Communication', details: "Messages sent through the app's messaging features" }
+    ]
+};
+
+const dataUsage = {
+    appFunctionality: [
+        'Provide personalized restaurant recommendations based on your preferences and location',
+        'Send notifications on chosen nearby restaurants you specifiy',
+        'Send important service notifications and updates'
+    ],
+    personalization: [
+        'Customize your dining experience and recommendations',
+        'Show relevant deals and promotions',
+        'Improve search results based on your preferences'
+    ],
+    analytics: [
+        'Analyze app usage to improve features and performance',
+        'Understand user behavior to enhance the dining discovery experience',
+        'Monitor app performance and fix technical issues'
+    ],
+    marketing: ['Send promotional offers and restaurant deals (with your consent)', 'Provide updates about new features and restaurants']
+};
+
+const dataSharing = [
+    { category: 'Service Providers', details: 'Work with trusted third-party services for analytics, and customer support' },
+    { category: 'Legal Requirements', details: 'Disclose information when required by law or to protect our rights and safety' }
+];
+
+const securityMeasures = [
+    'Encryption of data in transit and at rest',
+    'Regular security assessments and updates',
+    'Access controls and authentication measures',
+    'Secure data storage and backup procedures'
+];
+
+const userRights = [
+    { right: 'Access and Update', details: 'Review and modify your account information and preferences' },
+    { right: 'Location Controls', details: 'Manage location permissions in your device settings' },
+    { right: 'Data Deletion', details: 'Request deletion of your account and associated data' }
+];
+
+const appStorePrivacy = [
+    { dataType: 'Contact Info (Name, Email, Phone)', collected: true },
+    { dataType: 'Location (Precise & Coarse)', collected: true },
+    { dataType: 'User Content (Reviews, Photos)', collected: true },
+    { dataType: 'Usage Data (Analytics)', collected: true },
+    { dataType: 'Device Identifiers', collected: true }
+];
+---
+
+<Layout title="Privacy Policy - DinnaFind">
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .btn {
+            @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300 inline-flex items-center gap-2;
+        }
+
+        .btn-lg {
+            @apply px-8 py-4 text-lg;
+        }
+
+        .shine {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shine::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .shine:hover::before {
+            left: 100%;
+        }
+    </style>
+
+    <!-- Hero Section -->
+    <section class="text-center py-20 mb-16">
+        <div class="max-w-4xl mx-auto px-6">
+            <h1 class="gradient-text text-5xl md:text-6xl font-bold mb-6">Privacy Policy</h1>
+            <p class="text-xl text-gray-300 mb-4">Last updated: {policyData.lastUpdated}</p>
+            <p class="text-lg text-gray-400">
+                Your privacy is important to us. This policy explains how {policyData.companyName} collects, uses, and protects your information.
+            </p>
+        </div>
+    </section>
+
+    <!-- Privacy Policy Content -->
+    <div class="max-w-4xl mx-auto px-6 mb-16">
+        <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700/50">
+            <!-- Introduction -->
+            <section class="mb-8">
+                <h2 class="gradient-text text-2xl font-semibold mb-4">Introduction</h2>
+                <p class="text-gray-300 mb-4">
+                    {policyData.companyName} ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose,
+                    and safeguard your information when you use our restaurant discovery mobile application and related services.
+                </p>
+                <p class="text-gray-300">
+                    By using {policyData.companyName}, you consent to the data practices described in this policy. If you do not agree with our policies and
+                    practices, please do not use our app.
+                </p>
+            </section>
+
+            <!-- Information We Collect -->
+            <section class="mb-8">
+                <h2 class="gradient-text text-2xl font-semibold mb-4">Information We Collect</h2>
+
+                <h3 class="text-xl font-semibold text-white mb-3">Personal Information</h3>
+                <ul class="text-gray-300 mb-4 space-y-2">
+                    {
+                        dataCollection.personalInfo.map((item) => (
+                            <li>
+                                <strong>{item.label}:</strong> {item.details}
+                            </li>
+                        ))
+                    }
+                </ul>
+
+                <h3 class="text-xl font-semibold text-white mb-3">Location Information</h3>
+                <ul class="text-gray-300 mb-4 space-y-2">
+                    {
+                        dataCollection.locationInfo.map((item) => (
+                            <li>
+                                <strong>{item.label}:</strong> {item.details}
+                            </li>
+                        ))
+                    }
+                </ul>
+
+                <h3 class="text-xl font-semibold text-white mb-3">Usage Information</h3>
+                <ul class="text-gray-300 mb-4 space-y-2">
+                    {
+                        dataCollection.usageInfo.map((item) => (
+                            <li>
+                                <strong>{item.label}:</strong> {item.details}
+                            </li>
+                        ))
+                    }
+                </ul>
+
+                <h3 class="text-xl font-semibold text-white mb-3">Content You Provide</h3>
+                <ul class="text-gray-300 mb-4 space-y-2">
+                    {
+                        dataCollection.userContent.map((item) => (
+                            <li>
+                                <strong>{item.label}:</strong> {item.details}
+                            </li>
+                        ))
+                    }
+                </ul>
+            </section>
+
+            <!-- How We Use Your Information -->
+            <section class="mb-8">
+                <h2 class="gradient-text text-2xl font-semibold mb-4">How We Use Your Information</h2>
+
+                <h3 class="text-xl font-semibold text-white mb-3">App Functionality</h3>
+                <ul class="text-gray-300 mb-4 space-y-2">
+                    {dataUsage.appFunctionality.map((item) => <li>{item}</li>)}
+                </ul>
+
+                <h3 class="text-xl font-semibold text-white mb-3">Product Personalization</h3>
+                <ul class="text-gray-300 mb-4 space-y-2">
+                    {dataUsage.personalization.map((item) => <li>{item}</li>)}
+                </ul>
+
+                <h3 class="text-xl font-semibold text-white mb-3">Analytics and Improvement</h3>
+                <ul class="text-gray-300 mb-4 space-y-2">
+                    {dataUsage.analytics.map((item) => <li>{item}</li>)}
+                </ul>
+
+                <h3 class="text-xl font-semibold text-white mb-3">Marketing and Communications</h3>
+                <ul class="text-gray-300 mb-4 space-y-2">
+                    {dataUsage.marketing.map((item) => <li>{item}</li>)}
+                </ul>
+            </section>
+
+            <!-- Data Sharing and Disclosure -->
+            <section class="mb-8">
+                <h2 class="gradient-text text-2xl font-semibold mb-4">Data Sharing and Disclosure</h2>
+
+                <p class="text-gray-300 mb-4">
+                    We do not sell, trade, or rent your personal information to third parties. We may share your information in the following circumstances:
+                </p>
+
+                <ul class="text-gray-300 mb-4 space-y-2">
+                    {
+                        dataSharing.map((item) => (
+                            <li>
+                                <strong>{item.category}:</strong> {item.details}
+                            </li>
+                        ))
+                    }
+                </ul>
+            </section>
+
+            <!-- Data Security -->
+            <section class="mb-8">
+                <h2 class="gradient-text text-2xl font-semibold mb-4">Data Security</h2>
+
+                <p class="text-gray-300 mb-4">
+                    We implement appropriate technical and organizational security measures to protect your personal information, including:
+                </p>
+
+                <ul class="text-gray-300 mb-4 space-y-2">
+                    {securityMeasures.map((measure) => <li>{measure}</li>)}
+                </ul>
+            </section>
+
+            <!-- Your Privacy Choices -->
+            <section class="mb-8">
+                <h2 class="gradient-text text-2xl font-semibold mb-4">Your Privacy Choices</h2>
+
+                <p class="text-gray-300 mb-4">You have the following rights regarding your personal information:</p>
+
+                <ul class="text-gray-300 mb-4 space-y-2">
+                    {
+                        userRights.map((right) => (
+                            <li>
+                                <strong>{right.right}:</strong> {right.details}
+                            </li>
+                        ))
+                    }
+                </ul>
+            </section>
+
+            <!-- Children's Privacy -->
+            <section class="mb-8">
+                <h2 class="gradient-text text-2xl font-semibold mb-4">Children's Privacy</h2>
+
+                <p class="text-gray-300">
+                    {policyData.companyName} is not intended for children under 13 years of age. We do not knowingly collect personal information from children under
+                    13. If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately.
+                </p>
+            </section>
+
+            <!-- International Data Transfers -->
+            <section class="mb-8">
+                <h2 class="gradient-text text-2xl font-semibold mb-4">International Data Transfers</h2>
+
+                <p class="text-gray-300">
+                    Your information may be transferred to and processed in countries other than your own. We ensure that such transfers comply with applicable
+                    data protection laws and implement appropriate safeguards to protect your information.
+                </p>
+            </section>
+
+            <!-- Changes to This Policy -->
+            <section class="mb-8">
+                <h2 class="gradient-text text-2xl font-semibold mb-4">Changes to This Policy</h2>
+
+                <p class="text-gray-300">
+                    We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy in the app and
+                    updating the "Last updated" date. Your continued use of the app after such changes constitutes acceptance of the updated policy.
+                </p>
+            </section>
+
+            <!-- Contact Information -->
+            <section class="mb-8">
+                <h2 class="gradient-text text-2xl font-semibold mb-4">Contact Us</h2>
+
+                <p class="text-gray-300 mb-4">If you have any questions about this Privacy Policy or our data practices, please contact us:</p>
+
+                <div class="bg-gray-700/50 rounded-lg p-4">
+                    <p class="text-gray-300 mb-2"><strong>Email:</strong> {policyData.companyEmail}</p>
+                </div>
+            </section>
+
+            <!-- App Store Privacy Details -->
+            <section class="mb-8">
+                <h2 class="gradient-text text-2xl font-semibold mb-4">App Store Privacy Details</h2>
+
+                <p class="text-gray-300 mb-4">In accordance with Apple App Store requirements, here's a summary of our data collection practices:</p>
+
+                <div class="bg-gray-700/50 rounded-lg p-4 space-y-3">
+                    {
+                        appStorePrivacy.map((item) => (
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-300">{item.dataType}</span>
+                                <span class="text-green-400">✓ {item.collected ? 'Collected' : 'Not Collected'}</span>
+                            </div>
+                        ))
+                    }
+                </div>
+
+                <p class="text-gray-300 mt-4 text-sm">
+                    <strong>Data Use:</strong> App Functionality, Product Personalization, Analytics, Marketing<br />
+                    <strong>Data Linked to User:</strong> Yes<br />
+                    <strong>Tracking:</strong> No (We do not track users across third-party apps or websites)
+                </p>
+            </section>
+        </div>
+    </div>
+
+    <!-- Back to DinnaFind -->
+    <div class="text-center mb-16">
+        <a href="/dinnafind" class="btn btn-lg gradient-bg text-white border-0 hover:opacity-90 shine"> ← Back to DinnaFind </a>
+    </div>
+</Layout>

@@ -1,0 +1,349 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import DinnaFindAlert from '../components/DinnaFindAlert.astro';
+
+const features = [
+    {
+        icon: '🎯',
+        title: 'Smart Recommendations',
+        description: "Our AI learns your preferences and suggests restaurants you'll love, based on your dining history and taste profile."
+    },
+    {
+        icon: '📍',
+        title: 'Location-Based Discovery',
+        description: 'Find the best restaurants near you with real-time location tracking and detailed neighborhood guides.'
+    },
+    {
+        icon: '⏰',
+        title: 'Real-Time Availability',
+        description: 'Check live wait times, make instant reservations, and skip the line at your favorite restaurants.'
+    },
+    {
+        icon: '⭐',
+        title: 'Verified Reviews',
+        description: 'Read authentic reviews from real diners, with photos and detailed experiences to help you decide.'
+    },
+    {
+        icon: '🎉',
+        title: 'Exclusive Deals',
+        description: 'Access special offers, happy hour deals, and exclusive discounts at participating restaurants.'
+    },
+    {
+        icon: '👥',
+        title: 'Social Dining',
+        description: 'Share your favorites with friends, create dining groups, and discover where your network loves to eat.'
+    }
+];
+
+const steps = [
+    {
+        number: '1',
+        title: 'Tell Us Your Preferences',
+        description: 'Share your dietary preferences, favorite cuisines, and budget range.'
+    },
+    {
+        number: '2',
+        title: 'Get Personalized Matches',
+        description: 'Our AI analyzes thousands of options to find your perfect match.'
+    },
+    {
+        number: '3',
+        title: 'Browse & Compare',
+        description: 'View menus, photos, reviews, and real-time availability.'
+    },
+    {
+        number: '4',
+        title: 'Book & Enjoy',
+        description: 'Reserve your table instantly and enjoy an amazing dining experience.'
+    }
+];
+
+const testimonials = [
+    {
+        name: 'Sarah Johnson',
+        role: 'Food Enthusiast',
+        content: 'DinnaFind has completely changed how I discover restaurants. The recommendations are spot-on, and I love the real-time availability feature!',
+        rating: 5
+    },
+    {
+        name: 'Michael Chen',
+        role: 'Vegan Foodie',
+        content: "As someone with dietary restrictions, DinnaFind makes it so easy to find restaurants that cater to my needs. It's a game-changer!",
+        rating: 5
+    },
+    {
+        name: 'Emily Rodriguez',
+        role: 'Budget Diner',
+        content: "The exclusive deals alone make this app worth it. I've saved so much money while discovering amazing new places to eat!",
+        rating: 5
+    }
+];
+
+const stats = [
+    { value: '50K+', label: 'Active Users' },
+    { value: '10K+', label: 'Restaurants' },
+    { value: '4.8', label: 'App Rating' },
+    { value: '1M+', label: 'Reviews' }
+];
+---
+
+<Layout title="DinnaFind - Discover Your Next Favorite Restaurant">
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .hero-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .shine {
+            background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.3) 50%, transparent 60%);
+            background-size: 200% 100%;
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+    </style>
+
+    <!-- Alert Banner -->
+    <DinnaFindAlert class="mb-8" />
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden -mx-6 sm:-mx-12 -mt-8 mb-16">
+        <div class="gradient-bg hero-pattern py-20 px-6 sm:px-12">
+            <div class="max-w-5xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+                <div class="fade-in-up">
+                    <h1 class="text-white mb-6">
+                        Discover Your Next<br />
+                        <span class="text-yellow-300">Favorite Restaurant</span>
+                    </h1>
+                    <p class="text-xl text-white/90 mb-8">
+                        Find the perfect dining experience with AI-powered recommendations, real-time availability, and personalized suggestions based on your
+                        taste.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#download" class="btn btn-lg bg-white text-purple-600 hover:bg-gray-100 shine"> 📱 Download App </a>
+                        <a
+                            href="#features"
+                            class="btn btn-lg bg-transparent border-2 border-white text-white hover:bg-white hover:text-purple-600 transition-all"
+                        >
+                            Learn More →
+                        </a>
+                    </div>
+                    <div class="mt-8 flex items-center gap-6 text-white/80">
+                        <div class="flex items-center gap-2">
+                            <span class="text-yellow-300">⭐⭐⭐⭐⭐</span>
+                            <span>4.8 Rating</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span>50K+ Downloads</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="float-animation">
+                    <div class="bg-white rounded-[40px] p-3 shadow-2xl max-w-[300px] mx-auto relative">
+                        <div class="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 rounded-[40px] blur-2xl opacity-50"></div>
+                        <div class="gradient-bg rounded-[30px] h-[500px] flex items-center justify-center relative">
+                            <div class="text-center text-white">
+                                <div class="text-6xl mb-4 animate-pulse">🍽️</div>
+                                <div class="text-3xl font-bold">DinnaFind</div>
+                                <div class="text-sm mt-2 opacity-80">Your Food Discovery App</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="mb-16">
+        <div class="text-center mb-12">
+            <h2 class="gradient-text mb-4">Why Choose DinnaFind?</h2>
+            <p class="text-xl text-gray-300">Everything you need to discover amazing dining experiences</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature) => <FeatureCard icon={feature.icon} title={feature.title} description={feature.description} />)}
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="mb-16">
+        <div class="text-center mb-12">
+            <h2 class="gradient-text mb-4">How It Works</h2>
+            <p class="text-xl text-gray-300">Finding your perfect meal is easier than ever</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {
+                steps.map((step, index) => (
+                    <div class="text-center relative group">
+                        <div class="gradient-bg w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold text-white mx-auto mb-4 group-hover:scale-110 transition-transform">
+                            {step.number}
+                        </div>
+                        {index < steps.length - 1 && <div class="hidden lg:block absolute top-10 left-[60%] w-full h-0.5 gradient-bg opacity-50" />}
+                        <h3 class="text-lg font-semibold mb-2 text-white">{step.title}</h3>
+                        <p class="text-gray-300 text-sm">{step.description}</p>
+                    </div>
+                ))
+            }
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="mb-16">
+        <div class="text-center mb-12">
+            <h2 class="gradient-text mb-4">What Our Users Say</h2>
+            <p class="text-xl text-gray-300">Join thousands of happy food lovers</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            {
+                testimonials.map((testimonial) => (
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700/50 hover:border-purple-500/50 transition-all">
+                        <div class="text-yellow-400 mb-3">{'⭐'.repeat(testimonial.rating)}</div>
+                        <p class="text-gray-300 mb-4 italic">"{testimonial.content}"</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full gradient-bg flex items-center justify-center text-white font-bold">
+                                {testimonial.name
+                                    .split(' ')
+                                    .map((n) => n[0])
+                                    .join('')}
+                            </div>
+                            <div>
+                                <div class="font-semibold text-white">{testimonial.name}</div>
+                                <div class="text-sm text-gray-400">{testimonial.role}</div>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="mb-16 gradient-bg rounded-lg p-8 -mx-6 sm:mx-0 shine">
+        <div class="grid md:grid-cols-4 gap-8 text-center">
+            {
+                stats.map((stat) => (
+                    <div class="group">
+                        <div class="text-4xl font-bold text-white mb-2 group-hover:scale-110 transition-transform">{stat.value}</div>
+                        <div class="text-white/80">{stat.label}</div>
+                    </div>
+                ))
+            }
+        </div>
+    </section>
+
+    <!-- Download CTA Section -->
+    <section id="download" class="text-center mb-16">
+        <div class="bg-gray-800/50 backdrop-blur-sm rounded-lg p-12 border border-gray-700/50">
+            <h2 class="gradient-text mb-4">Ready to Find Your Next Favorite Restaurant?</h2>
+            <p class="text-xl text-gray-300 mb-8">Download DinnaFind today and start your culinary adventure</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://apps.apple.com" class="btn btn-lg gradient-bg text-white border-0 hover:opacity-90 shine">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"
+                        ></path>
+                    </svg>
+                    Download for iOS
+                </a>
+                <a href="https://play.google.com" class="btn btn-lg gradient-bg text-white border-0 hover:opacity-90 shine">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12l-9.85 9.85c-.5-.24-.84-.76-.84-1.35m13.81-5.38L6.05 21.34 14.54 12l-7.69-7.69L16.81 15.12M20.16 10.81c.5.28.84.76.84 1.19s-.34.91-.84 1.19L17.36 15l-2.55-2.55L17.36 9l2.8 1.81M5.04 1.84L15.81 8.88 13.26 12 3.41 2.15c.19-.08.39-.13.63-.13.3 0 .58.06.84.19z"
+                        ></path>
+                    </svg>
+                    Download for Android
+                </a>
+            </div>
+            <p class="text-gray-400 text-sm mt-6">Available on iOS 14+ and Android 8+</p>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="text-center mb-8">
+        <div class="border border-gray-700 rounded-lg p-8 bg-gray-800/30">
+            <h3 class="text-2xl font-semibold mb-4 text-white">Stay Updated</h3>
+            <p class="text-gray-300 mb-6">Get the latest restaurant recommendations and exclusive deals</p>
+            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input
+                    type="email"
+                    placeholder="Enter your email"
+                    class="flex-1 px-4 py-3 rounded bg-gray-800 text-white border border-gray-700 focus:border-purple-500 focus:outline-none transition-colors"
+                    required
+                />
+                <button type="submit" class="btn btn-lg gradient-bg text-white border-0 hover:opacity-90"> Subscribe </button>
+            </form>
+            <p class="text-gray-500 text-xs mt-4">
+                We respect your privacy. Unsubscribe at any time.
+                <a href="/privacy-policy" class="text-purple-400 hover:text-purple-300 underline">Read our Privacy Policy</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="text-center mb-8">
+        <div class="border-t border-gray-700 pt-8">
+            <div class="flex flex-wrap justify-center gap-6 mb-4">
+                <a href="/privacy-policy" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+                <a href="/terms-of-service" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+                <a href="/support" class="text-gray-400 hover:text-white transition-colors">Support</a>
+                <a href="/contact" class="text-gray-400 hover:text-white transition-colors">Contact</a>
+            </div>
+            <p class="text-gray-500 text-sm">© 2025 DinnaFind Inc. All rights reserved. Your privacy matters to us.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Main Site -->
+    <div class="text-center">
+        <a href="/" class="text-gray-400 hover:text-white transition-colors">← Back to Platform Starter</a>
+    </div>
+</Layout>

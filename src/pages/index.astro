@@ -4,18 +4,87 @@ import ContextAlert from '../components/ContextAlert.astro';
 import Markdown from '../components/Markdown.astro';
 
 const explainer = `
-An Astro website can go way beyond static pages - on the right platform.
-
-Netlify supports not only [Streaming SSR](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming) and fast [Edge Middleware](https://docs.astro.build/en/guides/middleware/), but also [on-demand revalidation](https://www.netlify.com/blog/cache-tags-and-purge-api-on-netlify/) and [stale-while-revalidate](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/). 
-Any page or data can be rebuilt only when needed, without site visitors ever getting a performance hit.
+Tap the button below to share your exact GPS location with our dispatch team.
+Your phone will ask for permission. Please choose **Allow**.
 `;
 ---
 
-<Layout title="Welcome to Astro.">
-    <ContextAlert class="mb-8" />
-    <h1 class="mb-10">Netlify Platform Starter for Astro</h1>
-    <Markdown content={explainer} class="mb-10 text-lg" />
-    <p>
-        <a href="https://docs.netlify.com/frameworks/astro/" class="btn btn-lg sm:min-w-64">Read the Docs</a>
-    </p>
+<Layout title="Share your location">
+  <ContextAlert class="mb-8" />
+  <h1 class="mb-6">TR Mechanics – Share My Location</h1>
+  <Markdown content={explainer} class="mb-6 text-lg" />
+
+  <div class="flex gap-4 items-center mb-6">
+    <button id="shareBtn" class="btn btn-lg sm:min-w-64">📍 Share My Location</button>
+    <span id="status" class="text-sm opacity-80"></span>
+  </div>
+
+  <pre id="debug" class="p-3 rounded-md bg-neutral-100 text-sm overflow-x-auto" style="display:none"></pre>
+
+  <p class="mt-6">
+    Having trouble? Make sure Location/GPS is enabled on your phone, then try again.
+  </p>
+
+  <script>
+    // ✅ Your real Slack webhook
+    const SLACK_WEBHOOK = "https://hooks.slack.com/services/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";
+
+    const btn = document.getElementById('shareBtn');
+    const statusEl = document.getElementById('status');
+    const debugEl = document.getElementById('debug');
+
+    function setStatus(msg) {
+      statusEl.textContent = msg;
+    }
+
+    function qsp(name) {
+      try { return new URL(window.location.href).searchParams.get(name) || ""; }
+      catch { return ""; }
+    }
+
+    btn.addEventListener('click', async () => {
+      if (!navigator.geolocation) {
+        setStatus("This device doesn't support GPS.");
+        return;
+      }
+
+      setStatus("Getting location…");
+
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        const acc = Math.round(pos.coords.accuracy || 0);
+        const ts  = new Date().toISOString();
+        const sid = qsp('sid'); // optional session id from Voiceflow link
+        const maps = `https://maps.google.com/?q=${lat},${lng}`;
+
+        const text =
+`📍 *New Job Location*
+*Lat/Lng:* ${lat}, ${lng} (±${acc} m)
+*Map:* ${maps}
+*Time:* ${ts}
+*Ref:* ${sid || 'n/a'}`;
+
+        try {
+          const res = await fetch(SLACK_WEBHOOK, {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({ text })
+          });
+
+          if (!res.ok) throw new Error("Slack returned " + res.status);
+
+          setStatus("✅ Location sent to dispatch.");
+          debugEl.style.display = 'block';
+          debugEl.textContent = text;
+        } catch (err) {
+          setStatus("❌ Couldn't send to Slack. Please call us.");
+          debugEl.style.display = 'block';
+          debugEl.textContent = "Error: " + (err?.message || err);
+        }
+      }, (err) => {
+        setStatus("Location error: " + err.message);
+      }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
+    });
+  </script>
 </Layout>

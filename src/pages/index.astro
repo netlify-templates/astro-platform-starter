@@ -1,21 +1,30 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ContextAlert from '../components/ContextAlert.astro';
-import Markdown from '../components/Markdown.astro';
-
-const explainer = `
-An Astro website can go way beyond static pages - on the right platform.
-
-Netlify supports not only [Streaming SSR](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming) and fast [Edge Middleware](https://docs.astro.build/en/guides/middleware/), but also [on-demand revalidation](https://www.netlify.com/blog/cache-tags-and-purge-api-on-netlify/) and [stale-while-revalidate](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/). 
-Any page or data can be rebuilt only when needed, without site visitors ever getting a performance hit.
-`;
 ---
 
-<Layout title="Welcome to Astro.">
-    <ContextAlert class="mb-8" />
-    <h1 class="mb-10">Netlify Platform Starter for Astro</h1>
-    <Markdown content={explainer} class="mb-10 text-lg" />
-    <p>
-        <a href="https://docs.netlify.com/frameworks/astro/" class="btn btn-lg sm:min-w-64">Read the Docs</a>
-    </p>
+<Layout title="Starfish Travel - Tour Quy Nhơn">
+  <h1>Chào mừng đến với Starfish Travel 🌊</h1>
+  <p>
+    Chúng tôi chuyên tổ chức <strong>tour trải nghiệm Quy Nhơn</strong> cho khách quốc tế và trong nước:
+  </p>
+
+  <ul>
+    <li>Snorkeling Hòn Khô – ngắm san hô, cá biển nhiệt đới.</li>
+    <li>Con Chim Eco Tour – khám phá thiên nhiên, cầu gỗ, chèo thuyền.</li>
+    <li>City Tour Quy Nhơn – Tháp Đôi, chợ địa phương, cà phê.</li>
+    <li>Bánh Ít + Workshop nón lá & vẽ mặt nạ tuồng.</li>
+  </ul>
+
+  <h2>Đặt tour dễ dàng</h2>
+  <p>
+    📞 Hotline/Zalo: <a href="tel:+84XXXXXXXXX">+84 XXXXXXXX</a><br/>
+    💬 WhatsApp: <a href="https://wa.me/84XXXXXXXXX">Chat ngay</a><br/>
+    📧 Email: hello@song-suoihomestay.com
+  </p>
+
+  <h2>Thông tin liên hệ</h2>
+  <p>
+    Công ty TNHH MTV Du lịch Sao Biển (Starfish Travel)<br/>
+    Địa chỉ: Sông Suối Homestay, Quy Nhơn, Bình Định
+  </p>
 </Layout>

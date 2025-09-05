@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bhone Cafe'</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fffdf8;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      background: #3e2723;
+      color: #fff;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+    }
+    section {
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    h2 {
+      border-bottom: 2px solid #e0c097;
+      padding-bottom: .5rem;
+      color: #3e2723;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    ul li {
+      padding: .5rem 0;
+    }
+    .contact {
+      background: #f8f4ef;
+      text-align: center;
+      padding: 2rem;
+    }
+    .map {
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Bhone Cafe'</h1>
+    <p>Welcome to your cozy coffee corner in Bago</p>
+  </header>
+
+  <section id="about">
+    <h2>About Us</h2>
+    <p>
+      At Bhone Cafe’, we believe every cup of coffee should bring warmth and connection. 
+      Our cafe is a friendly place where you can enjoy fresh brews, tasty meals, 
+      and a relaxing atmosphere with friends and family.
+    </p>
+  </section>
+
+  <section id="menu">
+    <h2>Our Menu</h2>
+    <h3>Coffee & Drinks</h3>
+    <ul>
+      <li>Espresso</li>
+      <li>Cappuccino</li>
+      <li>Latte</li>
+      <li>Fresh Juice</li>
+      <li>Milk Tea</li>
+    </ul>
+    <h3>Food</h3>
+    <ul>
+      <li>အာလူးချောင်းကြော် (French Fries)</li>
+      <li>ကြက်ကြော် (Fried Chicken)</li>
+      <li>ဖာ့ကဖောင်း</li>
+      <li>ဖက်ထုပ်ကြော်</li>
+      <li>ထမင်းကြော် (Fried Rice)</li>
+      <li>သင်္ဘောသီးထောင်း (Papaya Salad)</li>
+      <li>ပြောင်းဖူးထောင်း (Corn Salad)</li>
+      <li>ခေါက်ဆွဲကြော် (Fried Noodles)</li>
+    </ul>
+  </section>
+
+  <section class="contact">
+    <h2>Contact & Location</h2>
+    <p>📍 ပြည်ထောင်စု ပြည်တော်အေးလမ်း, ဘားအံ</p>
+    <p>📞 09440808248</p>
+    <div class="map">
+      <iframe src="https://maps.google.com/maps?q=Bhone%20Cafe%20Hpa-an&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </section>
+</body>
+</html>

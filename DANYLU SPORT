@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitLife Store - Ropa Deportiva, Tortas Saludables y Más</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #FF6B35;
+            --secondary: #004E89;
+            --accent: #FFC300;
+            --light: #F8F9FA;
+            --dark: #212529;
+            --success: #28A745;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: var(--accent);
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            margin-bottom: 40px;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .cta-button:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 195, 0, 0.4);
+        }
+
+        /* Categories */
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            width: 200px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .category-card i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .category-card h3 {
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        /* Products Section */
+        .products-section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .product-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--success);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 20px;
+            color: var(--accent);
+            font-size: 1.3rem;
+        }
+
+        .footer-column p, .footer-column li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: var(--accent);
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .contact-info i {
+            color: var(--accent);
+            font-size: 1.2rem;
+            width: 25px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .categories {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .category-card {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <h1>FitLife Store</h1>
+            </div>
+            <div class="social-links">
+                <a href="https://wa.me/1234567890?text=Hola%20estoy%20interesado%20en%20sus%20productos" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://tiktok.com/@fitlifestore" target="_blank"><i class="fab fa-tiktok"></i></a>
+                <a href="https://facebook.com/fitlifestore" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://instagram.com/fitlifestore" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Tu Estilo de Vida Saludable</h2>
+            <>Ropa deportiva de calidad, tortas nutritivas y accesorios para tu entrenamiento. Todo en un solo lugar para alcanzar tus metas de fitness.</p>
+            <a href="#productos" class="cta-button">Ver Productos</a>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="container categories">
+        <div class="category-card">
+            <i class="fas fa-tshirt"></i>
+            <h3>Ropa Deportiva</h3>
+            <p>Comodidad y estilo para tus entrenamientos</p>
+        </div>
+        <div class="category-card">
+            <i class="fas fa-birthday-cake"></i>
+            <h3>Tortas Saludables</h3>
+            <p>Delicias nutritivas sin culpa</p>
+        </div>
+        <div class="category-card">
+            <i class="fas fa-dumbbell"></i>
+            <h3>Elementos Deportivos</h3>
+            <p>Accesorios para maximizar tu rendimiento</p>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="productos" class="container products-section">
+        <h2 class="section-title">Nuestros Productos Destacados</h2>
+        
+        <div class="products-grid">
+            <!-- Ropa Deportiva -->
+            <div class="product-card">
+                <div class="product-img" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                    <div class="product-badge">Nuevo</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Leggings Deportivos Alta Compression</h3>
+                    <div class="product-price">$24.990</div>
+                    <div class="product-actions">
+                        <a href="https://wa.me/1234567890?text=Hola%20estoy%20interesado%20en%20los%20Leggings%20Deportivos" class="btn btn-primary" target="_blank">Comprar</a>
+                        <a href="#" class="btn btn-outline">Ver más</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-img" style="background-image: url('https://images.unsplash.com/photo-1549490349-8643362247b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                    <div class="product-badge">Oferta</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Top Deportivo Respirable</h3>
+                    <div class="product-price">$15.990</div>
+                    <div class="product-actions">
+                        <a href="https://wa.me/1234567890?text=Hola%20estoy%20interesado%20en%20el%20Top%20Deportivo" class="btn btn-primary" target="_blank">Comprar</a>
+                        <a href="#" class="btn btn-outline">Ver más</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tortas Saludables -->
+            <div class="product-card">
+                <div class="product-img" style="background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                    <div class="product-badge">Popular</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Torta de Chocolate Proteica</h3>
+                    <div class="product-price">$8.990</div>
+                    <div class="product-actions">
+                        <a href="https://wa.me/1234567890?text=Hola%20estoy%20interesado%20en%20la%20Torta%20de%20Chocolate" class="btn btn-primary" target="_blank">Comprar</a>
+                        <a href="#" class="btn btn-outline">Ver más</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-img" style="background-image: url('https://images.unsplash.com/photo-1568051243851-f9b136146e97?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                    <div class="product-badge">Sin Azúcar</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Torta de Zanahoria y Avena</h3>
+                    <div class="product-price">$7.990</div>
+                    <div class="product-actions">
+                        <a href="https://wa.me/1234567890?text=Hola%20estoy%20interesado%20en%20la%20Torta%20de%20Zanahoria" class="btn btn-primary" target="_blank">Comprar</a>
+                        <a href="#" class="btn btn-outline">Ver más</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Elementos Deportivos -->
+            <div class="product-card">
+                <div class="product-img" style="background-image: url('https://images.unsplash.com/photo-1599058917212-d750489b0772?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                    <div class="product-badge">Bestseller</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Botella de Agua Inteligente</h3>
+                    <div class="product-price">$12.990</div>
+                    <div class="product-actions">
+                        <a href="https://wa.me/1234567890?text=Hola%20estoy%20interesado%20en%20la%20Botella%20Inteligente" class="btn btn-primary" target="_blank">Comprar</a>
+                        <a href="#" class="btn btn-outline">Ver más</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-img" style="background-image: url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+                    <div class="product-badge">Profesional</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Set de Bandas de Resistencia</h3>
+                    <div class="product-price">$18.990</div>
+                    <div class="product-actions">
+                        <a href="https://wa.me/1234567890?text=Hola%20estoy%20interesado%20en%20las%20Bandas%20de%20Resistencia" class="btn btn-primary" target="_blank">Comprar</a>
+                        <a href="#" class="btn btn-outline">Ver más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>FitLife Store</h3>
+                    <p>Tu destino para productos deportivos y alimentación saludable. Transformamos tu vida con estilo y nutrición.</p>
+                    <div class="social-links">
+                        <a href="https://wa.me/1234567890" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://tiktok.com/@fitlifestore" target="_blank"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://facebook.com/fitlifestore" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://instagram.com/fitlifestore" target="_blank"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="#productos">Productos</a></li>
+                        <li><a href="#">Promociones</a></li>
+                        <li><a href="#">Testimonios</a></li>
+                        <li><a href="#">Preguntas Frecuentes</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contacto</h3>
+                    <div class="contact-info">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Av. Salud 123, Ciudad Fitness</span>
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-phone"></i>
+                        <span>+56 9 1234 5678</span>
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-envelope"></i>
+                        <span>contacto@fitlifestore.com</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 FitLife Store. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling para enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Animación simple para productos al hacer scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.style.opacity = 0;
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

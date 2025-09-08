@@ -1,0 +1,385 @@
+import React, { useEffect, useMemo, useState } from "react";
+import { ShoppingCart, Plus, Minus, Phone, Settings, Trash2, Save, Share2, X, MenuIcon, Receipt, IndianRupee, PackageCheck, Bike, Home, Store, Clock, Wand2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+
+// --- Utilities ---
+const fmt = (n:number)=> new Intl.NumberFormat("en-IN", { style:"currency", currency:"INR", maximumFractionDigits:0 }).format(n||0);
+const uid = () => Math.random().toString(36).slice(2);
+const LS_KEY = "canteen_app_state_v1";
+
+// --- Types ---
+interface Item { id:string; name:string; price:number; category:string; popular?:boolean; }
+interface SettingsState { shopName:string; tagline:string; ownerPhone:string; address:string; deliveryEnabled:boolean; pickupEnabled:boolean; deliveryFee:number; minOrder:number; note:string; }
+
+interface AppState {
+  items: Item[];
+  settings: SettingsState;
+}
+
+// --- Defaults ---
+const defaultItems: Item[] = [
+  { id: uid(), name: "Chai (Cup)", price: 10, category: "Drinks", popular:true },
+  { id: uid(), name: "Masala Chai", price: 15, category: "Drinks" },
+  { id: uid(), name: "Frooti (Small)", price: 20, category: "Drinks" },
+  { id: uid(), name: "Maaza (Small)", price: 20, category: "Drinks" },
+
+  { id: uid(), name: "Parle-G (small)", price: 5, category: "Packed" },
+  { id: uid(), name: "Rusk Toast (2 pc)", price: 10, category: "Packed" },
+  { id: uid(), name: "Kurkure (₹10)", price: 10, category: "Packed", popular:true },
+  { id: uid(), name: "Lays (₹10)", price: 10, category: "Packed" },
+
+  { id: uid(), name: "Maggi (Masala)", price: 35, category: "Hot Snacks", popular:true },
+  { id: uid(), name: "Cheese Maggi", price: 45, category: "Hot Snacks" },
+  { id: uid(), name: "Veg Sandwich", price: 35, category: "Hot Snacks" },
+  { id: uid(), name: "Patties", price: 25, category: "Hot Snacks" },
+
+  { id: uid(), name: "Basic Combo: Chai + Biscuit/Toast", price: 15, category: "Combos", popular:true },
+  { id: uid(), name: "Snack Combo: Chai + Kurkure/Lays", price: 25, category: "Combos" },
+  { id: uid(), name: "Special Combo: Chai + Patties/Sandwich", price: 0, category: "Combos" },
+];
+
+const defaultSettings: SettingsState = {
+  shopName: "THE BAITHAK",
+  tagline: "Yaaron ka asli adda",
+  ownerPhone: "91XXXXXXXXXX", // change in Settings
+  address: "Near College Gate, Gali No. 3",
+  deliveryEnabled: true,
+  pickupEnabled: true,
+  deliveryFee: 10,
+  minOrder: 0,
+  note: "Cash/UPI accepted."
+};
+
+// --- Main App ---
+export default function CanteenOrderApp(){
+  const [state, setState] = useState<AppState>(()=>{
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if(raw) return JSON.parse(raw);
+    } catch {}
+    return { items: defaultItems, settings: defaultSettings };
+  });
+
+  const [query, setQuery] = useState("");
+  const [cart, setCart] = useState<Record<string, number>>({});
+  const [orderType, setOrderType] = useState<'delivery'|'pickup'>("delivery");
+  const [customer, setCustomer] = useState({ name:"", phone:"", address:"", landmark:"", when:"ASAP", note:"" });
+  const [openSettings, setOpenSettings] = useState(false);
+
+  useEffect(()=>{
+    localStorage.setItem(LS_KEY, JSON.stringify(state));
+  },[state]);
+
+  const categories = useMemo(()=>{
+    const map: Record<string, Item[]> = {};
+    state.items.forEach(it=>{ if(query && !it.name.toLowerCase().includes(query.toLowerCase())) return; (map[it.category] ||= []).push(it); });
+    return Object.entries(map).sort(([a],[b])=> a.localeCompare(b));
+  },[state.items, query]);
+
+  const total = useMemo(()=>{
+    let t = 0; Object.entries(cart).forEach(([id, qty])=>{ const it = state.items.find(i=>i.id===id); if(it) t += it.price * qty; });
+    return t;
+  },[cart, state.items]);
+
+  function addItem(it:Item){ setCart(c=>({ ...c, [it.id]: (c[it.id]||0)+1 })); }
+  function decItem(it:Item){ setCart(c=>{ const q=(c[it.id]||0)-1; const n={...c}; if(q<=0) delete n[it.id]; else n[it.id]=q; return n; }); }
+  function clearCart(){ setCart({}); }
+
+  function addCustomItem(){
+    const name = prompt("Item name?");
+    if(!name) return;
+    const priceStr = prompt("Price (₹)?");
+    const price = Number(priceStr||0);
+    const category = prompt("Category? (Drinks / Packed / Hot Snacks / Combos)") || "Others";
+    const item: Item = { id: uid(), name, price, category };
+    setState(s=>({ ...s, items: [...s.items, item] }));
+  }
+
+  function saveEditPrice(id:string, price:number){
+    setState(s=>({ ...s, items: s.items.map(it=> it.id===id? { ...it, price }: it ) }));
+  }
+
+  function removeItem(id:string){
+    setState(s=>({ ...s, items: s.items.filter(it=> it.id!==id) }));
+    setCart(c=>{ const n={...c}; delete n[id]; return n; });
+  }
+
+  function buildOrderMessage(){
+    const lines:string[] = [];
+    lines.push(`*${state.settings.shopName}* — Order`);
+    lines.push(`Type: ${orderType.toUpperCase()}`);
+    if(orderType==="delivery"){ lines.push(`Address: ${customer.address}`); if(customer.landmark) lines.push(`Landmark: ${customer.landmark}`); }
+    lines.push(`Customer: ${customer.name} (${customer.phone})`);
+    lines.push("\n*Items:*");
+    Object.entries(cart).forEach(([id, qty])=>{
+      const it = state.items.find(i=>i.id===id); if(!it) return;
+      lines.push(`• ${it.name} × ${qty} — ₹${it.price*qty}`);
+    });
+    if(state.settings.deliveryEnabled && orderType==="delivery" && state.settings.deliveryFee>0){
+      lines.push(`Delivery Fee: ₹${state.settings.deliveryFee}`);
+    }
+    if(state.settings.minOrder>0){ lines.push(`(Min Order: ₹${state.settings.minOrder})`); }
+    if(customer.note) lines.push(`Note: ${customer.note}`);
+    lines.push(`\nTotal: ${fmt(orderTotal())}`);
+    lines.push("Payment: Cash/UPI on delivery");
+    return lines.join("\n");
+  }
+
+  function orderTotal(){
+    let t = total;
+    if(orderType==="delivery") t += state.settings.deliveryFee||0;
+    return t;
+  }
+
+  function openWhatsApp(){
+    const phone = state.settings.ownerPhone.replace(/[^0-9]/g, "");
+    const msg = encodeURIComponent(buildOrderMessage());
+    const url = `https://wa.me/${phone}?text=${msg}`;
+    window.open(url, "_blank");
+  }
+
+  return (
+    <div className="min-h-screen bg-neutral-50 text-neutral-900">
+      {/* Header */}
+      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur border-b">
+        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon"><MenuIcon className="w-5 h-5"/></Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-80">
+                <SheetHeader>
+                  <SheetTitle>Menu & Admin</SheetTitle>
+                </SheetHeader>
+                <div className="space-y-4 py-4">
+                  <Button onClick={addCustomItem} className="w-full" variant="secondary"><Plus className="w-4 h-4 mr-2"/>Add Custom Item</Button>
+                  <div className="text-sm text-neutral-600">Tip: tap a price to edit it. Long-press an item to delete.</div>
+                  <div className="border-t pt-4">
+                    <Button onClick={()=>setOpenSettings(true)} className="w-full" variant="outline"><Settings className="w-4 h-4 mr-2"/>Open Settings</Button>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+            <div>
+              <div className="font-black tracking-wide text-xl">{state.settings.shopName}</div>
+              <div className="text-xs text-neutral-600 -mt-0.5">{state.settings.tagline}</div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Input placeholder="Search items…" value={query} onChange={e=>setQuery(e.target.value)} className="w-44 md:w-72"/>
+            <Button onClick={()=>setOpenSettings(true)} variant="ghost" size="icon" title="Settings"><Settings className="w-5 h-5"/></Button>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button className="relative" title="Cart"><ShoppingCart className="w-5 h-5 mr-2"/>Cart <Badge variant="secondary" className="ml-2">{Object.values(cart).reduce((a,b)=>a+b,0)}</Badge></Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[420px]">
+                <SheetHeader>
+                  <SheetTitle>Your Cart</SheetTitle>
+                </SheetHeader>
+                <div className="py-3 space-y-2 max-h-[75vh] overflow-auto">
+                  {Object.keys(cart).length===0 && <div className="text-sm text-neutral-500">Cart is empty.</div>}
+                  {Object.entries(cart).map(([id, qty])=>{
+                    const it = state.items.find(i=>i.id===id)!;
+                    return (
+                      <Card key={id} className="">
+                        <CardContent className="py-3 flex items-center justify-between gap-3">
+                          <div>
+                            <div className="font-medium">{it.name}</div>
+                            <div className="text-xs text-neutral-500">{fmt(it.price)} each</div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button variant="outline" size="icon" onClick={()=>decItem(it)}><Minus className="w-4 h-4"/></Button>
+                            <div className="w-8 text-center font-medium">{qty}</div>
+                            <Button size="icon" onClick={()=>addItem(it)}><Plus className="w-4 h-4"/></Button>
+                          </div>
+                          <div className="font-semibold">{fmt(it.price*qty)}</div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+                <div className="border-t pt-3 space-y-3">
+                  <div className="flex items-center justify-between text-sm"><span>Items Total</span><span className="font-semibold">{fmt(total)}</span></div>
+                  {orderType==="delivery" && state.settings.deliveryFee>0 && (
+                    <div className="flex items-center justify-between text-sm"><span>Delivery Fee</span><span className="font-semibold">{fmt(state.settings.deliveryFee)}</span></div>
+                  )}
+                  <div className="flex items-center justify-between text-base">
+                    <span className="font-semibold flex items-center gap-1"><IndianRupee className="w-4 h-4"/>Payable</span>
+                    <span className="font-black">{fmt(orderTotal())}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Button variant="outline" onClick={clearCart}><Trash2 className="w-4 h-4 mr-2"/>Clear</Button>
+                    <Button onClick={openWhatsApp} disabled={!state.settings.ownerPhone || Object.keys(cart).length===0}><Share2 className="w-4 h-4 mr-2"/>Send to WhatsApp</Button>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero / Info */}
+      <section className="max-w-5xl mx-auto px-4 pt-5">
+        <Card className="border-dashed">
+          <CardContent className="py-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <div className="text-sm text-neutral-700">{state.settings.address}</div>
+              <div className="text-xs text-neutral-500">{state.settings.note}</div>
+            </div>
+            <div className="flex items-center gap-4">
+              <Tabs value={orderType} onValueChange={(v)=>setOrderType(v as any)}>
+                <TabsList>
+                  {state.settings.deliveryEnabled && <TabsTrigger value="delivery" className="flex items-center gap-1"><Bike className="w-4 h-4"/>Delivery</TabsTrigger>}
+                  {state.settings.pickupEnabled && <TabsTrigger value="pickup" className="flex items-center gap-1"><Store className="w-4 h-4"/>Pickup</TabsTrigger>}
+                </TabsList>
+              </Tabs>
+              <a href={`tel:${state.settings.ownerPhone}`}>
+                <Button variant="outline"><Phone className="w-4 h-4 mr-2"/>Call</Button>
+              </a>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Menu */}
+      <main className="max-w-5xl mx-auto px-4 py-6 grid md:grid-cols-3 gap-5">
+        <div className="md:col-span-2 space-y-6">
+          {categories.map(([cat, items])=> (
+            <div key={cat}>
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="text-lg font-extrabold tracking-wide">{cat}</h2>
+                <Badge variant="outline" className="flex items-center gap-1"><PackageCheck className="w-3 h-3"/>{items.length} items</Badge>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {items.map(it=> (
+                  <Card key={it.id} onContextMenu={(e)=>{e.preventDefault(); if(confirm(`Delete \"${it.name}\"?`)) removeItem(it.id);}} className="hover:shadow-sm transition">
+                    <CardHeader className="py-2">
+                      <CardTitle className="text-base flex items-center gap-2">
+                        {it.popular && <Badge>Popular</Badge>}
+                        <span>{it.name}</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="py-3 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <span className="text-neutral-600">Price:</span>
+                        <input
+                          type="number"
+                          className="w-24 border rounded px-2 py-1 text-sm"
+                          value={it.price}
+                          onChange={(e)=>saveEditPrice(it.id, Number(e.target.value))}
+                        />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="icon" onClick={()=>decItem(it)}><Minus className="w-4 h-4"/></Button>
+                        <Button size="icon" onClick={()=>addItem(it)}><Plus className="w-4 h-4"/></Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Checkout Sidebar */}
+        <div className="space-y-4">
+          <Card>
+            <CardHeader className="py-3"><CardTitle className="text-base flex items-center gap-2"><Receipt className="w-4 h-4"/>Order Details</CardTitle></CardHeader>
+            <CardContent className="space-y-3">
+              <div className="grid grid-cols-2 gap-2">
+                <Input placeholder="Your name" value={customer.name} onChange={e=>setCustomer({...customer, name:e.target.value})}/>
+                <Input placeholder="Phone" value={customer.phone} onChange={e=>setCustomer({...customer, phone:e.target.value})}/>
+                {orderType==="delivery" && (
+                  <>
+                    <Input className="col-span-2" placeholder="Full address" value={customer.address} onChange={e=>setCustomer({...customer, address:e.target.value})}/>
+                    <Input className="col-span-2" placeholder="Landmark (optional)" value={customer.landmark} onChange={e=>setCustomer({...customer, landmark:e.target.value})}/>
+                  </>
+                )}
+                <div className="col-span-2 flex items-center gap-2">
+                  <Clock className="w-4 h-4"/>
+                  <Input placeholder="When (ASAP / 20 min / 6 pm)" value={customer.when} onChange={e=>setCustomer({...customer, when:e.target.value})}/>
+                </div>
+                <Textarea className="col-span-2" placeholder="Note (no onion, extra cheese…)" value={customer.note} onChange={e=>setCustomer({...customer, note:e.target.value})}/>
+              </div>
+              <div className="text-sm text-neutral-600">Total: <span className="font-bold">{fmt(orderTotal())}</span></div>
+              <Button className="w-full" disabled={Object.keys(cart).length===0} onClick={openWhatsApp}><Share2 className="w-4 h-4 mr-2"/>Send Order to WhatsApp</Button>
+            </CardContent>
+          </Card>
+
+          <Card className="border-dashed">
+            <CardHeader className="py-3"><CardTitle className="text-base flex items-center gap-2"><Wand2 className="w-4 h-4"/>Quick Actions</CardTitle></CardHeader>
+            <CardContent className="flex flex-wrap gap-2">
+              <Button variant="outline" onClick={addCustomItem}><Plus className="w-4 h-4 mr-1"/>Add item</Button>
+              <Button variant="outline" onClick={clearCart}><Trash2 className="w-4 h-4 mr-1"/>Clear cart</Button>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+
+      {/* Settings Panel */}
+      {openSettings && (
+        <div className="fixed inset-0 bg-black/40 z-40 flex items-center justify-center p-4" onClick={()=>setOpenSettings(false)}>
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl" onClick={(e)=>e.stopPropagation()}>
+            <div className="flex items-center justify-between p-4 border-b">
+              <div className="font-bold">Shop Settings</div>
+              <Button variant="ghost" size="icon" onClick={()=>setOpenSettings(false)}><X className="w-5 h-5"/></Button>
+            </div>
+            <div className="p-4 grid sm:grid-cols-2 gap-3">
+              <div className="sm:col-span-2 grid grid-cols-2 gap-2">
+                <div className="col-span-2 md:col-span-1">
+                  <Label>Shop Name</Label>
+                  <Input value={state.settings.shopName} onChange={e=>setState(s=>({...s, settings:{...s.settings, shopName:e.target.value}}))}/>
+                </div>
+                <div className="col-span-2 md:col-span-1">
+                  <Label>Tagline</Label>
+                  <Input value={state.settings.tagline} onChange={e=>setState(s=>({...s, settings:{...s.settings, tagline:e.target.value}}))}/>
+                </div>
+              </div>
+              <div>
+                <Label>Owner WhatsApp Number</Label>
+                <Input placeholder="91XXXXXXXXXX" value={state.settings.ownerPhone} onChange={e=>setState(s=>({...s, settings:{...s.settings, ownerPhone:e.target.value}}))}/>
+              </div>
+              <div>
+                <Label>Shop Address</Label>
+                <Input value={state.settings.address} onChange={e=>setState(s=>({...s, settings:{...s.settings, address:e.target.value}}))}/>
+              </div>
+              <div className="flex items-center gap-3 mt-2">
+                <Switch checked={state.settings.deliveryEnabled} onCheckedChange={(v)=>setState(s=>({...s, settings:{...s.settings, deliveryEnabled:v}}))}/>
+                <Label>Enable Delivery</Label>
+                <Input type="number" className="w-28 ml-4" value={state.settings.deliveryFee} onChange={(e)=>setState(s=>({...s, settings:{...s.settings, deliveryFee:Number(e.target.value)}}))} />
+                <span className="text-sm text-neutral-600">Delivery Fee (₹)</span>
+              </div>
+              <div className="flex items-center gap-3 mt-2">
+                <Switch checked={state.settings.pickupEnabled} onCheckedChange={(v)=>setState(s=>({...s, settings:{...s.settings, pickupEnabled:v}}))}/>
+                <Label>Enable Pickup</Label>
+              </div>
+              <div>
+                <Label>Min Order (₹)</Label>
+                <Input type="number" value={state.settings.minOrder} onChange={(e)=>setState(s=>({...s, settings:{...s.settings, minOrder:Number(e.target.value)}}))}/>
+              </div>
+              <div className="sm:col-span-2">
+                <Label>Footer Note</Label>
+                <Input value={state.settings.note} onChange={e=>setState(s=>({...s, settings:{...s.settings, note:e.target.value}}))}/>
+              </div>
+              <div className="sm:col-span-2 flex items-center justify-end gap-2 pt-2">
+                <Button onClick={()=>{ localStorage.setItem(LS_KEY, JSON.stringify(state)); setOpenSettings(false); }}><Save className="w-4 h-4 mr-2"/>Save</Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <footer className="py-10 text-center text-xs text-neutral-500">Built for small canteens — edit prices, add items, and send orders on WhatsApp.</footer>
+    </div>
+  );
+}

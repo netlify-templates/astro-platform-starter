@@ -1,51 +1,86 @@
-# Astro on Netlify Platform Starter
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobe Creator</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="assets/star-icon.svg">
+</head>
+<body>
 
-[Live Demo](https://astro-platform-starter.netlify.app/)
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">
+      <img src="assets/star-icon.svg" alt="Sobe Creator" class="logo-img">
+      <div>
+        <h1>Sobe Creator</h1>
+        <p>Tudo para decolar seu canal no YouTube</p>
+      </div>
+    </div>
 
-A modern starter based on Astro.js, Tailwind, and [Netlify Core Primitives](https://docs.netlify.com/core/overview/#develop) (Edge Functions, Image CDN, Blob Store).
+    <nav class="menu">
+      <a href="#features">Recursos</a>
+      <a href="#pricing">Planos</a>
+      <a href="#testimonials">Depoimentos</a>
+      <button class="btn-primary">Teste grátis</button>
+    </nav>
+  </header>
 
-## Astro Commands
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-text">
+      <h2>Tenha mais visualizações no YouTube com menos esforço</h2>
+      <p>Planeje, otimize e produza vídeos com a ajuda de uma inteligência artificial especializada para creators — tudo em um só lugar.</p>
+      <div class="hero-buttons">
+        <a href="#pricing" class="btn-primary">Começar grátis</a>
+        <a href="#features" class="btn-secondary">Ver recursos</a>
+      </div>
+      <ul class="hero-list">
+        <li>🎯 Calendário de conteúdo</li>
+        <li>🔍 SEO para vídeos</li>
+        <li>🧠 Gerador de ideias</li>
+        <li>🖼️ Análise de thumbnails</li>
+      </ul>
+    </div>
 
-All commands are run from the root of the project, from a terminal:
+    <div class="hero-image">
+      <img src="assets/preview.png" alt="Painel do Sobe Creator">
+      <img src="assets/star-shiny.png" alt="Estrela Brilhante" class="floating-star">
+    </div>
+  </section>
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+  <!-- FEATURES -->
+  <section id="features" class="features">
+    <h3>Recursos principais</h3>
+    <p>Tudo que você precisa para crescer seu canal.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span>📅</span>
+        <h4>Calendário de conteúdo</h4>
+        <p>Planeje e organize seus vídeos facilmente.</p>
+      </div>
+      <div class="feature-card">
+        <span>🔎</span>
+        <h4>SEO e pesquisa</h4>
+        <p>Palavras-chave e otimização para YouTube.</p>
+      </div>
+      <div class="feature-card">
+        <span>💡</span>
+        <h4>Gerador de ideias</h4>
+        <p>Gere ideias ilimitadas baseadas no seu nicho.</p>
+      </div>
+    </div>
+  </section>
 
-## Deploying to Netlify
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2025 Sobe Creator — Todos os direitos reservados</p>
+    <div class="footer-links">
+      <a href="#">Termos de Uso</a>
+      <a href="#">Política de Privacidade</a>
+    </div>
+  </footer>
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/astro-platform-starter)
-
-## Developing Locally
-
-| Prerequisites                                                                |
-| :--------------------------------------------------------------------------- |
-| [Node.js](https://nodejs.org/) v18.14+.                                      |
-| (optional) [nvm](https://github.com/nvm-sh/nvm) for Node version management. |
-
-1. Clone this repository, then run `npm install` in its root directory.
-
-2. For the starter to have full functionality locally (e.g. edge functions, blob store), please ensure you have an up-to-date version of Netlify CLI. Run:
-
-```
-npm install netlify-cli@latest -g
-```
-
-3. Link your local repository to the deployed Netlify site. This will ensure you're using the same runtime version for both local development and your deployed site.
-
-```
-netlify link
-```
-
-4. Then, run the Astro.js development server via Netlify CLI:
-
-```
-netlify dev
-```
-
-If your browser doesn't navigate to the site automatically, visit [localhost:8888](http://localhost:8888).
+</body>
+</html>

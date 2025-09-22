@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VITÓRIA VS - Moda Cristã</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f7f4; /* Off White */
+      color: #333;
+    }
+
+    header {
+      background-color: #fff;
+      border-bottom: 2px solid #d4af37; /* Dourado */
+      text-align: center;
+      padding: 1rem;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      color: #d4af37; /* Dourado */
+      letter-spacing: 2px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 0.5rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #d4af37;
+    }
+
+    .hero {
+      background: url('https://source.unsplash.com/1600x600/?fashion,clothes') no-repeat center/cover;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+    }
+
+    .hero h2 {
+      font-size: 3rem;
+    }
+
+    .products {
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .products h3 {
+      color: #d4af37;
+      margin-bottom: 1.5rem;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+      padding: 1rem;
+    }
+
+    .product img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    .product h4 {
+      margin: 0.5rem 0;
+      color: #333;
+    }
+
+    .product p {
+      color: #d4af37;
+      font-weight: bold;
+    }
+
+    footer {
+      background: #fff;
+      border-top: 2px solid #d4af37;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+
+    footer p {
+      margin: 0;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>VITÓRIA VS</h1>
+    <nav>
+      <a href="#">Início</a>
+      <a href="#">Coleção</a>
+      <a href="#">Sobre Nós</a>
+      <a href="#">Contato</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Moda Cristã com Elegância</h2>
+  </section>
+
+  <section class="products">
+    <h3>Destaques</h3>
+    <div class="product-grid">
+      <div class="product">
+        <img src="https://source.unsplash.com/400x400/?dress" alt="Vestido">
+        <h4>Vestido Elegante</h4>
+        <p>R$ 199,90</p>
+      </div>
+      <div class="product">
+        <img src="https://source.unsplash.com/400x400/?fashion" alt="Saia">
+        <h4>Saia Clássica</h4>
+        <p>R$ 149,90</p>
+      </div>
+      <div class="product">
+        <img src="https://source.unsplash.com/400x400/?clothes" alt="Blusa">
+        <h4>Blusa Sofisticada</h4>
+        <p>R$ 99,90</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 VITÓRIA VS - Moda Cristã. Todos os direitos reservados.</p>
+  </footer>
+
+</body>
+</html>

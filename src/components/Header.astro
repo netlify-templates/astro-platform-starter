@@ -10,21 +10,51 @@ const navItems = [
 ];
 ---
 
-<nav class="flex flex-wrap items-center gap-4 pt-6 pb-16 sm:pt-12 sm:pb-24">
-    <a href="/">
-        <Logo />
-    </a>
-    {
-        !!navItems?.length && (
-            <ul class="flex flex-wrap gap-x-4 gap-y-1">
-                {navItems.map((item) => (
-                    <li>
-                        <a href={item.href} class="inline-block px-1.5 py-1 sm:px-3 sm:py-2">
-                            {item.linkText}
-                        </a>
-                    </li>
-                ))}
-            </ul>
-        )
-    }
+<nav class="flex items-center justify-between pt-6 pb-6 sm:pt-12 sm:pb-12">
+  <!-- Logo -->
+  <a href="/" class="flex items-center">
+    <Logo />
+  </a>
+
+  <button 
+    id="menu-toggle" 
+    class="sm:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    aria-label="Toggle menu"
+  >
+    <svg class="h-6 w-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+
+  <ul class="hidden sm:flex gap-x-6">
+    {navItems.map((item) => (
+      <li>
+        <a href={item.href} class="px-3 py-2 hover:text-indigo-600 transition">
+          {item.linkText}
+        </a>
+      </li>
+    ))}
+  </ul>
 </nav>
+
+<div id="mobile-menu" class="hidden sm:hidden flex-col gap-4 px-6 pb-6">
+  <ul class="flex flex-col gap-4">
+    {navItems.map((item) => (
+      <li>
+        <a href={item.href} class="block px-3 py-2 rounded hover:bg-gray-100 transition">
+          {item.linkText}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<script>
+  const toggleBtn = document.getElementById("menu-toggle");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  toggleBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+  });
+</script>

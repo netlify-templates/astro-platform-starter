@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>مینیمال موزیک — پنل نمایش و مدیریت</title>
+<style>
+:root{
+--bg:#fff; --text:#111; --muted:#666;
+--accent:#d6336c;
+--card:#fbf7f8;
+font-family: "Vazirmatn","Tahoma",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);line-height:1.45;padding:18px}
+.container{max-width:1000px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#ffdbe6,#ffe3f5);display:flex;align-items:center;justify-content:center;font-weight:700;color:#5a2131}
+h1{margin:0;font-size:20px}
+p.lead{margin:4px 0 0;color:var(--muted);font-size:13px}
+
+/* admin panel */
+.admin{background:#fff;border:1px solid #eee;padding:12px;border-radius:10px;margin-bottom:14px;display:flex;flex-direction:column;gap:10px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+input[type="text"], input[type="url"], textarea {padding:8px;border:1px solid #eee;border-radius:8px;font-size:14px;width:100%;}
+label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+.form-col{flex:1;min-width:180px}
+.btn{background:var(--accent);color:white;border:none;padding:8px 12px;border-radius:8px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid #ffd1dd}
+.small{font-size:13px;color:var(--muted)}
+
+/* categories */
+.cats{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.cat{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid #f0f0f0;color:var(--muted);cursor:pointer;font-size:14px}
+.cat.active{background:var(--accent);color:#fff;border-color:transparent}
+
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:12px}
+.card{background:var(--card);padding:12px;border-radius:12px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 2px 6px rgba(0,0,0,0.03)}
+.cover{width:88px;height:88px;border-radius:8px;background:#ddd;flex:0 0 88px;object-fit:cover}
+.meta{flex:1;min-width:0}
+.title{font-weight:700;margin:0 0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sub{color:var(--muted);font-size:13px;margin:0 0 8px}
+.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+footer{margin-top:22px;color:var(--muted);font-size:13px;text-align:center}
+
+@media (max-width:640px){
+header{flex-direction:column;align-items:flex-start;gap:10px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<div class="brand">
+<div class="logo">م</div>
+<div>
+<h1>مینیمال موزیک</h1>
+<p class="lead">نسخهٔ آزمایشی — مدیریت و نمایش آهنگ‌ها</p>
+</div>
+</div>
+<div class="small">برای تست سریع: آهنگ‌ها در مرورگر ذخیره می‌شوند.</div>
+</header>
+
+<!-- Admin panel -->
+<section class="admin" id="admin">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<strong>پنل مدیر — افزودن / ویرایش آهنگ</strong>
+<div style="display:flex;gap:8px">
+<button class="btn" id="exportBtn">خروجی JSON</button>
+<button class="btn ghost" id="importBtn">بارگذاری JSON</button>
+</div>
+</div>
+
+<div class="row">
+<div class="form-col">
+<label>عنوان آهنگ</label>
+<input id="title" type="text" placeholder="مثلاً: عکس تو در آینه">
+</div>
+<div class="form-col">
+<label>خواننده / هنرمند</label>
+<input id="artist" type="text" placeholder="مثلاً: نازنین">
+</div>
+<div class="form-col" style="min-width:160px">
+<label>دسته‌بندی (ژانر)</label>
+<input id="category" type="text" placeholder="مثلاً: پاپ">
+</div>
+</div>
+
+<div class="row">
+<div class="form-col">
+<label>آدرس کاور (URL)</label>
+<input id="image" type="url" placeholder="https://.../cover.jpg">
+</div>
+<div class="form-col">
+<label>آدرس فایل صوتی (URL)</label>
+<input id="audio" type="url" placeholder="https://.../track.mp3">
+</div>
+</div>
+
+<div>
+<label>توضیحات</label>
+<textarea id="description" rows="3" placeholder="توضیحات کامل آهنگ..."></textarea>
+</div>
+
+<div style="display:flex;gap:8px;align-items:center">
+<button class="btn" id="addBtn">افزودن آهنگ</button>
+<button class="btn ghost" id="clearBtn">پاک کردن همه (reset)</button>
+<div class="small" style="margin-left:auto;color:var(--muted)">آیتم‌ها در مرورگر شما ذخیره می‌شوند (localStorage)</div>
+</div>
+</section>
+
+<!-- categories -->
+<div>
+<div style="display:flex;justify-content:space-between;align-items:center">
+<h3 style="margin:0">دسته‌بندی‌ها</h3>
+<div class="small">برای فیلتر کلیک کنید</div>
+</div>
+<div class="cats" id="cats"></div>
+</div>
+
+<!-- grid -->
+<div class="grid" id="grid"></div>
+
+<footer>
+نسخهٔ آزمایشی — برای تبدیل به سایت/اپ حرفه‌ای، می‌توانیم داده‌ها را به یک سرور واقعی منتقل کنیم.
+</footer>
+</div>
+
+<script>
+const SAMPLE = [
+{
+id: 1,
+title: "نسخهٔ امید",
+artist: "نازنین",
+category: "پاپ",
+image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=800&q=60",
+audio: "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_700KB.mp3",
+description: "توضیحات کوتاه دربارهٔ آهنگ.",
+available: true,
+likes: 0
+},
+{
+id: 2,
+title: "آوای صبح",
+artist: "علی رضایی",
+category: "کلاسیک",
+image: "https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?w=800&q=60",
+audio: "https://file-examples.com/wp-content/uploads/2017/11/file_example_MP3_1MG.mp3",
+description: "قطعه‌ای ملایم و شنیدنی.",
+available: true,
+likes: 0
+}
+];
+
+const $ = id => document.getElementById(id);
+const saveKey = "minimalMusic_items_v1";
+
+function loadData(){
+try {
+const raw = localStorage.getItem(saveKey);
+if(raw) return JSON.parse(raw);
+} catch(e){}
+localStorage.setItem(saveKey, JSON.stringify(SAMPLE));
+return SAMPLE.slice();
+}
+function saveData(arr){
+localStorage.setItem(saveKey, JSON.stringify(arr));
+}
+
+let items = loadData();
+
+function uniqueCats(data){
+const s = new Set(data.filter(i=>i.available).map(i=>i.category || "بدون دسته"));
+return ["همه", ...Array.from(s)];
+}
+
+function renderCats(){
+const cats = uniqueCats(items);
+const wrap = $("cats");
+wrap.innerHTML = "";
+cats.forEach(c=>{
+const btn = document.createElement("button");
+btn.className = "cat" + (c==="همه" ? " active" : "");
+btn.textContent = c;
+btn.onclick = ()=> {
+document.querySelectorAll(".cat").forEach(x=>x.classList.remove("active"));
+btn.classList.add("active");
+renderGrid(c==="همه" ? null : c);
+};
+wrap.appendChild(btn);
+});
+}
+
+function renderGrid(filterCategory = null){
+const grid = $("grid");
+grid.innerHTML = "";
+const list = items.filter(i => i.available !== false && (filterCategory ? i.category===filterCategory : true));
+if(list.length===0){
+grid.innerHTML = "<div style='color:var(--muted)'>موردی برای نمایش وجود ندارد.</div>";
+return;
+}
+list.forEach(it=>{
+const card = document.createElement("div"); card.className="card";
+const img = document.createElement("img"); img.className="cover"; img.src=it.image || "";
+img.onerror = ()=> img.style.background="#eee";
+const meta = document.createElement("div"); meta.className="meta";
+const t = document.createElement("h4"); t.className="title"; t.textContent = it.title;
+const s = document.createElement("div"); s.className="sub"; s.textContent = it.artist + " • " + (it.category || "");
+const desc = document.createElement("div"); desc.style.fontSize="13px"; desc.style.color="var(--muted)"; desc.textContent = it.description || "";
+const actions = document.createElement("div"); actions.className="actions";
+
+const audio = document.createElement("audio"); audio.controls = true;
+audio.src = it.audio || "";
+audio.style.width = "100%";
+
+// like button
+const likeBtn = document.createElement("button"); likeBtn.className="btn ghost"; likeBtn.textContent = "❤ " + (it.likes||0);
+likeBtn.onclick = ()=>{
+it.likes = (it.likes||0) + 1;
+saveData(items); renderGrid(filterCategory);
+};
+
+// download
+const dl = document.createElement("a"); dl.className="btn ghost"; dl.href = it.audio || "#"; dl.textContent="دانلود";
+dl.setAttribute("download","");
+
+// edit & delete
+const edit = document.createElement("button"); edit.className="btn ghost"; edit.textContent="ویرایش";
+edit.onclick = ()=> populateFormForEdit(it.id);
+const del = document.createElement("button"); del.className="btn ghost"; del.textContent="حذف";
+del.onclick = ()=> {
+if(!confirm("آیا مطمئنید حذف شود؟")) return;
+items = items.filter(x=>x.id !== it.id);
+saveData(items); renderCats(); renderGrid(filterCategory);
+};
+
+actions.appendChild(likeBtn);
+actions.appendChild(dl);
+actions.appendChild(edit);
+actions.appendChild(del);
+
+meta.appendChild(t); meta.appendChild(s); meta.appendChild(desc); meta.appendChild(audio); meta.appendChild(actions);
+card.appendChild(img); card.appendChild(meta);
+grid.appendChild(card);
+});
+}
+
+// admin actions
+$("addBtn").onclick = ()=>{
+const id = Date.now();
+const obj = {
+id,
+title: $("title").value.trim() || ("آهنگ "+id),
+artist: $("artist").value.trim() || "هنرمند",
+category: $("category").value.trim() || "بدون دسته",
+image: $("image").value.trim(),
+audio: $("audio").value.trim(),
+description: $("description").value.trim(),
+available: true,
+likes: 0
+};
+items.unshift(obj);
+saveData(items);
+clearForm();
+renderCats(); renderGrid();
+alert("آهنگ اضافه شد ✅");
+};
+
+function populateFormForEdit(id){
+const it = items.find(x=>x.id===id);
+if(!it) return;
+$("title").value = it.title;
+$("artist").value = it.artist;
+$("category").value = it.category;
+$("image").value = it.image;
+$("audio").value = it.audio;
+$("description").value = it.description;
+$("addBtn").textContent = "ذخیره تغییرات";
+$("addBtn").onclick = ()=> {
+it.title = $("title").value.trim() || it.title;
+it.artist = $("artist").value.trim() || it.artist;
+it.category = $("category").value.trim() || it.category;
+it.image = $("image").value.trim();
+it.audio = $("audio").value.trim();
+it.description = $("description").value.trim();
+saveData(items);
+clearForm();
+$("addBtn").textContent = "افزودن آهنگ";
+$("addBtn").onclick = ()=> { location.reload(); };
+renderCats(); renderGrid();
+alert("ویرایش ذخیره شد ✅");
+};
+}
+
+$("clearBtn").onclick = ()=>{
+if(!confirm("تمام داده‌ها پاک شود؟")) return;
+localStorage.removeItem(saveKey);
+items = loadData();
+renderCats(); renderGrid();
+};
+
+$("exportBtn").onclick = ()=>{
+const a = document.createElement("a");
+const data = "data:application/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(items, null, 2));
+a.href = data; a.download = "music_items.json"; a.click();
+};
+$("importBtn").onclick = ()=>{
+const inp = document.createElement("input");
+inp.type="file"; inp.accept=".json,application/json";
+inp.onchange = (e)=>{
+const f = e.target.files[0];
+if(!f) return;
+const r = new FileReader();
+r.onload = ()=> {
+try{
+const parsed = JSON.parse(r.result);
+if(Array.isArray(parsed)){
+items = parsed;
+saveData(items);
+renderCats(); renderGrid();
+alert("بارگذاری انجام شد ✅");
+} else alert("فرمت درست نیست");
+}catch(err){ alert("خطا در خواندن فایل"); }
+};
+r.readAsText(f);
+};
+inp.click();
+};
+
+function clearForm(){
+["title","artist","category","image","audio","description"].forEach(id=>$(id).value="");
+}
+
+// init
+renderCats();
+renderGrid();
+</script>
+</body>
+</html>

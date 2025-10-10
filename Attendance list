@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <title>Page title</title>
+      <link rel="stylesheet" href="Joshua.css">
+</head>
+<body>
+      <section class="list">
+      <h1>Access 2 success <br>ICT Attendance list</h1>
+      <form id="attendanceForm">
+    <label>Name:</label>
+    <input type="text" id="name" required><br><br>
+    
+     <laber>Groups:</laber>
+     <select id="Group">
+        <option value="Group A">Group A</option>  
+        <option value="Group B">Group B</option>  
+     <option value="Group A&B">Group A&B</option>  
+     
+     </select><br><br>
+     
+     <laber>Gender</laber>
+     <select id="Gender"> 
+           <option value="male">male</option>
+           <option value="female">female</option>
+           <option value="Gay" >Gay</option>
+     </select><br><br>
+     
+     <laber>class</laber>
+     <select id="class">
+     <option id="SS:1">SS:1</option>
+      <option id="SS:2">SS:2</option>
+      <option id="SS:3">SS:3</option>
+      </select><br><br>
+       <button type="submit">Submit</button >
+      </section>
+</body>
+</html>

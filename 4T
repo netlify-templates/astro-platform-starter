@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4T - Complete Language Learning Platform | پلتفرم کامل یادگیری زبان</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Noto+Sans+KR:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .font-vazir { font-family: 'Vazirmatn', sans-serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .font-korean { font-family: 'Noto Sans KR', sans-serif; }
+        
+        :root {
+            --theme-primary: #667eea;
+            --theme-secondary: #764ba2;
+            --theme-accent: #3B82F6;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-secondary) 100%);
+        }
+        
+        .theme-dark { --theme-primary: #1f2937; --theme-secondary: #111827; --theme-accent: #6B7280; }
+        .theme-dark-blue { --theme-primary: #1e3a8a; --theme-secondary: #1e40af; --theme-accent: #3B82F6; }
+        .theme-dark-purple { --theme-primary: #6d28d9; --theme-secondary: #7c3aed; --theme-accent: #8B5CF6; }
+        .theme-dark-green { --theme-primary: #047857; --theme-secondary: #059669; --theme-accent: #10B981; }
+        .theme-dark-red { --theme-primary: #b91c1c; --theme-secondary: #dc2626; --theme-accent: #EF4444; }
+        .theme-dark-orange { --theme-primary: #c2410c; --theme-secondary: #ea580c; --theme-accent: #F97316; }
+        .theme-dark-pink { --theme-primary: #be185d; --theme-secondary: #e91e63; --theme-accent: #EC4899; }
+        .theme-dark-teal { --theme-primary: #0f766e; --theme-secondary: #14b8a6; --theme-accent: #14B8A6; }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .language-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .language-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .language-card:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .language-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .skill-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .skill-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .skill-card:hover .skill-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            stroke-dasharray: 251.2;
+            stroke-dashoffset: 251.2;
+            transition: stroke-dashoffset 0.5s ease-in-out;
+        }
+        
+        .alphabet-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .alphabet-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .pulse-glow {
+            animation: pulseGlow 2s infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.8); }
+        }
+
+        .vocab-category {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .vocab-category:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .chat-message {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .accent-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .accent-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .test-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .test-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .grammar-level-btn {
+            transition: all 0.3s ease;
+        }
+
+        .grammar-level-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .theme-btn:hover .theme-tooltip {
+            opacity: 1;
+        }
+
+        .alphabet-mode-btn {
+            transition: all 0.3s ease;
+        }
+
+        .alphabet-mode-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .alphabet-mode-btn.active {
+            background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+            transform: scale(1.05);
+        }
+
+        .sentence-word {
+            transition: all 0.3s ease;
+            cursor: grab;
+        }
+
+        .sentence-word:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .sentence-word.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .drop-zone {
+            min-height: 60px;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone.drag-over {
+            border-color: #3B82F6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .handwriting-canvas {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            cursor: crosshair;
+        }
+
+        .grammar-topic-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .grammar-topic-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .quiz-option {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .quiz-option:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .quiz-option.correct {
+            background: linear-gradient(135deg, #10B981, #059669);
+            animation: correctAnswer 0.5s ease-out;
+        }
+
+        .quiz-option.incorrect {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            animation: incorrectAnswer 0.5s ease-out;
+        }
+
+        @keyframes correctAnswer {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes incorrectAnswer {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .exercise-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .exercise-input:focus {
+            outline: none;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .exercise-input.correct {
+            border-color: #10B981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .exercise-input.incorrect {
+            border-color: #EF4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-full text-white font-vazir theme-dark">
+    
+    <!-- Language Selection Screen -->
+    <div id="languageSelection" class="min-h-screen flex items-center justify-center p-6">
+        <div class="max-w-7xl mx-auto text-center fade-in-up">
+            <!-- Header -->
+            <div class="mb-16">
+                <div class="w-32 h-32 mx-auto mb-8 floating-animation">
+                    <svg viewBox="0 0 120 120" class="w-full h-full drop-shadow-2xl">
+                        <!-- Background Circle with Gradient -->
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#e0e7ff;stop-opacity:1" />
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                <feMerge> 
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        
+                        <!-- Main Circle -->
+                        <circle cx="60" cy="60" r="55" fill="url(#logoGradient)" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                        
+                        <!-- Inner Glow Circle -->
+                        <circle cx="60" cy="60" r="45" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+                        
+                        <!-- 4T Text -->
+                        <text x="60" y="75" font-family="Arial, sans-serif" font-size="36" font-weight="bold" 
+                              text-anchor="middle" fill="url(#textGradient)" filter="url(#glow)">4T</text>
+                        
+                        <!-- Decorative Elements -->
+                        <circle cx="25" cy="25" r="3" fill="rgba(255,255,255,0.6)" opacity="0.8">
+                            <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="95" cy="35" r="2" fill="rgba(255,255,255,0.5)" opacity="0.6">
+                            <animate attributeName="opacity" values="0.6;0.2;0.6" dur="3s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="85" cy="85" r="2.5" fill="rgba(255,255,255,0.4)" opacity="0.7">
+                            <animate attributeName="opacity" values="0.7;0.3;0.7" dur="2.5s" repeatCount="indefinite"/>
+                        </circle>
+                    </svg>
+                </div>
+                <h1 class="text-6xl font-bold mb-6 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                    Complete Language Mastery
+                </h1>
+                <h2 class="text-4xl font-bold mb-4 text-blue-200">
+                    تسلط کامل بر زبان
+                </h2>
+                <p class="text-2xl text-white/80 mb-4">Choose Your Language Journey</p>
+                <p class="text-xl text-white/60">سفر یادگیری زبان خود را انتخاب کنید</p>
+            </div>
+
+            <!-- Language Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <!-- Persian -->
+                <button class="language-card glass-card p-8 rounded-3xl cursor-pointer transition-all duration-300 hover:scale-105 w-full text-left" onclick="selectLanguage('fa')">
+                    <div class="text-6xl mb-6">🇮🇷</div>
+                    <h3 class="text-2xl font-bold mb-3">Persian | فارسی</h3>
+                    <p class="text-white/70 mb-4">Native Language | زبان مادری</p>
+                    <div class="space-y-2 text-sm text-white/60">
+                        <div>📖 50,000+ واژگان کامل | Complete Vocabulary</div>
+                        <div>🎭 500 داستان صوتی | Audio Stories</div>
+                        <div>🤖 مکالمه نامحدود با AI | Unlimited AI Chat</div>
+                        <div>✍️ مهارت نوشتن پیشرفته | Advanced Writing</div>
+                        <div>🗣️ لهجه‌های مختلف | Regional Accents</div>
+                    </div>
+                    <div class="mt-6 bg-gradient-to-r from-green-500 to-blue-500 px-4 py-2 rounded-full text-sm font-medium">
+                        زبان مادری | Native
+                    </div>
+                </button>
+
+                <!-- English -->
+                <button class="language-card glass-card p-8 rounded-3xl cursor-pointer transition-all duration-300 hover:scale-105 w-full text-left" onclick="selectLanguage('en')">
+                    <div class="text-6xl mb-6">🇺🇸</div>
+                    <h3 class="text-2xl font-bold mb-3">English | انگلیسی</h3>
+                    <p class="text-white/70 mb-4">Global Language | زبان جهانی</p>
+                    <div class="space-y-2 text-sm text-white/60">
+                        <div>📚 IELTS/TOEFL/Cambridge Prep | آمادگی آزمون‌ها</div>
+                        <div>🎬 500 Stories + Movies | داستان و فیلم</div>
+                        <div>💼 Business & Academic | تجاری و دانشگاهی</div>
+                        <div>🎵 Music Analysis | تحلیل موزیک</div>
+                        <div>🗣️ US/UK/AU/CA Accents | لهجه‌های مختلف</div>
+                    </div>
+                    <div class="mt-6 bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-2 rounded-full text-sm font-medium">
+                        Global | جهانی
+                    </div>
+                </button>
+
+                <!-- Korean -->
+                <button class="language-card glass-card p-8 rounded-3xl cursor-pointer transition-all duration-300 hover:scale-105 w-full text-left" onclick="selectLanguage('ko')">
+                    <div class="text-6xl mb-6">🇰🇷</div>
+                    <h3 class="text-2xl font-bold mb-3">한국어 | کره‌ای</h3>
+                    <p class="text-white/70 mb-4">Korean Language | زبان کره‌ای</p>
+                    <div class="space-y-2 text-sm text-white/60">
+                        <div>🎵 K-Pop Lyrics Analysis | تحلیل متن کی‌پاپ</div>
+                        <div>🏛️ TOPIK I/II Exam Prep | آمادگی آزمون توپیک</div>
+                        <div>🔤 Complete Hangul System | سیستم کامل هانگول</div>
+                        <div>🎭 K-Drama Vocabulary | واژگان کی‌درامای</div>
+                        <div>🗣️ Seoul/Busan/Jeju Accents | لهجه‌های مختلف</div>
+                    </div>
+                    <div class="mt-6 bg-gradient-to-r from-pink-500 to-red-500 px-4 py-2 rounded-full text-sm font-medium">
+                        Trending | محبوب
+                    </div>
+                </button>
+
+                <!-- Turkish -->
+                <button class="language-card glass-card p-8 rounded-3xl cursor-pointer transition-all duration-300 hover:scale-105 w-full text-left" onclick="selectLanguage('tr')">
+                    <div class="text-6xl mb-6">🇹🇷</div>
+                    <h3 class="text-2xl font-bold mb-3">Türkçe | ترکی</h3>
+                    <p class="text-white/70 mb-4">Turkish Language | زبان ترکی</p>
+                    <div class="space-y-2 text-sm text-white/60">
+                        <div>🏛️ YÖS/TÖMER Exam Prep | آمادگی آزمون‌ها</div>
+                        <div>📖 Ottoman & Modern Turkish | ترکی عثمانی و مدرن</div>
+                        <div>🎵 Turkish Music Culture | فرهنگ موسیقی ترکی</div>
+                        <div>💼 Business Turkish | ترکی تجاری</div>
+                        <div>🗣️ Istanbul/Ankara Accents | لهجه‌های مختلف</div>
+                    </div>
+                    <div class="mt-6 bg-gradient-to-r from-red-500 to-orange-500 px-4 py-2 rounded-full text-sm font-medium">
+                        Cultural Bridge | پل فرهنگی
+                    </div>
+                </button>
+
+                <!-- Arabic -->
+                <button class="language-card glass-card p-8 rounded-3xl cursor-pointer transition-all duration-300 hover:scale-105 w-full text-left" onclick="selectLanguage('ar')">
+                    <div class="text-6xl mb-6">🇸🇦</div>
+                    <h3 class="text-2xl font-bold mb-3">العربية | عربی</h3>
+                    <p class="text-white/70 mb-4">Arabic Language | زبان عربی</p>
+                    <div class="space-y-2 text-sm text-white/60">
+                        <div>📜 Classical & Modern Arabic | عربی کلاسیک و مدرن</div>
+                        <div>🕌 Quranic Arabic | عربی قرآنی</div>
+                        <div>🗺️ Egyptian/Syrian/Gulf Dialects | لهجه‌های مختلف</div>
+                        <div>✍️ Arabic Calligraphy | خوشنویسی عربی</div>
+                        <div>📊 ALPT/ACTFL Tests | آزمون‌های استاندارد</div>
+                    </div>
+                    <div class="mt-6 bg-gradient-to-r from-green-500 to-teal-500 px-4 py-2 rounded-full text-sm font-medium">
+                        Classical | کلاسیک
+                    </div>
+                </button>
+
+                <!-- Russian -->
+                <button class="language-card glass-car

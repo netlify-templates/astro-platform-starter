@@ -1,0 +1,2944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visa Control Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Modern Flat Color Palette */
+            --primary: #667eea;
+            --primary-dark: #5a67d8;
+            --secondary: #48bb78;
+            --accent: #ed8936;
+            --danger: #f56565;
+            --warning: #ecc94b;
+            --info: #4299e1;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --gray: #718096;
+            --gray-light: #e2e8f0;
+            --sidebar-width: 260px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            transition: var(--transition);
+            overflow-y: auto;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-header {
+            padding: 30px 25px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        .sidebar-header .logo-icon {
+            font-size: 2.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary);
+            transform: scaleY(0);
+            transition: var(--transition);
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--primary);
+        }
+
+        .menu-item.active::before {
+            transform: scaleY(1);
+        }
+
+        .menu-item i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 30px;
+            transition: var(--transition);
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: var(--dark);
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info img {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            border: 3px solid var(--primary);
+        }
+
+        .user-info .user-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .user-info .user-role {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 25px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gray-light);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            color: var(--dark);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: var(--primary);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 20px;
+            padding: 25px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .stat-card.secondary {
+            background: linear-gradient(135deg, var(--secondary) 0%, #38a169 100%);
+        }
+
+        .stat-card.accent {
+            background: linear-gradient(135deg, var(--accent) 0%, #dd6b20 100%);
+        }
+
+        .stat-card.danger {
+            background: linear-gradient(135deg, var(--danger) 0%, #e53e3e 100%);
+        }
+
+        .stat-card.info {
+            background: linear-gradient(135deg, var(--info) 0%, #3182ce 100%);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            opacity: 0.3;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 10px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-change {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="email"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* File Upload Styles */
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #f6f9fc 0%, #e9ecef 100%);
+            border: 2px dashed var(--gray-light);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .file-upload:hover .file-upload-label {
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            border-color: var(--primary);
+        }
+
+        .file-upload-label i {
+            margin-right: 10px;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .file-info {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-align: center;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn i {
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--secondary) 0%, #38a169 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning) 0%, #d69e2e 100%);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(236, 201, 75, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger) 0%, #e53e3e 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 101, 101, 0.3);
+        }
+
+        .btn-outline {
+            background: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        /* Search Section */
+        .search-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 60px 15px 25px;
+            border: 2px solid var(--gray-light);
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        /* Autocomplete Dropdown */
+        .autocomplete-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-top: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .autocomplete-dropdown.show {
+            display: block;
+        }
+
+        .autocomplete-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .autocomplete-item.selected {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .autocomplete-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .autocomplete-info {
+            flex: 1;
+        }
+
+        .autocomplete-name {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 3px;
+        }
+
+        .autocomplete-passport {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .autocomplete-nationality {
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        /* Results Table */
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .results-table th {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .results-table tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        .status-uploaded {
+            background: linear-gradient(135deg, rgba(72, 187, 120, 0.1) 0%, rgba(56, 161, 105, 0.1) 100%);
+            color: var(--secondary);
+        }
+
+        .status-missing {
+            background: linear-gradient(135deg, rgba(245, 101, 101, 0.1) 0%, rgba(229, 62, 62, 0.1) 100%);
+            color: var(--danger);
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, rgba(236, 201, 75, 0.1) 0%, rgba(214, 158, 46, 0.1) 100%);
+            color: var(--warning);
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-right: 8px;
+            transition: var(--transition);
+            padding: 5px;
+            position: relative;
+        }
+
+        .action-btn:hover {
+            color: var(--primary-dark);
+            transform: scale(1.2);
+        }
+
+        .action-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .action-btn:hover::after {
+            opacity: 1;
+        }
+
+        /* Blood Test Cards */
+        .blood-test-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+        }
+
+        .blood-test-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .blood-test-card.expiring-soon {
+            background: linear-gradient(135deg, rgba(236, 201, 75, 0.1) 0%, rgba(214, 158, 46, 0.1) 100%);
+            border-left: 4px solid var(--warning);
+        }
+
+        .blood-test-card.expired {
+            background: linear-gradient(135deg, rgba(245, 101, 101, 0.1) 0%, rgba(229, 62, 62, 0.1) 100%);
+            border-left: 4px solid var(--danger);
+        }
+
+        .person-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .person-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            margin-right: 20px;
+            object-fit: cover;
+            border: 3px solid var(--gray-light);
+        }
+
+        .person-details h4 {
+            margin-bottom: 5px;
+            color: var(--dark);
+            font-size: 1.1rem;
+        }
+
+        .person-details p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .test-info {
+            text-align: right;
+        }
+
+        .test-date {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .days-remaining {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            min-width: 300px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast i {
+            font-size: 1.8rem;
+            margin-right: 15px;
+        }
+
+        .toast.success i {
+            color: var(--secondary);
+        }
+
+        .toast.warning i {
+            color: var(--warning);
+        }
+
+        .toast.error i {
+            color: var(--danger);
+        }
+
+        .toast-message {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 3px;
+            color: var(--dark);
+        }
+
+        .toast-text {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            padding: 25px;
+            border-bottom: 2px solid var(--gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--danger);
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .modal-footer {
+            padding: 20px 25px;
+            border-top: 2px solid var(--gray-light);
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--gray-light);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* Responsive */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 101;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-table {
+                font-size: 0.9rem;
+            }
+
+            .results-table th,
+            .results-table td {
+                padding: 10px 5px;
+            }
+
+            .blood-test-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .person-info {
+                margin-bottom: 15px;
+            }
+
+            .test-info {
+                text-align: center;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid var(--gray-light);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 20px 0;
+        }
+
+        /* Filter Pills */
+        .filter-pills {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-pill {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: white;
+            border: 2px solid var(--gray-light);
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .filter-pill:hover,
+        .filter-pill.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Download Animation */
+        @keyframes download {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(5px); }
+            100% { transform: translateY(0); }
+        }
+
+        .action-btn.downloading {
+            animation: download 1s ease-in-out;
+            color: var(--secondary);
+        }
+
+        /* Blood Test Form */
+        .blood-test-form {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .form-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .quick-action-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            background: white;
+            border: 2px solid var(--gray-light);
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-action-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">
+                <i class="fas fa-passport"></i>
+            </div>
+            <h2>Visa Control Pro</h2>
+        </div>
+        <div class="sidebar-menu">
+            <a class="menu-item active" data-section="dashboard">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a class="menu-item" data-section="data-entry">
+                <i class="fas fa-user-plus"></i> Data Entry
+            </a>
+            <a class="menu-item" data-section="search">
+                <i class="fas fa-search"></i> Search Records
+            </a>
+            <a class="menu-item" data-section="loi-management">
+                <i class="fas fa-envelope"></i> LOI Management
+            </a>
+            <a class="menu-item" data-section="blood-test">
+                <i class="fas fa-tint"></i> Blood Test Tracking
+            </a>
+            <a class="menu-item" data-section="analytics">
+                <i class="fas fa-chart-bar"></i> Analytics
+            </a>
+        </div>
+    </div>
+
+    <!-- Menu Toggle Button -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h1 id="pageTitle">Dashboard</h1>
+            <div class="user-info">
+                <div>
+                    <div class="user-name">Admin User</div>
+                    <div class="user-role">System Administrator</div>
+                </div>
+                <img src="https://picsum.photos/seed/admin/45/45.jpg" alt="User">
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="content-section active" id="dashboard">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-users stat-icon"></i>
+                    <div class="stat-value">1,247</div>
+                    <div class="stat-label">Total Records</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i> 12% from last month
+                    </div>
+                </div>
+                <div class="stat-card secondary">
+                    <i class="fas fa-clock stat-icon"></i>
+                    <div class="stat-value">89</div>
+                    <div class="stat-label">Expiring Soon</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i> 5 new today
+                    </div>
+                </div>
+                <div class="stat-card danger">
+                    <i class="fas fa-exclamation-triangle stat-icon"></i>
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">Missing Documents</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-down"></i> 8% improvement
+                    </div>
+                </div>
+                <div class="stat-card accent">
+                    <i class="fas fa-envelope stat-icon"></i>
+                    <div class="stat-value">342</div>
+                    <div class="stat-label">Emails Sent</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i> 23 this week
+                    </div>
+                </div>
+                <div class="stat-card info">
+                    <i class="fas fa-tint stat-icon"></i>
+                    <div class="stat-value">67</div>
+                    <div class="stat-label">Blood Test Alerts</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i> 12 critical
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-line"></i> Recent Activity
+                    </h3>
+                </div>
+                <div class="filter-pills">
+                    <div class="filter-pill active">All</div>
+                    <div class="filter-pill">New Entries</div>
+                    <div class="filter-pill">Expiring</div>
+                    <div class="filter-pill">Documents</div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-bell"></i> Recent Notifications
+                    </h3>
+                </div>
+                <div id="recentNotifications">
+                    <!-- Notifications will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Entry Section -->
+        <div class="content-section" id="data-entry">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-user"></i> Personal Information
+                    </h3>
+                </div>
+                <form id="dataEntryForm">
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="fullName">Full Name *</label>
+                                <input type="text" id="fullName" name="fullName" required placeholder="Enter full name">
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="passportNumber">Passport Number *</label>
+                                <input type="text" id="passportNumber" name="passportNumber" required placeholder="Enter passport number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="nationality">Nationality *</label>
+                                <select id="nationality" name="nationality" required>
+                                    <option value="">Select Nationality</option>
+                                    <option value="afghanistan">Afghanistan</option>
+                                    <option value="albania">Albania</option>
+                                    <option value="algeria">Algeria</option>
+                                    <option value="egypt">Egypt</option>
+                                    <option value="india">India</option>
+                                    <option value="pakistan">Pakistan</option>
+                                    <option value="philippines">Philippines</option>
+                                    <option value="saudi">Saudi Arabia</option>
+                                    <option value="uae">UAE</option>
+                                    <option value="usa">USA</option>
+                                    <option value="uk">UK</option>
+                                    <option value="bangladesh">Bangladesh</option>
+                                    <option value="srilanka">Sri Lanka</option>
+                                    <option value="nepal">Nepal</option>
+                                    <option value="indonesia">Indonesia</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="dateOfBirth">Date of Birth *</label>
+                                <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" placeholder="email@example.com">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-passport"></i> Visa Information
+                    </h3>
+                </div>
+                <form id="visaForm">
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="issueDate">Issue Date</label>
+                                <input type="date" id="issueDate" name="issueDate">
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="expiryDate">Expiry Date</label>
+                                <input type="date" id="expiryDate" name="expiryDate">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-file-upload"></i> Document Uploads
+                    </h3>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label>Passport Copy</label>
+                            <div class="file-upload">
+                                <input type="file" id="passportUpload" accept="image/*,.pdf">
+                                <label for="passportUpload" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose File</span>
+                                </label>
+                                <div class="file-info" id="passportFileInfo">No file selected</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label>Visa Copy</label>
+                            <div class="file-upload">
+                                <input type="file" id="visaUpload" accept="image/*,.pdf">
+                                <label for="visaUpload" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose File</span>
+                                </label>
+                                <div class="file-info" id="visaFileInfo">No file selected</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label>Entry Stamp</label>
+                            <div class="file-upload">
+                                <input type="file" id="entryStampUpload" accept="image/*,.pdf">
+                                <label for="entryStampUpload" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose File</span>
+                                </label>
+                                <div class="file-info" id="entryStampFileInfo">No file selected</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label>Letter of Invitation (LOI)</label>
+                            <div class="file-upload">
+                                <input type="file" id="loiUpload" accept="image/*,.pdf">
+                                <label for="loiUpload" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose File</span>
+                                </label>
+                                <div class="file-info" id="loiFileInfo">No file selected</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label>Personal Photo</label>
+                            <div class="file-upload">
+                                <input type="file" id="photoUpload" accept="image/*">
+                                <label for="photoUpload" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose File</span>
+                                </label>
+                                <div class="file-info" id="photoFileInfo">No file selected</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" id="saveDataBtn">
+                        <i class="fas fa-save"></i> Save Data
+                    </button>
+                    <button type="button" class="btn btn-outline" id="resetFormBtn">
+                        <i class="fas fa-redo"></i> Reset Form
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Section -->
+        <div class="content-section" id="search">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-search"></i> Search Records
+                    </h3>
+                </div>
+                <div class="search-container">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search by name or passport number...">
+                    <button class="search-btn" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <div class="autocomplete-dropdown" id="autocompleteDropdown">
+                        <!-- Suggestions will be populated here -->
+                    </div>
+                </div>
+                <div id="searchResults">
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Passport No.</th>
+                                <th>Nationality</th>
+                                <th>Expiry Date</th>
+                                <th>Documents Status</th>
+                                <th>Download Documents</th>
+                            </tr>
+                        </thead>
+                        <tbody id="searchResultsBody">
+                            <!-- Results will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOI Management Section -->
+        <div class="content-section" id="loi-management">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-envelope"></i> LOI Expiring Soon
+                    </h3>
+                </div>
+                <div id="loiList">
+                    <!-- LOI items will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Blood Test Section -->
+        <div class="content-section" id="blood-test">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-tint"></i> Blood Test Tracking
+                    </h3>
+                </div>
+                
+                <!-- Blood Test Entry Form -->
+                <div class="blood-test-form">
+                    <h4 class="form-section-title">
+                        <i class="fas fa-plus-circle"></i> Add New Blood Test Record
+                    </h4>
+                    <form id="bloodTestForm">
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="bloodTestPerson">Search Person *</label>
+                                    <input type="text" id="bloodTestPerson" placeholder="Type name or passport number..." required>
+                                    <div class="autocomplete-dropdown" id="bloodTestAutocomplete">
+                                        <!-- Suggestions will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="bloodTestDate">Test Date *</label>
+                                    <input type="date" id="bloodTestDate" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="bloodTestExpiry">Expiry Date *</label>
+                                    <input type="date" id="bloodTestExpiry" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="bloodTestResult">Test Result</label>
+                                    <select id="bloodTestResult">
+                                        <option value="negative">Negative</option>
+                                        <option value="positive">Positive</option>
+                                        <option value="pending">Pending</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label>Blood Test Report</label>
+                                    <div class="file-upload">
+                                        <input type="file" id="bloodTestReport" accept="image/*,.pdf">
+                                        <label for="bloodTestReport" class="file-upload-label">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <span>Choose File</span>
+                                        </label>
+                                        <div class="file-info" id="bloodTestReportInfo">No file selected</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary" id="saveBloodTestBtn">
+                                <i class="fas fa-save"></i> Save Blood Test
+                            </button>
+                            <button type="button" class="btn btn-outline" id="resetBloodTestBtn">
+                                <i class="fas fa-redo"></i> Reset Form
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="quick-action-btn" onclick="filterBloodTests('all')">
+                        <i class="fas fa-list"></i> All Tests
+                    </button>
+                    <button class="quick-action-btn" onclick="filterBloodTests('expired')">
+                        <i class="fas fa-exclamation-triangle"></i> Expired
+                    </button>
+                    <button class="quick-action-btn" onclick="filterBloodTests('expiring')">
+                        <i class="fas fa-clock"></i> Expiring Soon
+                    </button>
+                    <button class="quick-action-btn" onclick="filterBloodTests('valid')">
+                        <i class="fas fa-check-circle"></i> Valid
+                    </button>
+                </div>
+
+                <div id="bloodTestList">
+                    <!-- Blood test items will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div class="content-section" id="analytics">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-chart-pie stat-icon"></i>
+                    <div class="stat-value">68%</div>
+                    <div class="stat-label">Document Completion</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 68%"></div>
+                    </div>
+                </div>
+                <div class="stat-card secondary">
+                    <i class="fas fa-globe stat-icon"></i>
+                    <div class="stat-value">45</div>
+                    <div class="stat-label">Countries</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i> 3 new this month
+                    </div>
+                </div>
+                <div class="stat-card accent">
+                    <i class="fas fa-hourglass-half stat-icon"></i>
+                    <div class="stat-value">23 days</div>
+                    <div class="stat-label">Avg Processing Time</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-down"></i> 2 days faster
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-bar"></i> Monthly Statistics
+                    </h3>
+                </div>
+                <div class="chart-container">
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <div class="toast-message">
+            <div class="toast-title">Success</div>
+            <div class="toast-text">Operation completed successfully</div>
+        </div>
+    </div>
+
+    <!-- Email Modal -->
+    <div class="modal" id="emailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Send Email Reminder</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="recipientEmail">Recipient Email</label>
+                    <input type="email" id="recipientEmail" value="example@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="emailSubject">Subject</label>
+                    <input type="text" id="emailSubject" value="LOI Submission Reminder">
+                </div>
+                <div class="form-group">
+                    <label for="emailMessage">Message</label>
+                    <textarea id="emailMessage" rows="5">Dear Sir/Madam,
+
+This is a reminder that your Letter of Invitation (LOI) is expiring soon. Please submit the LOI through the OA system at your earliest convenience.
+
+Thank you.</textarea>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="sendAutomatically"> Send automatically when LOI expires in less than 120 days
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelEmail">Cancel</button>
+                <button class="btn btn-primary" id="sendEmail">Send Email</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Extended sample data with more records
+        const sampleData = [
+            {
+                id: 1,
+                name: "Ahmed Mohamed Ali",
+                passportNumber: "A12345678",
+                nationality: "Egypt",
+                expiryDate: "2024-02-15",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: true,
+                    loi: false,
+                    photo: true
+                },
+                bloodTestExpiry: "2024-02-10",
+                email: "ahmed.mohamed@example.com",
+                dateAdded: "2023-01-15"
+            },
+            {
+                id: 2,
+                name: "John Patrick Smith",
+                passportNumber: "B98765432",
+                nationality: "USA",
+                expiryDate: "2024-03-28",
+                documents: {
+                    passport: true,
+                    visa: false,
+                    entryStamp: true,
+                    loi: true,
+                    photo: true
+                },
+                bloodTestExpiry: "2024-03-20",
+                email: "john.smith@example.com",
+                dateAdded: "2023-02-10"
+            },
+            {
+                id: 3,
+                name: "Priya Lakshmi Sharma",
+                passportNumber: "C45678912",
+                nationality: "India",
+                expiryDate: "2023-12-30",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: false,
+                    loi: true,
+                    photo: true
+                },
+                bloodTestExpiry: "2023-12-25",
+                email: "priya.sharma@example.com",
+                dateAdded: "2023-01-20"
+            },
+            {
+                id: 4,
+                name: "Muhammad Abdullah Khan",
+                passportNumber: "D78912345",
+                nationality: "Pakistan",
+                expiryDate: "2024-05-15",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: true,
+                    loi: true,
+                    photo: false
+                },
+                bloodTestExpiry: "2024-05-10",
+                email: "muhammad.khan@example.com",
+                dateAdded: "2023-03-05"
+            },
+            {
+                id: 5,
+                name: "Fatima bint Al-Rashid",
+                passportNumber: "E32165498",
+                nationality: "Saudi Arabia",
+                expiryDate: "2024-01-20",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: true,
+                    loi: true,
+                    photo: true
+                },
+                bloodTestExpiry: "2024-01-15",
+                email: "fatima.alrashid@example.com",
+                dateAdded: "2023-02-15"
+            },
+            {
+                id: 6,
+                name: "Maria Rodriguez Santos",
+                passportNumber: "F65432178",
+                nationality: "Philippines",
+                expiryDate: "2024-04-10",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: true,
+                    loi: false,
+                    photo: true
+                },
+                bloodTestExpiry: "2024-04-05",
+                email: "maria.santos@example.com",
+                dateAdded: "2023-01-25"
+            },
+            {
+                id: 7,
+                name: "David William Johnson",
+                passportNumber: "G14725836",
+                nationality: "UK",
+                expiryDate: "2023-11-30",
+                documents: {
+                    passport: true,
+                    visa: false,
+                    entryStamp: true,
+                    loi: true,
+                    photo: true
+                },
+                bloodTestExpiry: "2023-11-25",
+                email: "david.johnson@example.com",
+                dateAdded: "2023-03-10"
+            },
+            {
+                id: 8,
+                name: "Liu Wei Zhang",
+                passportNumber: "H96385274",
+                nationality: "China",
+                expiryDate: "2024-06-20",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: true,
+                    loi: true,
+                    photo: true
+                },
+                bloodTestExpiry: "2024-06-15",
+                email: "wei.zhang@example.com",
+                dateAdded: "2023-02-20"
+            },
+            {
+                id: 9,
+                name: "Rahul Kumar Singh",
+                passportNumber: "I85296374",
+                nationality: "India",
+                expiryDate: "2023-12-15",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: false,
+                    loi: false,
+                    photo: true
+                },
+                bloodTestExpiry: "2023-12-10",
+                email: "rahul.singh@example.com",
+                dateAdded: "2023-03-15"
+            },
+            {
+                id: 10,
+                name: "Siti Nurhaliza",
+                passportNumber: "J74185296",
+                nationality: "Indonesia",
+                expiryDate: "2024-03-25",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: true,
+                    loi: true,
+                    photo: true
+                },
+                bloodTestExpiry: "2024-03-20",
+                email: "siti.nurhaliza@example.com",
+                dateAdded: "2023-01-30"
+            },
+            {
+                id: 11,
+                name: "Abdul Rahman Hassan",
+                passportNumber: "K15975346",
+                nationality: "Bangladesh",
+                expiryDate: "2024-02-28",
+                documents: {
+                    passport: false,
+                    visa: true,
+                    entryStamp: true,
+                    loi: true,
+                    photo: true
+                },
+                bloodTestExpiry: "2024-02-23",
+                email: "abdul.hassan@example.com",
+                dateAdded: "2023-02-25"
+            },
+            {
+                id: 12,
+                name: "Elena Petrovna Ivanova",
+                passportNumber: "L35795146",
+                nationality: "Russia",
+                expiryDate: "2023-11-20",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: true,
+                    loi: false,
+                    photo: false
+                },
+                bloodTestExpiry: "2023-11-15",
+                email: "elena.ivanova@example.com",
+                dateAdded: "2023-03-20"
+            },
+            {
+                id: 13,
+                name: "Mohammed Al-Fahad",
+                passportNumber: "M95175328",
+                nationality: "UAE",
+                expiryDate: "2024-07-10",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: true,
+                    loi: true,
+                    photo: true
+                },
+                bloodTestExpiry: "2024-07-05",
+                email: "mohammed.alfahad@example.com",
+                dateAdded: "2023-01-10"
+            },
+            {
+                id: 14,
+                name: "Jennifer Lee",
+                passportNumber: "N24681357",
+                nationality: "Canada",
+                expiryDate: "2024-04-30",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: false,
+                    loi: true,
+                    photo: true
+                },
+                bloodTestExpiry: "2024-04-25",
+                email: "jennifer.lee@example.com",
+                dateAdded: "2023-02-05"
+            },
+            {
+                id: 15,
+                name: "Carlos Miguel Rodriguez",
+                passportNumber: "O13579246",
+                nationality: "Mexico",
+                expiryDate: "2023-10-25",
+                documents: {
+                    passport: true,
+                    visa: false,
+                    entryStamp: true,
+                    loi: false,
+                    photo: true
+                },
+                bloodTestExpiry: "2023-10-20",
+                email: "carlos.rodriguez@example.com",
+                dateAdded: "2023-03-01"
+            },
+            {
+                id: 16,
+                name: "Yuki Tanaka",
+                passportNumber: "P86420975",
+                nationality: "Japan",
+                expiryDate: "2024-08-15",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: true,
+                    loi: true,
+                    photo: true
+                },
+                bloodTestExpiry: "2024-08-10",
+                email: "yuki.tanaka@example.com",
+                dateAdded: "2023-01-18"
+            },
+            {
+                id: 17,
+                name: "Amara Okonkwo",
+                passportNumber: "Q75319468",
+                nationality: "Nigeria",
+                expiryDate: "2024-01-10",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: true,
+                    loi: true,
+                    photo: false
+                },
+                bloodTestExpiry: "2024-01-05",
+                email: "amara.okonkwo@example.com",
+                dateAdded: "2023-02-12"
+            },
+            {
+                id: 18,
+                name: "Hans Mueller",
+                passportNumber: "R64281953",
+                nationality: "Germany",
+                expiryDate: "2024-05-20",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: false,
+                    loi: true,
+                    photo: true
+                },
+                bloodTestExpiry: "2024-05-15",
+                email: "hans.mueller@example.com",
+                dateAdded: "2023-03-08"
+            },
+            {
+                id: 19,
+                name: "Isabella Martinez",
+                passportNumber: "S53192847",
+                nationality: "Spain",
+                expiryDate: "2023-12-05",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: true,
+                    loi: false,
+                    photo: true
+                },
+                bloodTestExpiry: "2023-12-01",
+                email: "isabella.martinez@example.com",
+                dateAdded: "2023-01-22"
+            },
+            {
+                id: 20,
+                name: "Kim Min-Joon",
+                passportNumber: "T42073816",
+                nationality: "South Korea",
+                expiryDate: "2024-06-10",
+                documents: {
+                    passport: true,
+                    visa: true,
+                    entryStamp: true,
+                    loi: true,
+                    photo: true
+                },
+                bloodTestExpiry: "2024-06-05",
+                email: "kim.minjoon@example.com",
+                dateAdded: "2023-02-18"
+            }
+        ];
+
+        // Blood test data storage
+        let bloodTestData = [
+            {
+                id: 1,
+                personId: 1,
+                personName: "Ahmed Mohamed Ali",
+                passportNumber: "A12345678",
+                testDate: "2023-02-10",
+                expiryDate: "2024-02-10",
+                result: "negative",
+                reportUploaded: true
+            },
+            {
+                id: 2,
+                personId: 2,
+                personName: "John Patrick Smith",
+                passportNumber: "B98765432",
+                testDate: "2023-03-20",
+                expiryDate: "2024-03-20",
+                result: "negative",
+                reportUploaded: true
+            },
+            {
+                id: 3,
+                personId: 3,
+                personName: "Priya Lakshmi Sharma",
+                passportNumber: "C45678912",
+                testDate: "2022-12-25",
+                expiryDate: "2023-12-25",
+                result: "negative",
+                reportUploaded: false
+            },
+            {
+                id: 4,
+                personId: 4,
+                personName: "Muhammad Abdullah Khan",
+                passportNumber: "D78912345",
+                testDate: "2023-05-10",
+                expiryDate: "2024-05-10",
+                result: "pending",
+                reportUploaded: false
+            },
+            {
+                id: 5,
+                personId: 5,
+                personName: "Fatima bint Al-Rashid",
+                passportNumber: "E32165498",
+                testDate: "2023-01-15",
+                expiryDate: "2024-01-15",
+                result: "negative",
+                reportUploaded: true
+            },
+            {
+                id: 6,
+                personId: 6,
+                personName: "Maria Rodriguez Santos",
+                passportNumber: "F65432178",
+                testDate: "2023-04-05",
+                expiryDate: "2024-04-05",
+                result: "negative",
+                reportUploaded: true
+            },
+            {
+                id: 7,
+                personId: 7,
+                personName: "David William Johnson",
+                passportNumber: "G14725836",
+                testDate: "2022-11-25",
+                expiryDate: "2023-11-25",
+                result: "negative",
+                reportUploaded: false
+            },
+            {
+                id: 8,
+                personId: 8,
+                personName: "Liu Wei Zhang",
+                passportNumber: "H96385274",
+                testDate: "2023-06-15",
+                expiryDate: "2024-06-15",
+                result: "negative",
+                reportUploaded: true
+            },
+            {
+                id: 9,
+                personId: 9,
+                personName: "Rahul Kumar Singh",
+                passportNumber: "I85296374",
+                testDate: "2022-12-10",
+                expiryDate: "2023-12-10",
+                result: "negative",
+                reportUploaded: false
+            },
+            {
+                id: 10,
+                personId: 10,
+                personName: "Siti Nurhaliza",
+                passportNumber: "J74185296",
+                testDate: "2023-03-20",
+                expiryDate: "2024-03-20",
+                result: "negative",
+                reportUploaded: true
+            },
+            {
+                id: 11,
+                personId: 11,
+                personName: "Abdul Rahman Hassan",
+                passportNumber: "K15975346",
+                testDate: "2023-02-23",
+                expiryDate: "2024-02-23",
+                result: "negative",
+                reportUploaded: true
+            },
+            {
+                id: 12,
+                personId: 12,
+                personName: "Elena Petrovna Ivanova",
+                passportNumber: "L35795146",
+                testDate: "2022-11-15",
+                expiryDate: "2023-11-15",
+                result: "negative",
+                reportUploaded: false
+            },
+            {
+                id: 13,
+                personId: 13,
+                personName: "Mohammed Al-Fahad",
+                passportNumber: "M95175328",
+                testDate: "2023-07-05",
+                expiryDate: "2024-07-05",
+                result: "negative",
+                reportUploaded: true
+            },
+            {
+                id: 14,
+                personId: 14,
+                personName: "Jennifer Lee",
+                passportNumber: "N24681357",
+                testDate: "2023-04-25",
+                expiryDate: "2024-04-25",
+                result: "negative",
+                reportUploaded: true
+            },
+            {
+                id: 15,
+                personId: 15,
+                personName: "Carlos Miguel Rodriguez",
+                passportNumber: "O13579246",
+                testDate: "2022-10-20",
+                expiryDate: "2023-10-20",
+                result: "negative",
+                reportUploaded: false
+            },
+            {
+                id: 16,
+                personId: 16,
+                personName: "Yuki Tanaka",
+                passportNumber: "P86420975",
+                testDate: "2023-08-10",
+                expiryDate: "2024-08-10",
+                result: "negative",
+                reportUploaded: true
+            },
+            {
+                id: 17,
+                personId: 17,
+                personName: "Amara Okonkwo",
+                passportNumber: "Q75319468",
+                testDate: "2023-01-05",
+                expiryDate: "2024-01-05",
+                result: "negative",
+                reportUploaded: true
+            },
+            {
+                id: 18,
+                personId: 18,
+                personName: "Hans Mueller",
+                passportNumber: "R64281953",
+                testDate: "2023-05-15",
+                expiryDate: "2024-05-15",
+                result: "negative",
+                reportUploaded: true
+            },
+            {
+                id: 19,
+                personId: 19,
+                personName: "Isabella Martinez",
+                passportNumber: "S53192847",
+                testDate: "2022-12-01",
+                expiryDate: "2023-12-01",
+                result: "negative",
+                reportUploaded: false
+            },
+            {
+                id: 20,
+                personId: 20,
+                personName: "Kim Min-Joon",
+                passportNumber: "T42073816",
+                testDate: "2023-06-05",
+                expiryDate: "2024-06-05",
+                result: "negative",
+                reportUploaded: true
+            }
+        ];
+
+        // DOM Elements
+        const menuItems = document.querySelectorAll('.menu-item');
+        const contentSections = document.querySelectorAll('.content-section');
+        const pageTitle = document.getElementById('pageTitle');
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const searchResultsBody = document.getElementById('searchResultsBody');
+        const toast = document.getElementById('toast');
+        const emailModal = document.getElementById('emailModal');
+        const closeModal = document.getElementById('closeModal');
+        const cancelEmail = document.getElementById('cancelEmail');
+        const sendEmail = document.getElementById('sendEmail');
+        const saveDataBtn = document.getElementById('saveDataBtn');
+        const resetFormBtn = document.getElementById('resetFormBtn');
+        const autocompleteDropdown = document.getElementById('autocompleteDropdown');
+        const bloodTestPerson = document.getElementById('bloodTestPerson');
+        const bloodTestAutocomplete = document.getElementById('bloodTestAutocomplete');
+        const saveBloodTestBtn = document.getElementById('saveBloodTestBtn');
+        const resetBloodTestBtn = document.getElementById('resetBloodTestBtn');
+
+        // File upload elements
+        const fileUploads = [
+            { input: 'passportUpload', info: 'passportFileInfo' },
+            { input: 'visaUpload', info: 'visaFileInfo' },
+            { input: 'entryStampUpload', info: 'entryStampFileInfo' },
+            { input: 'loiUpload', info: 'loiFileInfo' },
+            { input: 'photoUpload', info: 'photoFileInfo' },
+            { input: 'bloodTestReport', info: 'bloodTestReportInfo' }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            populateLOIList();
+            populateBloodTestList();
+            populateRecentNotifications();
+            initializeCharts();
+            // Load all data in search results initially
+            displaySearchResults(sampleData);
+        });
+
+        // Setup Event Listeners
+        function setupEventListeners() {
+            // Menu toggle for mobile
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+
+            // Menu navigation
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const targetSection = this.getAttribute('data-section');
+                    switchSection(targetSection);
+                });
+            });
+
+            // Search functionality with autocomplete
+            searchInput.addEventListener('input', handleSearchInput);
+            searchInput.addEventListener('focus', handleSearchInput);
+            searchBtn.addEventListener('click', performSearch);
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            // Blood test person search with autocomplete
+            bloodTestPerson.addEventListener('input', handleBloodTestSearch);
+            bloodTestPerson.addEventListener('focus', handleBloodTestSearch);
+
+            // Click outside to close autocomplete
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.search-container')) {
+                    autocompleteDropdown.classList.remove('show');
+                }
+                if (!e.target.closest('#bloodTestPerson') && !e.target.closest('#bloodTestAutocomplete')) {
+                    bloodTestAutocomplete.classList.remove('show');
+                }
+            });
+
+            // File upload handlers
+            fileUploads.forEach(upload => {
+                const input = document.getElementById(upload.input);
+                const info = document.getElementById(upload.info);
+                
+                input.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        info.textContent = this.files[0].name;
+                    } else {
+                        info.textContent = 'No file selected';
+                    }
+                });
+            });
+
+            // Modal handlers
+            closeModal.addEventListener('click', function() {
+                emailModal.classList.remove('show');
+            });
+
+            cancelEmail.addEventListener('click', function() {
+                emailModal.classList.remove('show');
+            });
+
+            sendEmail.addEventListener('click', function() {
+                sendEmailNotification();
+            });
+
+            // Form handlers
+            saveDataBtn.addEventListener('click', function() {
+                saveFormData();
+            });
+
+            resetFormBtn.addEventListener('click', function() {
+                resetForm();
+            });
+
+            // Blood test form handlers
+            saveBloodTestBtn.addEventListener('click', function() {
+                saveBloodTest();
+            });
+
+            resetBloodTestBtn.addEventListener('click', function() {
+                resetBloodTestForm();
+            });
+
+            // Filter pills
+            document.querySelectorAll('.filter-pill').forEach(pill => {
+                pill.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        // Handle search input with autocomplete
+        function handleSearchInput() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                autocompleteDropdown.classList.remove('show');
+                displaySearchResults(sampleData);
+                return;
+            }
+
+            // Filter data based on search term
+            const suggestions = sampleData.filter(person => 
+                person.name.toLowerCase().includes(searchTerm) || 
+                person.passportNumber.toLowerCase().includes(searchTerm)
+            );
+
+            // Show autocomplete suggestions
+            showAutocompleteSuggestions(suggestions, searchTerm);
+        }
+
+        // Handle blood test search
+        function handleBloodTestSearch() {
+            const searchTerm = bloodTestPerson.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                bloodTestAutocomplete.classList.remove('show');
+                return;
+            }
+
+            // Filter data based on search term
+            const suggestions = sampleData.filter(person => 
+                person.name.toLowerCase().includes(searchTerm) || 
+                person.passportNumber.toLowerCase().includes(searchTerm)
+            );
+
+            // Show autocomplete suggestions
+            showBloodTestAutocomplete(suggestions, searchTerm);
+        }
+
+        // Show autocomplete suggestions
+        function showAutocompleteSuggestions(suggestions, searchTerm) {
+            autocompleteDropdown.innerHTML = '';
+
+            if (suggestions.length === 0) {
+                autocompleteDropdown.innerHTML = '<div class="autocomplete-item">No results found</div>';
+                autocompleteDropdown.classList.add('show');
+                return;
+            }
+
+            suggestions.forEach(person => {
+                const item = document.createElement('div');
+                item.className = 'autocomplete-item';
+                item.innerHTML = `
+                    <img src="https://picsum.photos/seed/${person.id}/40/40.jpg" alt="${person.name}" class="autocomplete-avatar">
+                    <div class="autocomplete-info">
+                        <div class="autocomplete-name">${highlightMatch(person.name, searchTerm)}</div>
+                        <div class="autocomplete-passport">${highlightMatch(person.passportNumber, searchTerm)}</div>
+                    </div>
+                    <div class="autocomplete-nationality">${person.nationality}</div>
+                `;
+                
+                item.addEventListener('click', function() {
+                    searchInput.value = person.name;
+                    autocompleteDropdown.classList.remove('show');
+                    displaySearchResults([person]);
+                });
+                
+                autocompleteDropdown.appendChild(item);
+            });
+
+            autocompleteDropdown.classList.add('show');
+        }
+
+        // Show blood test autocomplete suggestions
+        function showBloodTestAutocomplete(suggestions, searchTerm) {
+            bloodTestAutocomplete.innerHTML = '';
+
+            if (suggestions.length === 0) {
+                bloodTestAutocomplete.innerHTML = '<div class="autocomplete-item">No results found</div>';
+                bloodTestAutocomplete.classList.add('show');
+                return;
+            }
+
+            suggestions.forEach(person => {
+                const item = document.createElement('div');
+                item.className = 'autocomplete-item';
+                item.innerHTML = `
+                    <img src="https://picsum.photos/seed/${person.id}/40/40.jpg" alt="${person.name}" class="autocomplete-avatar">
+                    <div class="autocomplete-info">
+                        <div class="autocomplete-name">${highlightMatch(person.name, searchTerm)}</div>
+                        <div class="autocomplete-passport">${highlightMatch(person.passportNumber, searchTerm)}</div>
+                    </div>
+                    <div class="autocomplete-nationality">${person.nationality}</div>
+                `;
+                
+                item.addEventListener('click', function() {
+                    bloodTestPerson.value = person.name;
+                    bloodTestPerson.dataset.personId = person.id;
+                    bloodTestPerson.dataset.passportNumber = person.passportNumber;
+                    bloodTestAutocomplete.classList.remove('show');
+                });
+                
+                bloodTestAutocomplete.appendChild(item);
+            });
+
+            bloodTestAutocomplete.classList.add('show');
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, searchTerm) {
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            return text.replace(regex, '<strong>$1</strong>');
+        }
+
+        // Perform search
+        function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                displaySearchResults(sampleData);
+                return;
+            }
+
+            // Filter data based on search term
+            const results = sampleData.filter(person => 
+                person.name.toLowerCase().includes(searchTerm) || 
+                person.passportNumber.toLowerCase().includes(searchTerm)
+            );
+
+            // Display results
+            displaySearchResults(results);
+            autocompleteDropdown.classList.remove('show');
+        }
+
+        // Display search results
+        function displaySearchResults(results) {
+            searchResultsBody.innerHTML = '';
+
+            if (results.length === 0) {
+                searchResultsBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 30px;">No results found</td></tr>';
+                return;
+            }
+
+            results.forEach(person => {
+                const row = document.createElement('tr');
+                
+                // Create document status HTML
+                let documentStatus = '';
+                for (const [doc, status] of Object.entries(person.documents)) {
+                    const statusClass = status ? 'status-uploaded' : 'status-missing';
+                    const statusText = status ? '✓' : '✗';
+                    documentStatus += `<span class="status-badge ${statusClass}" title="${doc}">${statusText}</span> `;
+                }
+
+                row.innerHTML = `
+                    <td><strong>${person.name}</strong></td>
+                    <td>${person.passportNumber}</td>
+                    <td>${person.nationality}</td>
+                    <td>${person.expiryDate}</td>
+                    <td>${documentStatus}</td>
+                    <td>
+                        <button class="action-btn" onclick="downloadDocument('passport', ${person.id}, this)" data-tooltip="Download Passport">
+                            <i class="fas fa-passport"></i>
+                        </button>
+                        <button class="action-btn" onclick="downloadDocument('visa', ${person.id}, this)" data-tooltip="Download Visa">
+                            <i class="fas fa-file-alt"></i>
+                        </button>
+                        <button class="action-btn" onclick="downloadDocument('entryStamp', ${person.id}, this)" data-tooltip="Download Entry Stamp">
+                            <i class="fas fa-stamp"></i>
+                        </button>
+                        <button class="action-btn" onclick="downloadDocument('loi', ${person.id}, this)" data-tooltip="Download LOI">
+                            <i class="fas fa-envelope-open-text"></i>
+                        </button>
+                        <button class="action-btn" onclick="downloadDocument('photo', ${person.id}, this)" data-tooltip="Download Photo">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </td>
+                `;
+                
+                searchResultsBody.appendChild(row);
+            });
+        }
+
+        // Download document
+        function downloadDocument(docType, personId, buttonElement) {
+            const person = sampleData.find(p => p.id === personId);
+            
+            if (!person.documents[docType]) {
+                showToast(`${docType} document is not available for ${person.name}`, 'error');
+                return;
+            }
+            
+            // Add downloading animation
+            buttonElement.classList.add('downloading');
+            
+            // Simulate download process
+            setTimeout(() => {
+                buttonElement.classList.remove('downloading');
+                showToast(`Successfully downloaded ${docType} for ${person.name}`, 'success');
+                
+                // In a real application, this would trigger an actual file download
+                // For demonstration, we'll create a dummy download
+                const link = document.createElement('a');
+                link.href = '#';
+                link.download = `${docType}_${person.name.replace(/\s+/g, '_')}_${person.passportNumber}.pdf`;
+                link.click();
+            }, 1000);
+        }
+
+        // Save blood test
+        function saveBloodTest() {
+            const personName = bloodTestPerson.value;
+            const personId = bloodTestPerson.dataset.personId;
+            const passportNumber = bloodTestPerson.dataset.passportNumber;
+            const testDate = document.getElementById('bloodTestDate').value;
+            const expiryDate = document.getElementById('bloodTestExpiry').value;
+            const result = document.getElementById('bloodTestResult').value;
+            const reportUploaded = document.getElementById('bloodTestReport').files.length > 0;
+
+            // Validation
+            if (!personName || !personId || !testDate || !expiryDate) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+
+            // Create new blood test record
+            const newBloodTest = {
+                id: bloodTestData.length + 1,
+                personId: parseInt(personId),
+                personName: personName,
+                passportNumber: passportNumber,
+                testDate: testDate,
+                expiryDate: expiryDate,
+                result: result,
+                reportUploaded: reportUploaded
+            };
+
+            // Add to blood test data
+            bloodTestData.push(newBloodTest);
+
+            // Update the person's blood test expiry in main data
+            const person = sampleData.find(p => p.id === parseInt(personId));
+            if (person) {
+                person.bloodTestExpiry = expiryDate;
+            }
+
+            // Refresh blood test list
+            populateBloodTestList();
+
+            // Show success message
+            showToast(`Blood test record saved for ${personName}`, 'success');
+
+            // Reset form
+            resetBloodTestForm();
+        }
+
+        // Reset blood test form
+        function resetBloodTestForm() {
+            document.getElementById('bloodTestForm').reset();
+            document.getElementById('bloodTestReportInfo').textContent = 'No file selected';
+            delete bloodTestPerson.dataset.personId;
+            delete bloodTestPerson.dataset.passportNumber;
+        }
+
+        // Filter blood tests
+        function filterBloodTests(filter) {
+            const today = new Date();
+            let filteredData = [...bloodTestData];
+
+            switch(filter) {
+                case 'expired':
+                    filteredData = filteredData.filter(test => new Date(test.expiryDate) < today);
+                    break;
+                case 'expiring':
+                    const futureDate = new Date();
+                    futureDate.setDate(today.getDate() + 10);
+                    filteredData = filteredData.filter(test => {
+                        const expiryDate = new Date(test.expiryDate);
+                        return expiryDate >= today && expiryDate <= futureDate;
+                    });
+                    break;
+                case 'valid':
+                    filteredData = filteredData.filter(test => new Date(test.expiryDate) >= today);
+                    break;
+            }
+
+            displayFilteredBloodTests(filteredData);
+        }
+
+        // Display filtered blood tests
+        function displayFilteredBloodTests(tests) {
+            const bloodTestList = document.getElementById('bloodTestList');
+            bloodTestList.innerHTML = '';
+
+            if (tests.length === 0) {
+                bloodTestList.innerHTML = '<p style="text-align: center; padding: 30px; color: var(--gray);">No blood tests found</p>';
+                return;
+            }
+
+            tests.forEach(test => {
+                const expiryDate = new Date(test.expiryDate);
+                const today = new Date();
+                const daysUntilExpiry = Math.floor((expiryDate - today) / (1000 * 60 * 60 * 24));
+                
+                const card = document.createElement('div');
+                card.className = 'blood-test-card';
+                
+                if (daysUntilExpiry < 0) {
+                    card.classList.add('expired');
+                } else if (daysUntilExpiry <= 10) {
+                    card.classList.add('expiring-soon');
+                }
+                
+                let statusText = '';
+                if (daysUntilExpiry < 0) {
+                    statusText = `Expired ${Math.abs(daysUntilExpiry)} days ago`;
+                } else if (daysUntilExpiry === 0) {
+                    statusText = 'Expires today';
+                } else if (daysUntilExpiry <= 10) {
+                    statusText = `Expires in ${daysUntilExpiry} days`;
+                } else {
+                    statusText = `Expires in ${daysUntilExpiry} days`;
+                }
+
+                const resultBadge = test.result === 'negative' ? 'status-uploaded' : 
+                                   test.result === 'positive' ? 'status-missing' : 'status-pending';
+                
+                card.innerHTML = `
+                    <div class="person-info">
+                        <img src="https://picsum.photos/seed/${test.personId}/60/60.jpg" alt="${test.personName}" class="person-avatar">
+                        <div class="person-details">
+                            <h4>${test.personName}</h4>
+                            <p>Passport: ${test.passportNumber}</p>
+                            <p style="color: var(--gray); font-size: 0.85rem;">
+                                Test Date: ${test.testDate} | 
+                                Result: <span class="status-badge ${resultBadge}">${test.result.toUpperCase()}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="test-info">
+                        <div class="test-date">Expiry: ${test.expiryDate}</div>
+                        <div class="days-remaining">${statusText}</div>
+                        <div style="margin-bottom: 10px;">
+                            ${test.reportUploaded ? 
+                                '<span style="color: var(--secondary); font-size: 0.85rem;"><i class="fas fa-check-circle"></i> Report uploaded</span>' : 
+                                '<span style="color: var(--warning); font-size: 0.85rem;"><i class="fas fa-exclamation-triangle"></i> No report</span>'}
+                        </div>
+                        <button class="btn ${daysUntilExpiry <= 10 ? 'btn-warning' : 'btn-outline'}" onclick="sendBloodTestReminder('${test.personName}', '${test.passportNumber}')">
+                            <i class="fas fa-bell"></i> Send Reminder
+                        </button>
+                    </div>
+                `;
+                
+                bloodTestList.appendChild(card);
+            });
+        }
+
+        // Switch between sections
+        function switchSection(sectionId) {
+            // Update active menu item
+            menuItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-section') === sectionId) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Update active content section
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+                if (section.id === sectionId) {
+                    section.classList.add('active');
+                }
+            });
+
+            // Update page title
+            switch(sectionId) {
+                case 'dashboard':
+                    pageTitle.textContent = 'Dashboard';
+                    break;
+                case 'data-entry':
+                    pageTitle.textContent = 'Data Entry';
+                    break;
+                case 'search':
+                    pageTitle.textContent = 'Search Records';
+                    break;
+                case 'loi-management':
+                    pageTitle.textContent = 'LOI Management';
+                    break;
+                case 'blood-test':
+                    pageTitle.textContent = 'Blood Test Tracking';
+                    break;
+                case 'analytics':
+                    pageTitle.textContent = 'Analytics';
+                    break;
+            }
+
+            // Close sidebar on mobile after selection
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+            }
+        }
+
+        // Populate LOI list
+        function populateLOIList() {
+            const loiList = document.getElementById('loiList');
+            loiList.innerHTML = '';
+
+            // Filter people with LOI expiring in less than 120 days
+            const today = new Date();
+            const futureDate = new Date();
+            futureDate.setDate(today.getDate() + 120);
+
+            const expiringLOIs = sampleData.filter(person => {
+                const expiryDate = new Date(person.expiryDate);
+                return expiryDate <= futureDate && expiryDate >= today;
+            });
+
+            if (expiringLOIs.length === 0) {
+                loiList.innerHTML = '<p style="text-align: center; padding: 30px; color: var(--gray);">No LOIs expiring in the next 120 days</p>';
+                return;
+            }
+
+            expiringLOIs.forEach(person => {
+                const expiryDate = new Date(person.expiryDate);
+                const daysUntilExpiry = Math.floor((expiryDate - today) / (1000 * 60 * 60 * 24));
+                
+                const card = document.createElement('div');
+                card.className = 'blood-test-card';
+                if (daysUntilExpiry < 30) {
+                    card.classList.add('expiring-soon');
+                }
+                
+                card.innerHTML = `
+                    <div class="person-info">
+                        <img src="https://picsum.photos/seed/${person.id}/60/60.jpg" alt="${person.name}" class="person-avatar">
+                        <div class="person-details">
+                            <h4>${person.name}</h4>
+                            <p>Passport: ${person.passportNumber} | ${person.nationality}</p>
+                            <p style="color: var(--gray); font-size: 0.85rem;">Email: ${person.email}</p>
+                        </div>
+                    </div>
+                    <div class="test-info">
+                        <div class="test-date">LOI Expiry: ${person.expiryDate}</div>
+                        <div class="days-remaining">${daysUntilExpiry} days remaining</div>
+                        <button class="btn btn-primary" onclick="openEmailModal('${person.email}', '${person.name}')">
+                            <i class="fas fa-envelope"></i> Send Reminder
+                        </button>
+                    </div>
+                `;
+                
+                loiList.appendChild(card);
+            });
+        }
+
+        // Populate blood test list
+        function populateBloodTestList() {
+            displayFilteredBloodTests(bloodTestData);
+        }
+
+        // Populate recent notifications
+        function populateRecentNotifications() {
+            const notifications = [
+                { type: 'warning', message: 'LOI expiring in 15 days for Ahmed Mohamed', time: '2 hours ago' },
+                { type: 'danger', message: 'Blood test expired for Priya Sharma', time: '5 hours ago' },
+                { type: 'success', message: 'New documents uploaded for John Smith', time: '1 day ago' },
+                { type: 'info', message: 'Visa renewal reminder for Fatima Al-Rashid', time: '2 days ago' },
+                { type: 'warning', message: '3 documents missing for Muhammad Khan', time: '3 days ago' }
+            ];
+
+            const container = document.getElementById('recentNotifications');
+            container.innerHTML = '';
+
+            notifications.forEach(notif => {
+                const notifDiv = document.createElement('div');
+                notifDiv.className = 'blood-test-card';
+                notifDiv.style.padding = '15px';
+                notifDiv.innerHTML = `
+                    <div style="display: flex; align-items: center;">
+                        <i class="fas fa-${notif.type === 'success' ? 'check-circle' : notif.type === 'danger' ? 'exclamation-circle' : notif.type === 'warning' ? 'exclamation-triangle' : 'info-circle'}" 
+                           style="color: var(--${notif.type === 'success' ? 'secondary' : notif.type}); margin-right: 15px; font-size: 1.5rem;"></i>
+                        <div>
+                            <div style="font-weight: 500;">${notif.message}</div>
+                            <div style="color: var(--gray); font-size: 0.85rem;">${notif.time}</div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(notifDiv);
+            });
+        }
+
+        // Initialize Charts
+        function initializeCharts() {
+            // Activity Chart
+            const activityCtx = document.getElementById('activityChart');
+            if (activityCtx) {
+                new Chart(activityCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'New Entries',
+                            data: [65, 78, 90, 81, 96, 105],
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            tension: 0.4
+                        }, {
+                            label: 'Completed',
+                            data: [45, 62, 75, 70, 85, 92],
+                            borderColor: '#48bb78',
+                            backgroundColor: 'rgba(72, 187, 120, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Monthly Chart
+            const monthlyCtx = document.getElementById('monthlyChart');
+            if (monthlyCtx) {
+                new Chart(monthlyCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Work Visa', 'Visit Visa', 'Student Visa', 'Family Visa', 'Business Visa', 'Tourist Visa'],
+                        datasets: [{
+                            label: 'Current Month',
+                            data: [120, 85, 45, 67, 32, 28],
+                            backgroundColor: '#667eea'
+                        }, {
+                            label: 'Last Month',
+                            data: [105, 92, 38, 72, 28, 35],
+                            backgroundColor: '#48bb78'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Open email modal
+        function openEmailModal(email, name) {
+            document.getElementById('recipientEmail').value = email;
+            document.getElementById('emailMessage').value = `Dear ${name},
+
+This is a reminder that your Letter of Invitation (LOI) is expiring soon. Please submit the LOI through the OA system at your earliest convenience.
+
+Thank you.`;
+            emailModal.classList.add('show');
+        }
+
+        // Send email notification
+        function sendEmailNotification() {
+            const recipient = document.getElementById('recipientEmail').value;
+            const subject = document.getElementById('emailSubject').value;
+            const message = document.getElementById('emailMessage').value;
+            const autoSend = document.getElementById('sendAutomatically').checked;
+            
+            showToast(`Email sent to ${recipient}`, 'success');
+            
+            if (autoSend) {
+                showToast('Automatic email reminders enabled', 'success');
+            }
+            
+            emailModal.classList.remove('show');
+        }
+
+        // Send blood test reminder
+        function sendBloodTestReminder(name, passportNumber) {
+            showToast(`Blood test reminder sent to ${name} (${passportNumber})`, 'success');
+        }
+
+        // Save form data
+        function saveFormData() {
+            const fullName = document.getElementById('fullName').value;
+            const passportNumber = document.getElementById('passportNumber').value;
+            
+            if (!fullName || !passportNumber) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            showToast('Data saved successfully', 'success');
+            
+            setTimeout(() => {
+                resetForm();
+            }, 1500);
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('dataEntryForm').reset();
+            document.getElementById('visaForm').reset();
+            
+            fileUploads.forEach(upload => {
+                document.getElementById(upload.info).textContent = 'No file selected';
+            });
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toastElement = document.getElementById('toast');
+            const toastIcon = toastElement.querySelector('i');
+            const toastTitle = toastElement.querySelector('.toast-title');
+            const toastText = toastElement.querySelector('.toast-text');
+            
+            toastElement.className = 'toast ' + type;
+            
+            switch(type) {
+                case 'success':
+                    toastIcon.className = 'fas fa-check-circle';
+                    toastTitle.textContent = 'Success';
+                    break;
+                case 'warning':
+                    toastIcon.className = 'fas fa-exclamation-triangle';
+                    toastTitle.textContent = 'Warning';
+                    break;
+                case 'error':
+                    toastIcon.className = 'fas fa-times-circle';
+                    toastTitle.textContent = 'Error';
+                    break;
+            }
+            
+            toastText.textContent = message;
+            
+            toastElement.classList.add('show');
+            
+            setTimeout(() => {
+                toastElement.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

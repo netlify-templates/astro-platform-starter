@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>СтройЛегко — Юридическое сопровождение строительства</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { color: #333; line-height: 1.6; background-color: #fff; }
+    .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+    .btn {
+      display: inline-block; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .section { padding: 80px 0; }
+    .bg-light { background-color: #f8f9fa; }
+    .bg-dark { background: linear-gradient(135deg, #e63946, #d90429); color: white; text-align: center; }
+    .text-center { text-align: center; }
+    h1, h2, h3 { margin-bottom: 20px; }
+    p { margin-bottom: 16px; }
+    .logo { max-height: 60px; margin-bottom: 20px; }
+    .cards { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
+    .card { background: #f8f9fa; padding: 30px; border-radius: 12px; flex: 1 1 300px; max-width: 350px; border: 1px solid #dee2e6; }
+    .footer { background-color: #222; color: white; padding: 40px 0; text-align: center; }
+    .footer a { color: #4ade80; text-decoration: none; }
+    .contact-link { margin: 8px 0; display: block; }
+    .form-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); max-width: 600px; margin: 0 auto; }
+    input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; }
+    button { width: 100%; padding: 12px; background: #e63946; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 18px; font-weight: 600; }
+    button:hover { background: #d90429; }
+  </style>
+</head>
+<body>
+
+  <!-- Шапка -->
+  <header class="section">
+    <div class="container">
+      <!-- Логотип — замени src на свою ссылку после загрузки -->
+      <img src="https://i.imgur.com/9zKbFqP.png" alt="СтройЛегко" class="logo">
+      <h1>«СтройЛегко»</h1>
+      <h2>Подбор участков и оформление разрешений для строительства</h2>
+      <p class="text-center">Ваш надёжный партнёр в Красноярске и Красноярском крае.</p>
+      <p class="text-center">✅ Юридическое сопровождение строительства</p>
+      <div class="text-center" style="margin-top: 30px;">
+        <a href="tel:+79082234079" class="btn" style="background: #e63946; color: white;">📞 Позвонить</a>
+        <a href="https://wa.me/79082234079" target="_blank" class="btn" style="background: #25d366; color: white;">💬 WhatsApp</a>
+        <a href="mailto:k.llq@yandex.ru" class="btn" style="background: #4a6fa5; color: white;">✉️ Email</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- О себе -->
+  <section class="section bg-light">
+    <div class="container">
+      <h2>Я специализируюсь на оформлении и сопровождении документов для строительства</h2>
+      <p>
+        (РНС, ввод объекта, согласование АГО и др.), подборе участков для ИЖС и промышленных объектов,
+        проверке их юридической чистоты и оформлении всех необходимых документов для начала строительства.
+        Мой опыт — более 7 лет!
+      </p>
+    </div>
+  </section>
+
+  <!-- Услуги -->
+  <section class="section">
+    <div class="container">
+      <h2 class="text-center">Наши услуги</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>СТРОИТЕЛЬСТВО</h3>
+          <p>Полное сопровождение документов для вашего строительного проекта.</p>
+        </div>
+        <div class="card">
+          <h3>ПРОЕКТИРОВАНИЕ</h3>
+          <p>Мы предлагаем полный спектр услуг по проектированию.</p>
+        </div>
+        <div class="card">
+          <h3>КАДАСТРОВЫЕ РАБОТЫ</h3>
+          <p>Предоставлю комплексные услуги в области межевания и кадастрового учета.</p>
+        </div>
+        <div class="card">
+          <h3>ЮРИДИЧЕСКАЯ КОНСУЛЬТАЦИЯ</h3>
+          <p>Мы предлагаем широкий спектр юридических услуг для вашего комфорта и уверенности.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA + Форма -->
+  <section class="section bg-dark">
+    <div class="container">
+      <h2>Не теряйте время — начните строительство правильно!</h2>
+      <p>Оставьте заявку, и я свяжусь с вами в течение часа, чтобы обсудить ваш проект.</p>
+      <div style="margin-top: 20px;">
+        <a href="https://wa.me/79082234079" target="_blank" class="btn" style="background: white; color: #e63946;">💬 Написать в WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Форма обратной связи -->
+  <section class="section">
+    <div class="container">
+      <h2 class="text-center">Оставьте заявку</h2>
+      <p class="text-center">Я свяжусь с вами в течение часа!</p>
+      <div class="form-container">
+        <form action="https://formspree.io/f/xoqrvkka" method="POST">
+          <input type="text" name="name" placeholder="Ваше имя" required>
+          <input type="tel" name="phone" placeholder="Телефон" required>
+          <input type="email" name="email" placeholder="Email (необязательно)">
+          <textarea name="message" placeholder="Сообщение (например: нужен подбор участка)" rows="4"></textarea>
+          <button type="submit">Отправить заявку</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Футер -->
+  <footer class="footer">
+    <div class="container">
+      <img src="https://i.imgur.com/9zKbFqP.png" alt="СтройЛегко" class="logo">
+      <a href="tel:+79082234079" class="contact-link">тел/WhatsApp: +7 908 223 40 79</a>
+      <a href="mailto:k.llq@yandex.ru" class="contact-link">e-mail: k.llq@yandex.ru</a>
+      <p>📍 Красноярск и Красноярский край</p>
+    </div>
+  </footer>
+
+</body>
+</html>

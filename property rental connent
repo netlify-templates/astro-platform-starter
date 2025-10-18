@@ -1,0 +1,1415 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInAnonymously, signInWithCustomToken } from 'firebase/auth';
+import { getFirestore, collection, onSnapshot, addDoc, query, setLogLevel, serverTimestamp, doc, deleteDoc, getDoc, setDoc } from 'firebase/firestore';
+import { Home, PlusCircle, Loader2, DollarSign, MapPin, Bed, Bath, User, Briefcase, Trash2, LogIn, UserPlus, Search, Filter, PhoneCall, MessageCircle, Image, Star } from 'lucide-react';
+
+// --- Firebase Initialization and Globals ---
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+
+// --- Helper Components ---
+
+/**
+ * Custom Button Component (Renamed to CtaButton to avoid JSX parsing conflict)
+ */
+const CtaButton = ({ children, onClick, className = '', disabled = false, variant = 'primary' }) => {
+  let baseClasses = 'px-4 py-2 rounded-lg font-semibold transition-all duration-300 active:scale-[0.98]';
+  let variantClasses;
+
+  switch (variant) {
+    case 'danger':
+      variantClasses = 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-500/50';
+      break;
+    case 'secondary':
+      variantClasses = 'bg-gray-200 hover:bg-gray-300 text-gray-800 shadow-md';
+      break;
+    case 'success':
+      variantClasses = 'bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-500/50';
+      break;
+    case 'primary':
+    default:
+      variantClasses = 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/50';
+      break;
+  }
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`${baseClasses} ${disabled ? 'bg-gray-400 cursor-not-allowed text-gray-100 shadow-none' : variantClasses} ${className}`}
+    >
+      {children}
+    </button>
+  );
+};
+
+/**
+ * Simple Delete Confirmation Modal
+ */
+const ConfirmationModal = ({ isOpen, title, message, onConfirm, onCancel, isProcessing }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full p-6 space-y-4">
+        <h3 className="text-xl font-bold text-gray-900">{title}</h3>
+        <p className="text-gray-600">{message}</p>
+        <div className="flex justify-end space-x-3">
+          <CtaButton variant="secondary" onClick={onCancel} disabled={isProcessing}>
+            Cancel
+          </CtaButton>
+          <CtaButton variant="danger" onClick={onConfirm} disabled={isProcessing}>
+            {isProcessing ? <Loader2 className="animate-spin w-5 h-5 inline-block mr-2" /> : <Trash2 className="w-5 h-5 inline-block mr-2" />}
+            {isProcessing ? 'Deleting...' : 'Delete'}
+          </CtaButton>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Property Icon Placeholder Component (Fallback if no image URL is provided)
+ */
+const PropertyImagePlaceholder = ({ bedrooms }) => {
+  // Cap the number of bed icons shown at 4 for visual consistency
+  const numBeds = Math.min(4, bedrooms); 
+  
+  const bedIcons = Array(numBeds).fill(0).map((_, index) => (
+    <Bed key={index} className="w-6 h-6 text-white" />
+  ));
+
+  // Determine background color based on the number of bedrooms
+  const colorClass = bedrooms === 1 ? 'bg-indigo-400' :
+                     bedrooms === 2 ? 'bg-teal-500' :
+                     bedrooms === 3 ? 'bg-purple-500' :
+                     bedrooms >= 4 ? 'bg-gray-600' :
+                     'bg-gray-400';
+
+  return (
+    <div className={`relative w-full h-32 flex items-center justify-center rounded-lg mb-4 ${colorClass} shadow-lg`}>
+      <div className="flex space-x-2">
+        {bedIcons}
+      </div>
+      <span className="absolute top-3 right-3 text-sm font-semibold text-white bg-black/30 px-2 py-0.5 rounded-full">
+        {bedrooms} BR
+      </span>
+    </div>
+  );
+};
+
+/**
+ * Mock QR Code SVG Generator (visually resembles a QR code)
+ */
+const MockQRCode = () => {
+  // A simple 10x10 grid pattern that visually resembles a QR code
+  const blocks = Array(10).fill(0).map((_, i) =>
+    Array(10).fill(0).map((_, j) => {
+      // Create a recognizable, blocky pattern with corner markers
+      const isCorner = (i < 3 && j < 3) || (i < 3 && j > 6) || (i > 6 && j < 3);
+      // Simple alternating pattern for "data"
+      const isPattern = (i % 3 === 0 && j % 2 === 0) || (i % 5 === 1);
+      
+      const fill = isCorner ? 'fill-indigo-600' : (isPattern ? 'fill-gray-800' : 'fill-white');
+      
+      return (
+        <rect 
+          key={`${i}-${j}`}
+          x={j * 10}
+          y={i * 10}
+          width="8"
+          height="8"
+          className={fill}
+        />
+      );
+    })
+  ).flat();
+
+  return (
+    <svg 
+      viewBox="0 0 100 100" 
+      className="w-40 h-40 bg-white p-2 rounded-xl shadow-inner border border-gray-200"
+    >
+      {blocks}
+    </svg>
+  );
+};
+
+/**
+ * Download App Banner with QR Code
+ */
+const DownloadAppBanner = () => (
+  <div className="bg-indigo-700 text-white rounded-xl shadow-2xl p-8 mb-10 flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0 md:space-x-8">
+    <div className="md:w-1/2">
+      <h3 className="text-3xl font-extrabold mb-3">
+        Download the <span className="text-yellow-300">Gauteng Rental Connect</span> App!
+      </h3>
+      <p className="text-indigo-100 text-lg">
+        Scan the QR code to get the best experience on your mobile device. Instantly search, save, and list properties across Gauteng.
+      </p>
+      <p className="mt-4 text-sm text-indigo-200">
+        (Scanning this code in a real mobile environment would direct you to the app download page.)
+      </p>
+    </div>
+    
+    <div className="flex flex-col items-center justify-center space-y-2 md:w-auto">
+      <MockQRCode />
+      <span className="text-sm font-semibold text-yellow-300">SCAN ME</span>
+    </div>
+  </div>
+);
+
+
+/**
+ * Property Listing Card Component (Now includes delete functionality, WhatsApp, Map Link, Photo, Boosted status, and Favorites)
+ */
+const PropertyCard = ({ property, isOwner = false, onDelete, userId, db, isFavorite, onToggleFavorite }) => {
+    // Generate WhatsApp URL
+    const whatsappUrl = `https://wa.me/${property.whatsapp.replace(/\D/g, '')}`;
+    
+    // Generate Google Maps URL using the location and ensuring 'Gauteng, South Africa' is appended
+    const mapQuery = `${property.location}, Gauteng, South Africa`;
+    const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
+
+
+    return (
+        <div className={`relative bg-white p-6 rounded-xl shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-gray-100 flex flex-col h-full ${property.isBoosted ? 'border-4 border-yellow-400 ring-4 ring-yellow-200/50' : ''}`}>
+            
+            {/* FEATURED BADGE */}
+            {property.isBoosted && (
+                <div className="absolute top-0 right-0 z-10 bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-xl flex items-center shadow-lg">
+                    <Star className="w-4 h-4 mr-1 fill-white" />FEATURED
+                </div>
+            )}
+
+            {/* FAVORITES BUTTON */}
+            {userId && !isOwner && (
+                <button
+                    onClick={() => onToggleFavorite(property.id)}
+                    className="absolute top-4 right-4 z-20 p-2 bg-white/80 rounded-full shadow-lg transition-colors hover:bg-gray-100"
+                    title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+                >
+                    <Star 
+                        className={`w-6 h-6 transition-transform ${isFavorite ? 'text-yellow-500 fill-yellow-500 scale-110' : 'text-gray-400'}`} 
+                    />
+                </button>
+            )}
+
+            {/* Property Image / Placeholder Logic */}
+            {property.imageUrl ? (
+                <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden shadow-lg">
+                    <img 
+                        src={property.imageUrl} 
+                        alt={property.title} 
+                        className="w-full h-full object-cover"
+                        // Fallback to placeholder on error
+                        onError={(e) => {
+                            e.target.onerror = null; // prevents infinite loop
+                            e.target.style.display = 'none'; // hide broken image
+                        }}
+                    />
+                </div>
+            ) : (
+                <PropertyImagePlaceholder bedrooms={property.bedrooms} />
+            )}
+
+
+            <h3 className="text-xl font-bold text-gray-900 truncate mb-2">{property.title}</h3>
+            
+            {/* Property Details Grid */}
+            <div className="grid grid-cols-2 gap-3 text-sm text-gray-600 mb-4 flex-grow">
+                <div className="flex items-center">
+                    <DollarSign className="w-4 h-4 text-green-500 mr-2" />
+                    <span className="font-semibold text-lg text-green-600">R{property.price.toLocaleString()}<span className='text-xs font-normal text-gray-500'>/mo</span></span>
+                </div>
+                
+                {/* Location with Map Link */}
+                <a 
+                    href={mapUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors font-medium"
+                >
+                    <MapPin className="w-4 h-4 mr-2" />
+                    <span className="truncate">{property.location}</span>
+                </a>
+                
+                <div className="flex items-center">
+                    <Bed className="w-4 h-4 text-purple-500 mr-2" />
+                    {property.bedrooms} Beds
+                </div>
+                <div className="flex items-center">
+                    <Bath className="w-4 h-4 text-teal-500 mr-2" />
+                    {property.bathrooms} Baths
+                </div>
+            </div>
+
+            <p className="text-gray-500 text-sm italic mb-4 line-clamp-3">{property.description}</p>
+            
+            {/* Contact Info and Meta Data */}
+            <div className="pt-4 border-t border-gray-100 flex flex-col space-y-3">
+                {/* WhatsApp Contact Button */}
+                <a 
+                    href={whatsappUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center space-x-2 bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded-lg transition-colors shadow-md shadow-green-500/50"
+                >
+                    <MessageCircle className="w-5 h-5" />
+                    <span>WhatsApp Owner</span>
+                </a>
+
+                {/* Listing Meta */}
+                <div className="flex justify-between items-center text-xs text-gray-400">
+                    <div className="flex items-center space-x-1">
+                        <User className="w-3 h-3" />
+                        <span className="truncate max-w-[100px]" title={property.ownerId}>Owner ID: {property.ownerId.substring(0, 4)}...</span>
+                    </div>
+                    <p>Listed: {new Date(property.createdAt?.toDate?.() || Date.now()).toLocaleDateString()}</p>
+                </div>
+            </div>
+
+
+            {isOwner && (
+                <CtaButton variant="danger" onClick={() => onDelete(property.id, property.title)} className="mt-4 w-full">
+                    <Trash2 className="w-4 h-4 mr-2" /> Delete Listing
+                </CtaButton>
+            )}
+        </div>
+    );
+};
+
+/**
+ * Form for Adding a New Property Listing
+ */
+const PropertyForm = ({ db, userId, onAddSuccess }) => {
+  // --- MONETIZATION CONSTANTS ---
+  const BASE_FEE = 50; // R50 per post
+  const BOOST_FEE = 99; // R99 per boost
+  // ------------------------------
+  
+  const initialState = {
+    title: '', // Changed to empty for better real-world scenario
+    location: '', // Changed to empty 
+    price: '',
+    bedrooms: '',
+    bathrooms: '',
+    description: '',
+    whatsapp: '', 
+    imageUrl: '',
+    isBoosted: false, 
+  };
+  const [formData, setFormData] = useState(initialState);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Calculate total fee dynamically
+  const totalFee = BASE_FEE + (formData.isBoosted ? BOOST_FEE : 0);
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    
+    if (type === 'checkbox') {
+        setFormData({ ...formData, [name]: checked });
+    } else if (name === 'price' || name === 'bedrooms' || name === 'bathrooms') {
+      // Use raw value for input, validation happens on submit
+      setFormData({ ...formData, [name]: value });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  const validateForm = () => {
+    // Only check required fields (excluding optional imageUrl and isBoosted)
+    const requiredFields = ['title', 'location', 'price', 'bedrooms', 'bathrooms', 'description', 'whatsapp'];
+    for (const key of requiredFields) {
+      if (formData[key] === '' || formData[key] === null || (typeof formData[key] === 'number' && isNaN(formData[key]))) {
+        return false;
+      }
+    }
+    const price = parseInt(formData.price, 10);
+    const bedrooms = parseInt(formData.bedrooms, 10);
+    const bathrooms = parseInt(formData.bathrooms, 10);
+
+    if (isNaN(price) || price < 1) return false;
+    if (isNaN(bedrooms) || bedrooms < 1) return false;
+    if (isNaN(bathrooms) || bathrooms < 1) return false;
+
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm() || !db) {
+      setError("Please fill in all required fields correctly.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+
+    const propertyData = {
+      ...formData,
+      price: parseInt(formData.price, 10),
+      bedrooms: parseInt(formData.bedrooms, 10),
+      bathrooms: parseInt(formData.bathrooms, 10),
+      imageUrl: formData.imageUrl || null, 
+      isBoosted: formData.isBoosted || false,
+      // Track the fee paid for future reporting
+      feePaid: totalFee, 
+      ownerId: userId,
+      createdAt: serverTimestamp(),
+    };
+
+    try {
+      const propertiesRef = collection(db, `artifacts/${appId}/public/data/properties`);
+      await addDoc(propertiesRef, propertyData);
+      setFormData(initialState);
+      onAddSuccess();
+    } catch (err) {
+      console.error("Error adding document: ", err);
+      setError("Failed to list property. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
+  // Function to quickly fill the form with mock data
+  const handleQuickFill = () => {
+    setFormData({
+        title: 'Cozy 2BR Apartment in Midrand',
+        location: 'Midrand',
+        price: 9500,
+        bedrooms: 2,
+        bathrooms: 1,
+        description: 'A quick-filled listing to test the R50 base fee. Excellent security and amenities.',
+        whatsapp: '0712345678',
+        imageUrl: 'https://placehold.co/600x400/364E99/FFFFFF/png?text=Property+Image+Test',
+        isBoosted: false,
+    });
+    setError(null);
+  };
+
+  const InputField = ({ label, name, type = 'text', min = 1, pattern, title, isOptional = false }) => (
+    <div className="flex flex-col space-y-1">
+      <label htmlFor={name} className="text-sm font-medium text-gray-700">{label}{isOptional && <span className='text-gray-400'> (Optional)</span>}</label>
+      <input
+        type={type}
+        id={name}
+        name={name}
+        value={formData[name]}
+        onChange={handleChange}
+        min={min}
+        required={!isOptional}
+        pattern={pattern}
+        title={title}
+        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+      />
+    </div>
+  );
+
+  return (
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-2xl border border-gray-100">
+      <h2 className="text-3xl font-extrabold text-gray-900 mb-6">List Your Property</h2>
+      
+      {/* Base Fee Info */}
+      <div className="mb-6 p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
+          <p className="font-bold text-indigo-800 flex items-center">
+              <DollarSign className="w-5 h-5 mr-2" />
+              Base Listing Fee: R{BASE_FEE}.00
+          </p>
+          <p className="text-sm text-indigo-700 mt-1">
+              A fee of R{BASE_FEE}.00 is required for every property post on the platform.
+          </p>
+      </div>
+      
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <InputField label="Title (e.g., Cozy 2BR Apartment)" name="title" />
+        <InputField label="Location / Suburb (Gauteng)" name="location" />
+        
+        {/* Price and Details Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <InputField label="Monthly Rent Price (R)" name="price" type="number" />
+          <InputField label="Bedrooms" name="bedrooms" type="number" />
+          <InputField label="Bathrooms" name="bathrooms" type="number" />
+          {/* WhatsApp Field */}
+          <InputField 
+            label="WhatsApp Number (e.g., 0825551234)" 
+            name="whatsapp" 
+            type="tel"
+            pattern="[0-9+]{10,15}"
+            title="Enter a valid WhatsApp number (10-15 digits, including country code if necessary)." 
+          />
+        </div>
+        
+        {/* NEW: Image URL field */}
+        <InputField 
+          label="Primary Image URL" 
+          name="imageUrl" 
+          type="url"
+          isOptional={true}
+          title="Direct link to a high-resolution image of the property." 
+        />
+
+
+        {/* Description */}
+        <div className="flex flex-col space-y-1">
+          <label htmlFor="description" className="text-sm font-medium text-gray-700">Description</label>
+          <textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            required
+            rows="4"
+            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 resize-none"
+          ></textarea>
+        </div>
+        
+        {/* MONETIZATION: Boost Toggle (R99 extra fee) */}
+        <div className={`p-4 rounded-lg border-2 ${formData.isBoosted ? 'border-yellow-500 bg-yellow-50' : 'border-gray-300 bg-gray-50'}`}>
+            <label className="flex items-center justify-between cursor-pointer">
+                <div className="flex items-center">
+                    <input
+                        type="checkbox"
+                        name="isBoosted"
+                        checked={formData.isBoosted}
+                        onChange={handleChange}
+                        className="w-5 h-5 text-yellow-600 border-gray-300 rounded focus:ring-yellow-500 mr-3"
+                    />
+                    <div className="flex flex-col">
+                        <span className="font-bold text-gray-800 flex items-center">
+                            <Star className="w-5 h-5 mr-2 text-yellow-500 fill-yellow-500/50" />
+                            Boost Listing (+R{BOOST_FEE}.00)
+                        </span>
+                        <span className="text-sm text-gray-600">Appear at the top of search results for 7 days.</span>
+                    </div>
+                </div>
+                <span className={`px-3 py-1 text-xs font-semibold rounded-full ${formData.isBoosted ? 'bg-yellow-500 text-white' : 'bg-gray-300 text-gray-800'}`}>
+                    {formData.isBoosted ? 'Active' : 'Add Boost'}
+                </span>
+            </label>
+        </div>
+
+        {error && (
+          <p className="text-sm text-red-600 font-medium bg-red-50 p-3 rounded-lg border border-red-200">{error}</p>
+        )}
+
+        {/* Buttons Group: Quick Fill and Submit */}
+        <div className='flex space-x-4'>
+            <CtaButton 
+                type="button" 
+                variant="secondary" 
+                onClick={handleQuickFill} 
+                className="flex-grow"
+            >
+                <Image className="w-5 h-5 inline-block mr-2" />
+                Quick Fill (Test Data)
+            </CtaButton>
+
+            {/* SUBMIT BUTTON NOW SHOWS DYNAMIC FEE */}
+            <CtaButton 
+                type="submit" 
+                variant="success" 
+                disabled={isSubmitting || !validateForm()} 
+                className="flex-grow text-lg"
+            >
+                {isSubmitting ? <Loader2 className="animate-spin w-5 h-5 inline-block mr-2" /> : <DollarSign className="w-5 h-5 inline-block mr-2" />}
+                {isSubmitting ? 'Processing Payment...' : `Post & Pay R${totalFee}.00`}
+            </CtaButton>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+/**
+ * Sign Up Form
+ */
+const SignUpForm = ({ db, userId, onAuthSuccess }) => {
+  const [formData, setFormData] = useState({
+    name: '',       
+    surname: '',    
+    email: '',
+    phone: '',
+    password: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!db) return;
+
+    // FIX: Set isSubmitting to true immediately to prevent repeated clicks
+    setIsSubmitting(true); 
+    setError(null);
+
+    // 1. Check if a profile already exists (Simulating checking if email is already registered)
+    const profileRef = doc(db, `artifacts/${appId}/users/${userId}/user_profile`, 'info');
+    
+    // Simulate a brief network delay before fetching the doc for a better test environment experience
+    await new Promise(resolve => setTimeout(resolve, 500)); 
+    
+    const docSnap = await getDoc(profileRef);
+
+    if (docSnap.exists() && docSnap.data().email === formData.email) {
+      setIsSubmitting(false);
+      setError("This email is already associated with an account. Please sign in.");
+      return;
+    }
+    
+    try {
+      // 2. Mock Firebase Auth Sign Up success and save the profile data to Firestore
+      const profileData = {
+        name: formData.name,            
+        surname: formData.surname,      
+        email: formData.email,
+        phoneNumber: formData.phone,
+        createdAt: serverTimestamp(),
+      };
+
+      // Save profile to the private collection
+      await setDoc(profileRef, profileData);
+      
+      // Pass the new complete profile data back to the App component
+      onAuthSuccess({ 
+          name: formData.name, 
+          surname: formData.surname, 
+          email: formData.email, 
+          phone: formData.phone 
+      });
+
+    } catch (err) {
+      console.error("Sign Up Error: ", err);
+      setError("Failed to create profile. Please check your inputs.");
+    } finally {
+      // FIX: Ensure isSubmitting is explicitly set to false only if there's an error 
+      // or if the process finished without redirecting (e.g., failed validation check).
+      // Since onAuthSuccess handles the state change/redirect, we only need to handle errors here.
+      if (error) {
+         setIsSubmitting(false);
+      }
+    }
+  };
+
+  const InputField = ({ label, name, type = 'text', pattern, title }) => (
+    <div className="flex flex-col space-y-1">
+      <label htmlFor={name} className="text-sm font-medium text-gray-700">{label}</label>
+      <input
+        type={type}
+        id={name}
+        name={name}
+        value={formData[name]}
+        onChange={handleChange}
+        required
+        pattern={pattern}
+        title={title}
+        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+      />
+    </div>
+  );
+
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-2xl border border-gray-100 max-w-md mx-auto">
+      <h3 className="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+        <UserPlus className="w-6 h-6 mr-2 text-indigo-500" />Create Your Account
+      </h3>
+      <div className="mb-4 p-3 bg-yellow-50 text-yellow-800 rounded-lg text-sm border border-yellow-200">
+        <span className="font-bold">Note:</span> Actual email/password authentication is simulated. We securely save your profile data (Name, Surname, email, phone) to Firestore.
+      </div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Name and Surname Fields */}
+        <div className="grid grid-cols-2 gap-4">
+            <InputField label="First Name" name="name" type="text" />
+            <InputField label="Surname" name="surname" type="text" />
+        </div>
+
+        <InputField 
+          label="Email Address" 
+          name="email" 
+          type="email" 
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+          title="Must be a valid email address."
+        />
+        <InputField 
+          label="Cell Phone Number" 
+          name="phone" 
+          type="tel" 
+          pattern="[0-9]{10,15}"
+          // PHONE HINT UPDATE: More relevant context for SA numbers
+          title="Enter your cell phone number (e.g., 082 555 1234)."
+        />
+        <InputField 
+          label="Password (8+ Characters)" 
+          name="password" 
+          type="password"
+          pattern=".{8,}"
+          title="Password must be 8 or more characters."
+        />
+        
+        {error && (
+          <p className="text-sm text-red-600 font-medium bg-red-50 p-3 rounded-lg border border-red-200">{error}</p>
+        )}
+
+        {/* Updated Button with Loader */}
+        <CtaButton type="submit" disabled={isSubmitting} className="w-full">
+          {isSubmitting ? (
+            <span className="flex items-center justify-center">
+                <Loader2 className="animate-spin w-5 h-5 inline-block mr-2" />
+                Signing Up...
+            </span>
+          ) : 'Sign Up'}
+        </CtaButton>
+      </form>
+      <p className="mt-4 text-center text-sm text-gray-600">
+        Already have an account?{' '}
+        <button type="button" onClick={() => setIsSignUpView(false)} className="text-indigo-600 hover:text-indigo-800 font-semibold transition-colors">
+          Sign In
+        </button>
+      </p>
+    </div>
+  );
+};
+
+/**
+ * Sign In Form
+ */
+const SignInForm = ({ db, userId, onAuthSuccess, onSwitchToSignUp }) => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!db) return;
+
+    setIsSubmitting(true);
+    setError(null);
+
+    // Mock Sign In: Check if a profile exists for this session's user ID
+    const profileRef = doc(db, `artifacts/${appId}/users/${userId}/user_profile`, 'info');
+    
+    // Simulate a brief network delay before fetching the doc for a better test environment experience
+    await new Promise(resolve => setTimeout(resolve, 500)); 
+
+    const docSnap = await getDoc(profileRef);
+
+    if (docSnap.exists() && docSnap.data().email === formData.email) {
+      // Mock success and pass the existing data, including name and surname
+      const data = docSnap.data();
+      onAuthSuccess({ 
+          name: data.name, 
+          surname: data.surname, 
+          email: data.email, 
+          phone: data.phoneNumber 
+      });
+    } else {
+      setError("Invalid credentials or no profile found. Please sign up.");
+    }
+    
+    setIsSubmitting(false);
+  };
+
+  const InputField = ({ label, name, type = 'text' }) => (
+    <div className="flex flex-col space-y-1">
+      <label htmlFor={name} className="text-sm font-medium text-gray-700">{label}</label>
+      <input
+        type={type}
+        id={name}
+        name={name}
+        value={formData[name]}
+        onChange={handleChange}
+        required
+        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+      />
+    </div>
+  );
+
+  return (
+    <div className="bg-white p-6 rounded-xl shadow-2xl border border-gray-100 max-w-md mx-auto">
+      <h3 className="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+        <LogIn className="w-6 h-6 mr-2 text-indigo-500" />Sign In to Your Account
+      </h3>
+      <div className="mb-4 p-3 bg-yellow-50 text-yellow-800 rounded-lg text-sm border border-yellow-200">
+        <span className="font-bold">Note:</span> Sign In relies on the existence of a saved profile linked to your current session.
+      </div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <InputField label="Email Address" name="email" type="email" />
+        <InputField label="Password" name="password" type="password" />
+        
+        {error && (
+          <p className="text-sm text-red-600 font-medium bg-red-50 p-3 rounded-lg border border-red-200">{error}</p>
+        )}
+
+        <CtaButton type="submit" disabled={isSubmitting} className="w-full">
+          {isSubmitting ? (
+            <span className="flex items-center justify-center">
+                <Loader2 className="animate-spin w-5 h-5 inline-block mr-2" />
+                Signing In...
+            </span>
+          ) : 'Sign In'}
+        </CtaButton>
+      </form>
+      <p className="mt-4 text-center text-sm text-gray-600">
+        Don't have an account?{' '}
+        <button type="button" onClick={onSwitchToSignUp} className="text-indigo-600 hover:text-indigo-800 font-semibold transition-colors">
+          Sign Up
+        </button>
+      </p>
+    </div>
+  );
+};
+
+
+/**
+ * Account Management View (Shown after Sign In/Up)
+ */
+const AccountManager = ({ properties, userId, db, profileData }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [propertyToDelete, setPropertyToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
+
+  // Filter the main properties list to show only the ones owned by the current user ID
+  const userListings = properties.filter(p => p.ownerId === userId);
+
+  const openDeleteModal = (id, title) => {
+    setPropertyToDelete({ id, title });
+    setModalOpen(true);
+    setDeleteError(null);
+  };
+
+  const closeDeleteModal = () => {
+    setModalOpen(false);
+    setPropertyToDelete(null);
+  };
+
+  const handleDelete = async () => {
+    if (!db || !propertyToDelete) return;
+
+    setIsDeleting(true);
+    setDeleteError(null);
+    
+    try {
+      const propertyRef = doc(db, `artifacts/${appId}/public/data/properties`, propertyToDelete.id);
+      await deleteDoc(propertyRef);
+      closeDeleteModal();
+    } catch (err) {
+      console.error("Error deleting document: ", err);
+      setDeleteError("Failed to delete listing. Please try again.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+
+  return (
+    <div className="max-w-7xl mx-auto p-6 bg-white rounded-xl shadow-2xl border border-gray-100">
+      <h2 className="text-3xl font-extrabold text-gray-900 mb-6 flex items-center">
+        <User className="w-8 h-8 text-indigo-600 mr-3" />
+        {profileData.name} {profileData.surname}'s Account
+      </h2>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Display Name and Surname */}
+        <div className="p-4 bg-indigo-50 rounded-lg border border-indigo-200">
+            <p className="text-sm text-indigo-800 font-semibold">Full Name:</p>
+            <p className="break-all font-mono text-gray-900 font-medium">{profileData.name} {profileData.surname}</p>
+        </div>
+        
+        <div className="p-4 bg-indigo-50 rounded-lg border border-indigo-200">
+            <p className="text-sm text-indigo-800 font-semibold">Registered Email:</p>
+            <p className="break-all font-mono text-gray-900 font-medium">{profileData.email}</p>
+        </div>
+        <div className="p-4 bg-indigo-50 rounded-lg border border-indigo-200">
+            <p className="text-sm text-indigo-800 font-semibold">Phone Number:</p>
+            <p className="break-all font-mono text-gray-900 font-medium">{profileData.phone}</p>
+        </div>
+        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <p className="text-sm text-gray-700 font-semibold">Session User ID:</p>
+            <p className="break-all font-mono text-xs text-gray-700">{userId}</p>
+        </div>
+      </div>
+
+      <h3 className="2xl font-bold text-gray-800 mb-6">
+        My Active Listings ({userListings.length})
+      </h3>
+
+      {deleteError && (
+        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+          {deleteError}
+        </div>
+      )}
+
+      {userListings.length === 0 ? (
+        <div className="text-center p-10 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+          <p className="text-xl font-semibold text-gray-600">You haven't listed any properties yet.</p>
+          <p className="mt-2 text-gray-500">Go to the "List a Property" tab to create your first listing!</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {userListings.map(property => (
+            <PropertyCard 
+              key={property.id} 
+              property={property} 
+              isOwner={true} 
+              onDelete={openDeleteModal} 
+            />
+          ))}
+        </div>
+      )}
+
+      <ConfirmationModal 
+        isOpen={modalOpen}
+        title="Confirm Deletion"
+        message={`Are you sure you want to delete the listing: "${propertyToDelete?.title}"? This action cannot be undone.`}
+        onConfirm={handleDelete}
+        onCancel={closeDeleteModal}
+        isProcessing={isDeleting}
+      />
+    </div>
+  );
+};
+
+/**
+ * Filter Panel Component
+ */
+const FilterPanel = ({ filters, setFilters }) => {
+    const handleFilterChange = (e) => {
+        const { name, value, type } = e.target;
+        setFilters(prev => ({
+            ...prev,
+            [name]: type === 'number' ? (value === '' ? '' : Number(value)) : value,
+        }));
+    };
+
+    const handleClear = () => {
+        setFilters({
+            searchTerm: '',
+            minPrice: '',
+            maxPrice: '',
+            minBedrooms: 0,
+        });
+    };
+
+    return (
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 mb-8 max-w-full mx-auto">
+            <h3 className="text-xl font-bold text-gray-900 flex items-center mb-4">
+                <Filter className="w-5 h-5 mr-2 text-indigo-600" />
+                Advanced Filters
+            </h3>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {/* Search Term Input (re-purposed) */}
+                <div className="col-span-1 lg:col-span-4 relative">
+                    <label htmlFor="searchTerm" className="text-sm font-medium text-gray-700 sr-only">Search</label>
+                    <input
+                        type="text"
+                        id="searchTerm"
+                        name="searchTerm"
+                        placeholder="Search by title or location..."
+                        value={filters.searchTerm}
+                        onChange={handleFilterChange}
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150"
+                    />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                </div>
+
+                {/* Min Price */}
+                <div className="flex flex-col space-y-1">
+                    <label htmlFor="minPrice" className="text-sm font-medium text-gray-700">Min Price (R)</label>
+                    <input
+                        type="number"
+                        id="minPrice"
+                        name="minPrice"
+                        min="0"
+                        placeholder="e.g., 5000"
+                        value={filters.minPrice}
+                        onChange={handleFilterChange}
+                        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                    />
+                </div>
+
+                {/* Max Price */}
+                <div className="flex flex-col space-y-1">
+                    <label htmlFor="maxPrice" className="text-sm font-medium text-gray-700">Max Price (R)</label>
+                    <input
+                        type="number"
+                        id="maxPrice"
+                        name="maxPrice"
+                        min="0"
+                        placeholder="e.g., 15000"
+                        value={filters.maxPrice}
+                        onChange={handleFilterChange}
+                        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                    />
+                </div>
+                
+                {/* Min Bedrooms */}
+                <div className="flex flex-col space-y-1">
+                    <label htmlFor="minBedrooms" className="text-sm font-medium text-gray-700">Min Bedrooms</label>
+                    <select
+                        id="minBedrooms"
+                        name="minBedrooms"
+                        value={filters.minBedrooms}
+                        onChange={handleFilterChange}
+                        className="px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-white appearance-none"
+                    >
+                        <option value={0}>Any</option>
+                        <option value={1}>1+</option>
+                        <option value={2}>2+</option>
+                        <option value={3}>3+</option>
+                        <option value={4}>4+</option>
+                    </select>
+                </div>
+
+                {/* Clear Button */}
+                <div className="flex items-end pt-2 sm:pt-0">
+                    <CtaButton variant="secondary" onClick={handleClear} className="w-full">
+                        Clear Filters
+                    </CtaButton>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+
+/**
+ * Main Application Component
+ */
+const App = () => {
+  const [db, setDb] = useState(null);
+  const [auth, setAuth] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [isAuthReady, setIsAuthReady] = useState(false);
+  
+  // State for profile management
+  const [profileStatus, setProfileStatus] = useState('loading'); // 'loading', 'none', 'complete'
+  const [profileData, setProfileData] = useState({ name: '', surname: '', email: '', phone: '' }); 
+  const [isSignUpView, setIsSignUpView] = useState(false); // To toggle between Sign In/Up
+  
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  const [activeTab, setActiveTab] = useState('rentals'); // 'rentals', 'list', 'profile', or 'saved'
+
+  // NEW STATE: Favorites (stores property IDs)
+  const [favorites, setFavorites] = useState(new Set()); 
+
+  // Filtering combined state
+  const [filters, setFilters] = useState({
+      searchTerm: '',
+      minPrice: '',
+      maxPrice: '',
+      minBedrooms: 0,
+  });
+
+  // 1. Firebase Initialization and Authentication
+  useEffect(() => {
+    if (!firebaseConfig || !Object.keys(firebaseConfig).length) {
+      setError("Firebase configuration is missing. Cannot proceed.");
+      return;
+    }
+
+    setLogLevel('debug');
+
+    const app = initializeApp(firebaseConfig);
+    const authInstance = getAuth(app);
+    const dbInstance = getFirestore(app);
+    
+    setDb(dbInstance);
+    setAuth(authInstance);
+    
+    const setupAuth = async () => {
+      try {
+        const token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        if (token) {
+          await signInWithCustomToken(authInstance, token);
+        } else {
+          await signInAnonymously(authInstance);
+        }
+        
+        setUserId(authInstance.currentUser?.uid || crypto.randomUUID()); 
+      } catch (e) {
+        console.error("Firebase Auth Error, falling back to random ID:", e);
+        setUserId(crypto.randomUUID()); 
+      } finally {
+        setIsAuthReady(true); 
+      }
+    };
+
+    setupAuth();
+    
+  }, []); 
+  
+  // 2. Load User Profile on Auth Ready
+  useEffect(() => {
+    const loadProfile = async () => {
+      if (db && userId && isAuthReady) {
+        setProfileStatus('loading');
+        try {
+          // Check for existing profile in private collection
+          const profileRef = doc(db, `artifacts/${appId}/users/${userId}/user_profile`, 'info');
+          const docSnap = await getDoc(profileRef);
+
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            setProfileData({ 
+                name: data.name || '',
+                surname: data.surname || '',
+                email: data.email,
+                phone: data.phoneNumber
+            });
+            setProfileStatus('complete'); 
+          } else {
+            setProfileStatus('none');
+          }
+        } catch (e) {
+          console.error("Error loading user profile:", e);
+          setProfileStatus('none');
+        }
+      }
+    };
+
+    loadProfile();
+  }, [db, userId, isAuthReady, appId]);
+
+  // 3. Real-time Property Data Fetching (onSnapshot)
+  useEffect(() => {
+    if (db && isAuthReady) { 
+      if (properties.length === 0) {
+          setLoading(true);
+      }
+      setError(null);
+      
+      const propertiesRef = collection(db, `artifacts/${appId}/public/data/properties`);
+      const q = query(propertiesRef);
+
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const fetchedProperties = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        })).sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+        
+        setProperties(fetchedProperties);
+        setLoading(false);
+      }, (err) => {
+        console.error("Error fetching properties:", err);
+        if (properties.length === 0) {
+            setError("Failed to load property listings. Check network and console.");
+        }
+        setLoading(false);
+      });
+
+      return () => unsubscribe();
+    }
+  }, [db, appId, isAuthReady]); 
+
+  // 4. Real-time Favorites Data Fetching (onSnapshot)
+  useEffect(() => {
+    if (db && userId && isAuthReady) {
+      const favoritesRef = doc(db, `artifacts/${appId}/users/${userId}/favorites`, 'list');
+      
+      const unsubscribe = onSnapshot(favoritesRef, (docSnap) => {
+          if (docSnap.exists() && docSnap.data().propertyIds) {
+              // Convert array to Set for fast lookups
+              setFavorites(new Set(docSnap.data().propertyIds)); 
+          } else {
+              setFavorites(new Set());
+          }
+      }, (err) => {
+        console.error("Error fetching favorites:", err);
+      });
+
+      return () => unsubscribe();
+    } else {
+        setFavorites(new Set()); // Clear favorites if user state changes or logs out (simulated)
+    }
+  }, [db, userId, isAuthReady, appId]);
+
+  // FAVORITES TOGGLE HANDLER
+  const handleToggleFavorite = useCallback(async (propertyId) => {
+    if (!db || !userId) {
+        console.error("Cannot toggle favorite: DB or User ID not ready.");
+        return;
+    }
+
+    const favoritesRef = doc(db, `artifacts/${appId}/users/${userId}/favorites`, 'list');
+    
+    // Create a new Set from the current state for manipulation
+    const newFavorites = new Set(favorites);
+    
+    // Check if the property is currently favorited
+    if (newFavorites.has(propertyId)) {
+        // If favorited, remove it
+        newFavorites.delete(propertyId);
+    } else {
+        // If not favorited, add it
+        newFavorites.add(propertyId);
+    }
+
+    try {
+        // Save the updated list (Set converted back to an Array) to Firestore
+        await setDoc(favoritesRef, { 
+            propertyIds: Array.from(newFavorites),
+            updatedAt: serverTimestamp()
+        }, { merge: true }); // Use merge to prevent overwriting other potential fields
+    } catch (err) {
+        console.error("Error toggling favorite:", err);
+    }
+  }, [db, userId, favorites, appId]);
+
+
+  // Handlers
+  const handleListSuccess = useCallback(() => {
+    setActiveTab('profile'); 
+  }, []);
+
+  const handleAuthSuccess = useCallback((data) => {
+    setProfileData(data);
+    setProfileStatus('complete');
+    setActiveTab('profile');
+  }, []);
+  
+  // FILTERING AND SORTING LOGIC
+  const filteredProperties = properties
+    .filter(property => {
+        const { searchTerm, minPrice, maxPrice, minBedrooms } = filters;
+        const lowerCaseSearch = searchTerm.toLowerCase();
+        
+        // 1. Text Search Filter (Title or Location)
+        const matchesSearch = !lowerCaseSearch || (
+            property.title.toLowerCase().includes(lowerCaseSearch) ||
+            property.location.toLowerCase().includes(lowerCaseSearch)
+        );
+        
+        // 2. Price Range Filter
+        const propertyPrice = property.price;
+        const matchesMinPrice = minPrice === '' || propertyPrice >= minPrice;
+        const matchesMaxPrice = maxPrice === '' || propertyPrice <= maxPrice;
+        
+        // 3. Bedroom Filter
+        const propBedrooms = property.bedrooms ? parseInt(property.bedrooms, 10) : 0;
+        const matchesBedrooms = propBedrooms >= minBedrooms;
+
+        return matchesSearch && matchesMinPrice && matchesMaxPrice && matchesBedrooms;
+    })
+    .sort((a, b) => {
+        // MONETIZATION SORTING: Prioritize boosted properties
+        if (a.isBoosted && !b.isBoosted) return -1;
+        if (!a.isBoosted && b.isBoosted) return 1;
+        
+        // Fallback to latest posted date
+        const aTime = a.createdAt?.toMillis() || 0;
+        const bTime = b.createdAt?.toMillis() || 0;
+        return bTime - aTime;
+    });
+
+  const totalListings = properties.length;
+  const myListingCount = properties.filter(p => p.ownerId === userId).length;
+  const favoriteCount = favorites.size;
+  
+  // Get the actual favorited properties based on the IDs stored in the favorites Set
+  const favoriteProperties = properties.filter(p => favorites.has(p.id));
+
+  const TabButton = ({ tab, label, Icon, count }) => (
+      <button
+          onClick={() => setActiveTab(tab)}
+          className={`
+              flex items-center space-x-2 px-4 py-2 rounded-lg font-medium text-lg transition-colors
+              ${activeTab === tab 
+                  ? 'bg-indigo-100 text-indigo-700 shadow-md' 
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-indigo-600'
+              }
+          `}
+      >
+          <Icon className="w-5 h-5" />
+          <span>{label}</span>
+          {count > 0 && (
+            <span className="ml-2 px-2 py-0.5 text-xs font-bold text-white bg-indigo-500 rounded-full">{count}</span>
+          )}
+      </button>
+  );
+  
+  // Determine content for the 'profile' tab
+  let profileContent;
+  if (profileStatus === 'loading' || !isAuthReady) {
+    profileContent = (
+        <div className="flex justify-center items-center h-64 bg-white rounded-xl shadow-2xl">
+            <Loader2 className="w-8 h-8 text-indigo-500 animate-spin mr-3" />
+            <p className="text-lg text-indigo-500">Connecting to Account Service...</p>
+        </div>
+    );
+  } else if (profileStatus === 'none') {
+    // If no profile exists, show Sign Up first (default flow)
+    profileContent = isSignUpView ? (
+        <SignUpForm db={db} userId={userId} onAuthSuccess={handleAuthSuccess} />
+    ) : (
+        <SignInForm db={db} userId={userId} onAuthSuccess={handleAuthSuccess} onSwitchToSignUp={() => setIsSignUpView(true)} />
+    );
+  } else if (profileStatus === 'complete') {
+    // If profile exists, immediately show Account Manager
+    profileContent = <AccountManager properties={properties} userId={userId} db={db} profileData={profileData} />;
+  }
+
+
+  return (
+    <div className="min-h-screen bg-gray-50 font-inter">
+      {/* Header */}
+      <header className="bg-white shadow-lg sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center">
+          <div className="flex items-center mb-4 md:mb-0">
+            <Home className="w-8 h-8 text-indigo-600 mr-3" />
+            {/* BRANDING UPDATE: Focused on Gauteng */}
+            <h1 className="text-2xl font-extrabold text-gray-900">Gauteng Rental Connect</h1>
+          </div>
+          
+          <nav className="flex space-x-4">
+            <TabButton tab="rentals" label="Find a Rental" Icon={Home} count={totalListings} />
+            
+            {/* NEW TAB: SAVED LISTINGS */}
+            <TabButton tab="saved" label="Saved" Icon={Star} count={favoriteCount} />
+
+            <TabButton tab="list" label="List a Property" Icon={PlusCircle} count={0} />
+            <TabButton tab="profile" label="Account" Icon={Briefcase} count={profileStatus === 'complete' ? myListingCount : 0} />
+          </nav>
+
+          <p className="text-xs text-gray-500 mt-4 md:mt-0 px-3 py-1 bg-gray-100 rounded-full">
+            <User className="w-3 h-3 inline mr-1" />
+            Session Status: {userId ? (profileStatus === 'complete' ? 'Logged In' : 'Connected') : 'Not Ready'}
+          </p>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        {error && (
+          <div className="mb-8 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg" role="alert">
+            <p className="font-bold">Error:</p>
+            <p>{error}</p>
+          </div>
+        )}
+        
+        {/* Tab Content: Rentals */}
+        {activeTab === 'rentals' && (
+          <div>
+            {/* Download Banner with QR Code */}
+            <DownloadAppBanner />
+
+            {/* TITLE UPDATE: Focused on Gauteng */}
+            <h2 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Available Rental Listings in Gauteng</h2>
+            
+            {/* NEW: Filter Panel */}
+            <FilterPanel filters={filters} setFilters={setFilters} />
+            
+            {loading && (
+              <div className="flex justify-center items-center h-48">
+                <Loader2 className="w-8 h-8 text-indigo-500 animate-spin mr-2" />
+                <p className="text-lg text-indigo-500">Loading listings...</p>
+              </div>
+            )}
+
+            {!loading && totalListings === 0 && (
+              <div className="text-center p-10 bg-white rounded-xl shadow-md">
+                <p className="text-2xl font-semibold text-gray-600">No properties listed yet.</p>
+                <p className="mt-2 text-gray-500">Be the first to list one!</p>
+                <CtaButton onClick={() => setActiveTab('list')} className="mt-4">
+                    List My Property
+                </CtaButton>
+              </div>
+            )}
+
+            {/* Display message if no results found */}
+            {!loading && filteredProperties.length === 0 && (filters.searchTerm || filters.minPrice || filters.maxPrice || filters.minBedrooms > 0) && (
+                <div className="text-center p-10 bg-white rounded-xl shadow-md">
+                    <p className="text-2xl font-semibold text-gray-600">No matching listings found.</p>
+                    <p className="mt-2 text-gray-500">Try adjusting your filters or search criteria.</p>
+                </div>
+            )}
+            
+            {/* Displaying filteredProperties */}
+            {!loading && filteredProperties.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredProperties.map(property => (
+                  <PropertyCard 
+                    key={property.id} 
+                    property={property} 
+                    userId={userId} 
+                    db={db}
+                    isFavorite={favorites.has(property.id)}
+                    onToggleFavorite={handleToggleFavorite}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+        
+        {/* Tab Content: Saved Listings */}
+        {activeTab === 'saved' && (
+            <div className="space-y-8">
+                <h2 className="text-4xl font-extrabold text-gray-900 text-center flex items-center justify-center">
+                    <Star className="w-8 h-8 mr-3 text-yellow-500 fill-yellow-500/80" />
+                    My Saved Properties ({favoriteCount})
+                </h2>
+                
+                {favoriteCount === 0 ? (
+                    <div className="text-center p-10 bg-white rounded-xl shadow-md border border-dashed border-gray-300">
+                        <p className="text-xl font-semibold text-gray-600">You have no saved rentals yet.</p>
+                        <p className="mt-2 text-gray-500">Click the star icon on any listing to save it here!</p>
+                        <CtaButton onClick={() => setActiveTab('rentals')} className="mt-4">
+                            Start Browsing Rentals
+                        </CtaButton>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {favoriteProperties.map(property => (
+                            <PropertyCard 
+                                key={property.id} 
+                                property={property} 
+                                userId={userId} 
+                                db={db}
+                                isFavorite={favorites.has(property.id)}
+                                onToggleFavorite={handleToggleFavorite}
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
+        )}
+
+        
+        {/* Tab Content: List Property */}
+        {activeTab === 'list' && db && userId && (
+          <PropertyForm db={db} userId={userId} onAddSuccess={handleListSuccess} />
+        )}
+
+        {/* Tab Content: Account */}
+        {activeTab === 'profile' && profileContent}
+
+      </main>
+      
+      {/* Footer (Optional) */}
+      <footer className="py-6 text-center text-gray-500 text-sm border-t border-gray-200 mt-10">
+        Gauteng Rental Connect | Built with React and Firestore. App ID: {appId}
+      </footer>
+    </div>
+  );
+};
+
+export default App;

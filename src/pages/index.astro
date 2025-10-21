@@ -1,21 +1,42 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ContextAlert from '../components/ContextAlert.astro';
-import Markdown from '../components/Markdown.astro';
-
-const explainer = `
-An Astro website can go way beyond static pages - on the right platform.
-
-Netlify supports not only [Streaming SSR](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming) and fast [Edge Middleware](https://docs.astro.build/en/guides/middleware/), but also [on-demand revalidation](https://www.netlify.com/blog/cache-tags-and-purge-api-on-netlify/) and [stale-while-revalidate](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/). 
-Any page or data can be rebuilt only when needed, without site visitors ever getting a performance hit.
-`;
 ---
 
-<Layout title="Welcome to Astro.">
-    <ContextAlert class="mb-8" />
-    <h1 class="mb-10">Netlify Platform Starter for Astro</h1>
-    <Markdown content={explainer} class="mb-10 text-lg" />
-    <p>
-        <a href="https://docs.netlify.com/frameworks/astro/" class="btn btn-lg sm:min-w-64">Read the Docs</a>
+<Layout title="Perito Natan | Perícia Forense Digital e Segurança da Informação">
+  <Fragment slot="head">
+    <meta name="description" content="Perito Natan Fachini — Especialista em Perícia Forense Digital, Segurança da Informação e Investigação Cibernética. Atuação em provas digitais, análise de dispositivos e rastreamento de incidentes." />
+    <meta name="author" content="Natan Fachini" />
+  </Fragment>
+
+  <section class="text-center mt-20">
+    <h1 class="text-5xl font-bold mb-6">Perito Natan Fachini</h1>
+    <p class="text-xl mb-8 max-w-3xl mx-auto">
+      Profissional especializado em <strong>Perícia Forense Digital</strong> e <strong>Segurança da Informação</strong>, com experiência em análise de evidências, autenticação de documentos, rastreamento de incidentes e investigação de crimes cibernéticos.
     </p>
+
+    <a href="mailto:contato@peritonatan.com.br" class="bg-blue-600 text-white px-6 py-3 rounded-xl text-lg hover:bg-blue-700 transition">
+      📩 Entre em contato
+    </a>
+  </section>
+
+  <section class="mt-24 text-center">
+    <h2 class="text-3xl font-semibold mb-4">Áreas de Atuação</h2>
+    <ul class="list-none text-lg leading-relaxed">
+      <li>🔍 Análise de assinaturas eletrônicas e documentos digitais</li>
+      <li>💾 Extração e preservação de dados em mídias e dispositivos</li>
+      <li>📱 Perícia em dispositivos móveis e recuperação de informações</li>
+      <li>🕵️‍♂️ Investigação de incidentes cibernéticos e rastreamento de autoria</li>
+      <li>⚖️ Apoio técnico em processos judiciais e assistências técnicas</li>
+    </ul>
+  </section>
+
+  <section class="mt-24 text-center">
+    <h2 class="text-3xl font-semibold mb-4">Contato</h2>
+    <p class="text-lg">📧 <a href="mailto:contato@peritonatan.com.br" class="underline text-blue-400">contato@peritonatan.com.br</a></p>
+    <p class="text-lg">📍 Bento Gonçalves • Rio Grande do Sul</p>
+  </section>
+
+  <footer class="mt-32 text-center text-sm text-gray-400">
+    <p>© 2025 Perito Natan Fachini — Todos os direitos reservados.</p>
+  </footer>
 </Layout>

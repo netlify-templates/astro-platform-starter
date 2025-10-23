@@ -47,5 +47,3 @@ netlify link
 ```
 npm run dev
 ```
-
-If your browser doesn't navigate to the site automatically, visit [localhost:8888](http://localhost:8888).

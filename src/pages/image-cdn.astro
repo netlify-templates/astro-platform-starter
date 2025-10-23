@@ -1,17 +1,13 @@
 ---
 import { Image } from 'astro:assets';
 import corgi from '../assets/corgi.jpg';
-import ContextAlert from '../components/ContextAlert.astro';
 import Diff from '../components/Diff.astro';
 import Markdown from '../components/Markdown.astro';
 import Layout from '../layouts/Layout.astro';
 
-import { getNetlifyContext } from '../utils';
-
 const sampleImage = '/images/corgi.jpg';
 
-const ctx = getNetlifyContext();
-const forceWebP = ctx === 'dev';
+const forceWebP = process.env.NODE_ENV = "development";
 const sampleImageSrcSet = [640, 1280, 2048]
     .map((size) => {
         return `/.netlify/images?url=${sampleImage}&w=${size}${forceWebP ? '&fm=webp' : ''} ${size}w`;
@@ -62,12 +58,6 @@ detection, so format is set to WebP.
 <Layout title="Image CDN">
     <div class="flex flex-col gap-12 sm:gap-16">
         <section>
-            <ContextAlert
-                addedChecksFunction={(ctx) => {
-                    return ctx === 'dev' ? devModeWarning : null;
-                }}
-                class="mb-8"
-            />
             <h1>Image CDN</h1>
         </section>
         <section>

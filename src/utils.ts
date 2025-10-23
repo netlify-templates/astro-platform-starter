@@ -1,11 +1,6 @@
 import blobshape from 'blobshape';
 import { uniqueNamesGenerator, adjectives, animals } from 'unique-names-generator';
 
-// Note: this only works on the server side
-export function getNetlifyContext() {
-    return process.env.CONTEXT;
-}
-
 export function randomInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }

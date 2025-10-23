@@ -3,7 +3,6 @@ import Layout from '../../layouts/Layout.astro';
 import Markdown from '../../components/Markdown.astro';
 import ShapeEditor from './_components/ShapeEditor.tsx';
 import { uploadDisabled } from '../../utils';
-import ContextAlert from '../../components/ContextAlert.astro';
 
 const explainer = `
 [Netlify Blobs](https://docs.netlify.com/blobs/overview/) provides an object store for any kind of data, be it JSON, binary, 
@@ -21,12 +20,6 @@ User uploads are disabled in this site. To run your own and try it out:
 ---
 
 <Layout title="Blobs">
-    <ContextAlert
-        addedChecksFunction={() => {
-            return uploadDisabled ? uploadDisabledText : null;
-        }}
-        class="mb-8"
-    />
     <h1 class="mb-10">Blobs x Blobs</h1>
     <Markdown content={explainer} class="mb-12" />
     <ShapeEditor client:load />

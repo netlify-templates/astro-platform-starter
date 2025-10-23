@@ -42,10 +42,10 @@ npm install netlify-cli@latest -g
 netlify link
 ```
 
-4. Then, run the Astro.js development server via Netlify CLI:
+4. Then, run the Astro.js development server:
 
 ```
-netlify dev
+npm run dev
 ```
 
 If your browser doesn't navigate to the site automatically, visit [localhost:8888](http://localhost:8888).

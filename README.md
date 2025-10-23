@@ -2,7 +2,7 @@
 
 [Live Demo](https://astro-platform-starter.netlify.app/)
 
-A modern starter based on Astro.js, Tailwind, and [Netlify Core Primitives](https://docs.netlify.com/core/overview/#develop) (Edge Functions, Image CDN, Blob Store).
+A modern starter based on Astro.js, Tailwind, and [Netlify Core Primitives](https://docs.netlify.com/core/overview/#develop) (Edge Functions, Image CDN, Blobs).
 
 ## Astro Commands
 
@@ -25,24 +25,18 @@ All commands are run from the root of the project, from a terminal:
 
 | Prerequisites                                                                |
 | :--------------------------------------------------------------------------- |
-| [Node.js](https://nodejs.org/) v18.14+.                                      |
+| [Node.js](https://nodejs.org/) v18.20.8+.                                    |
 | (optional) [nvm](https://github.com/nvm-sh/nvm) for Node version management. |
 
 1. Clone this repository, then run `npm install` in its root directory.
 
-2. For the starter to have full functionality locally (e.g. edge functions, blob store), please ensure you have an up-to-date version of Netlify CLI. Run:
-
-```
-npm install netlify-cli@latest -g
-```
-
-3. Link your local repository to the deployed Netlify site. This will ensure you're using the same runtime version for both local development and your deployed site.
+2. Recommended: link your local repository to a Netlify project. This will ensure you're using the same runtime version for both local development and your deployed project.
 
 ```
 netlify link
 ```
 
-4. Then, run the Astro.js development server:
+3. Run the Astro.js development server:
 
 ```
 npm run dev

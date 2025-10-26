@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOID'S - Cyberpunk Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: #000;
+            color: #00ff41;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Animated Background */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(rgba(0,255,65,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,65,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 10s linear infinite;
+            z-index: -3;
+        }
+        
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        /* Particle System */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00ff41;
+            border-radius: 50%;
+            animation: particle-float 15s infinite linear;
+            box-shadow: 0 0 10px #00ff41;
+        }
+        
+        @keyframes particle-float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+            animation: glitch 2s infinite;
+        }
+        
+        @keyframes glitch {
+            0%, 100% { text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff; }
+            25% { text-shadow: -2px 0 #ff00ff, 2px 0 #00ffff; }
+            50% { text-shadow: 2px 0 #00ffff, -2px 0 #ff00ff; }
+            75% { text-shadow: -2px 0 #00ffff, 2px 0 #ff00ff; }
+        }
+        
+        /* 3D Rotating Planet */
+        .planet-3d {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotate3d 10s infinite linear;
+        }
+        
+        .planet-3d::before {
+            content: '🪐';
+            font-size: 150px;
+            position: absolute;
+            filter: drop-shadow(0 0 20px #00ff41) drop-shadow(0 0 40px #00ff41);
+            animation: planet-glow 2s infinite alternate;
+        }
+        
+        @keyframes rotate3d {
+            0% { transform: rotateY(0deg) rotateX(10deg); }
+            100% { transform: rotateY(360deg) rotateX(10deg); }
+        }
+        
+        @keyframes planet-glow {
+            0% { filter: drop-shadow(0 0 20px #00ff41) drop-shadow(0 0 40px #00ff41); }
+            100% { filter: drop-shadow(0 0 30px #00ff41) drop-shadow(0 0 60px #00ff41) drop-shadow(0 0 80px #00ff41); }
+        }
+        
+        /* Glassmorphism Container */
+        .container {
+            background: rgba(0, 20, 10, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 500px;
+            box-shadow: 
+                0 0 50px rgba(0, 255, 65, 0.5),
+                inset 0 0 20px rgba(0, 255, 65, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00ff41, #ff00ff, #00ffff, #00ff41);
+            border-radius: 15px;
+            opacity: 0;
+            z-index: -1;
+            animation: border-glow 3s infinite;
+        }
+        
+        @keyframes border-glow {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        
+        /* Neon Text */
+        .neon-text {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #00ff41;
+            text-shadow: 
+                0 0 10px #00ff41,
+                0 0 20px #00ff41,
+                0 0 30px #00ff41,
+                0 0 40px #00ff41;
+            animation: neon-flicker 1.5s infinite alternate;
+        }
+        
+        @keyframes neon-flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        /* Form Styles */
+        input, button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0, 255, 65, 0.5);
+            border-radius: 5px;
+            color: #00ff41;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #00ff41;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.8);
+            transform: scale(1.02);
+        }
+        
+        button {
+            background: linear-gradient(45deg, #00ff41, #00cc33);
+            color: #000;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 65, 0.6);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        
+        .nav-btn {
+            flex: 1;
+            margin: 0 5px;
+            padding: 10px;
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            border-radius: 5px;
+            color: #00ff41;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(0, 255, 65, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.4);
+        }
+        
+        /* Social Links */
+        .social-link {
+            display: block;
+            margin: 10px 0;
+            padding: 15px;
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            border-radius: 5px;
+            color: #00ff41;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-link:hover {
+            background: rgba(0, 255, 65, 0.2);
+            transform: translateX(5px);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+        }
+        
+        /* Hidden by default */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Success Message */
+        .success-message {
+            background: rgba(0, 255, 65, 0.2);
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+            animation: success-pulse 1s ease-in-out;
+        }
+        
+        @keyframes success-pulse {
+            0% { transform: scale(0.9); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* RGB Animation */
+        .rgb-animation {
+            animation: rgb-shift 3s infinite;
+        }
+        
+        @keyframes rgb-shift {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="cyber-grid"></div>
+    <div class="particles" id="particles"></div>
+    
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="container">
+            <div class="planet-3d"></div>
+            <h1 class="neon-text glitch" style="text-align: center; margin-bottom: 30px;">VOID'S</h1>
+            <form id="loginForm">
+                <input type="text" id="nama" placeholder="Masukkan Nama Anda" required>
+                <input type="text" id="username" placeholder="Masukkan Username" required>
+                <input type="password" id="password" placeholder="Masukkan Password" required>
+                <button type="submit">LOGIN</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Home Page -->
+    <div id="homePage" class="page">
+        <div class="container">
+            <div class="planet-3d"></div>
+            <h1 class="neon-text glitch" style="text-align: center; margin-bottom: 20px;">||||| VOID'S</h1>
+            
+            <a href="https://vm.tiktok.com/ZSHvfXHABY4UH-V8GyZ/" class="social-link" target="_blank">
+                <strong>[ Join Tiktok Channel ]</strong><br>
+                Follow our channel so you don't miss any further information.
+            </a>
+            
+            <a href="https://whatsapp.com/channel/0029Vb6Qh0TGU3BKYr3erA0p" class="social-link" target="_blank">
+                <strong>[ Join Whatsapp Channel ]</strong><br>
+                Follow our channel so you don't miss any further information.
+            </a>
+            
+            <div style="background: rgba(0,255,65,0.1); border: 1px solid rgba(0,255,65,0.3); border-radius: 5px; padding: 15px; margin: 20px 0;">
+                <div>👤 <strong>Nama:</strong> <span id="displayNama"></span></div>
+                <div>🛡️ <strong>Role:</strong> <span id="displayRole" class="rgb-animation"></span></div>
+                <div>📅 <strong>Calendar:</strong> <span id="calendar"></span></div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="showPage('homePage')">🏠 Home</button>
+                <button class="nav-btn" onclick="showPage('nglPage')">NgL</button>
+                <button class="nav-btn" onclick="showPage('infoPage')">❗ Info!</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NgL Page -->
+    <div id="nglPage" class="page">
+        <div class="container">
+            <div class="planet-3d"></div>
+            <h1 class="neon-text glitch" style="text-align: center; margin-bottom: 30px;">NgL SENDER</h1>
+            <form id="nglForm">
+                <input type="text" id="nglUsername" placeholder="Masukkan Username" required>
+                <input type="text" id="nglPesan" placeholder="Masukkan Pesan" required>
+                <input type="number" id="nglJumlah" placeholder="Masukkan Jumlah" min="1" value="1" required>
+                <button type="submit">KIRIM PESAN</button>
+            </form>
+            <div id="nglSuccess" class="success-message" style="display: none;">
+                Berhasil Mengirim Scammer ✅
+            </div>
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="showPage('homePage')">🏠 Home</button>
+                <button class="nav-btn" onclick="showPage('nglPage')">NgL</button>
+                <button class="nav-btn" onclick="showPage('infoPage')">❗ Info!</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Info Page -->
+    <div id="infoPage" class="page">
+        <div class="container">
+            <div class="planet-3d"></div>
+            <h1 class="neon-text glitch" style="text-align: center; margin-bottom: 30px;">INFORMASI</h1>
+            <div style="background: rgba(0,255,65,0.1); border: 1px solid rgba(0,255,65,0.3); border-radius: 5px; padding: 20px;">
+                <p><strong>Developer:</strong> Hasnan</p>
+                <p><strong>Nama Apk:</strong> VOID'S</p>
+                <p><strong>Deskripsi:</strong> Gunakan Aplikasi Ini dengan Bijak Ya</p>
+            </div>
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="showPage('homePage')">🏠 Home</button>
+                <button class="nav-btn" onclick="showPage('nglPage')">NgL</button>
+                <button class="nav-btn" onclick="showPage('infoPage')">❗ Info!</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Create particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Update calendar
+        function updateCalendar() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('calendar').textContent = now.toLocaleDateString('id-ID', options);
+        }
+        
+        // Page navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+        
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const nama = document.getElementById('nama').value;
+            
+            let role = '';
+            
+            if (password === 'HASNAN') {
+                role = 'Member';
+            } else if (password === 'HASNAN99') {
+                role = 'Admin';
+            } else if (password === 'RESSELERNGL99') {
+                role = 'Resseler';
+            } else {
+                alert('Password salah!');
+                return;
+            }
+            
+            document.getElementById('displayNama').textContent = nama;
+            document.getElementById('displayRole').textContent = role;
+            
+            showPage('homePage');
+            updateCalendar();
+            setInterval(updateCalendar, 1000);
+        });
+        
+        // NgL functionality
+        document.getElementById('nglForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('nglUsername').value;
+            const pesan = document.getElementById('nglPesan').value;
+            const jumlah = parseInt(document.getElementById('nglJumlah').value);
+            
+            const successDiv = document.getElementById('nglSuccess');
+            successDiv.style.display = 'none';
+            
+            for (let i = 0; i < jumlah; i++) {
+                try {
+                    const response = await fetch('https://ngl.link/api/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `username=${encodeURIComponent(username)}&question=${encodeURIComponent(pesan)}&deviceId=local-${Date.now()}`
+                    });
+                    
+                    if (response.ok) {
+                        console.log(`Pesan ${i + 1} terkirim`);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+                
+                // Delay between sends
+                if (i < jumlah - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            }
+            
+            successDiv.style.display = 'block';
+            document.getElementById('nglForm').reset();
+            
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 3000);
+        });
+        
+        // Initialize
+        createParticles();
+    </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>أذكاري</title>
+<style>
+    body {
+        font-family: 'Amiri', serif;
+        background: #f5f7fa;
+        padding: 30px;
+        color: #1a1a1a;
+        line-height: 2;
+        text-align: right;
+    }
+    h1 {
+        text-align: center;
+        font-size: 32px;
+        margin-bottom: 30px;
+    }
+    .zekr {
+        background: white;
+        padding: 18px;
+        margin-bottom: 15px;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        font-size: 20px;
+    }
+    #completeBtn {
+        width: 100%;
+        padding: 15px;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        font-size: 22px;
+        border-radius: 12px;
+        cursor: pointer;
+        margin-top: 25px;
+    }
+    #modal {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.4);
+        justify-content: center;
+        align-items: center;
+    }
+    #modalContent {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 380px;
+        text-align: center;
+        font-size: 22px;
+    }
+    #qrImg {
+        width: 180px;
+        margin: 15px auto;
+        display: block;
+    }
+    .note {
+        margin-top: 30px;
+        font-size: 16px;
+        color: #444;
+        text-align: center;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>أذكاري</h1>
+
+<div class="zekr">سبحان الله، والحمد لله، ولا إله إلا الله، والله أكبر</div>
+<div class="zekr">أستغفر الله العظيم وأتوب إليه</div>
+<div class="zekr">لا حول ولا قوة إلا بالله</div>
+<div class="zekr">سبحان الله وبحمده، سبحان الله العظيم</div>
+<div class="zekr">اللهم اجعل يومي هذا خيرًا من أمسه</div>
+<div class="zekr">حسبي الله ونعم الوكيل</div>
+<div class="zekr">اللهم صلّ وسلم على نبينا محمد</div>
+<div class="zekr">استغفر الله الذي لا إله إلا هو الحي القيوم وأتوب إليه</div>
+<div class="zekr">سبحان الله عدد ما خلق</div>
+<div class="zekr">اللهم ارزقنا حسن الخاتمة</div>
+<div class="zekr">اللهم اغفر لي ولوالدي</div>
+
+<button id="completeBtn">هل أكملت القراءة؟</button>
+
+<div class="note">
+    تنبيه: يُرجى عدم نزع أو قطع هذه الورقة، فربما يستفيد منها غيرك.
+</div>
+
+<div id="modal">
+    <div id="modalContent">
+        <p>بارك الله فيك 🤍</p>
+        <img id="qrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://example.com" />
+        <a id="downloadQR" download="QR.png">📥 حفظ الـ QR كصورة</a>
+    </div>
+</div>
+
+<script>
+    const btn = document.getElementById("completeBtn");
+    const modal = document.getElementById("modal");
+    const qrImg = document.getElementById("qrImg");
+    const downloadQR = document.getElementById("downloadQR");
+
+    btn.onclick = () => {
+        modal.style.display = "flex";
+    };
+
+    modal.onclick = (e) => {
+        if (e.target === modal) modal.style.display = "none";
+    };
+
+    downloadQR.onclick = function() {
+        fetch(qrImg.src)
+            .then(res => res.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                downloadQR.href = url;
+            });
+    };
+</script>
+
+</body>
+</html>

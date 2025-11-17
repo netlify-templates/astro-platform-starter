@@ -1,43 +1,79 @@
-# Astro on Netlify Platform Starter
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Хогвартс — Магический Мир</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
 
-[Live Demo](https://astro-platform-starter.netlify.app/)
+<body>
 
-A modern starter based on Astro.js, Tailwind, and [Netlify Core Primitives](https://docs.netlify.com/core/overview/#develop) (Edge Functions, Image CDN, Blobs).
+    <div class="header">
+        <h1 class="main-title">🏰 Хогвартс</h1>
+        <p class="main-subtitle">Магия начинается здесь</p>
+    </div>
 
-## Astro Commands
+    <div class="menu">
+        <button class="menu-btn" onclick="openPage('sorting')">🎩 Распределение</button>
+        <button class="menu-btn" onclick="openPage('spells')">🪄 Заклинания</button>
+        <button class="menu-btn" onclick="openPage('profile')">📜 Профиль</button>
+        <button class="menu-btn" onclick="openPage('inventory')">🎒 Инвентарь</button>
+        <button class="menu-btn" onclick="openPage('pet')">🐾 Питомец</button>
+    </div>
 
-All commands are run from the root of the project, from a terminal:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+    <!-- 🎩 Распределение -->
+    <div id="sorting" class="page hidden">
+        <h2>🎩 Шляпа Распределения</h2>
+        <p>Готов(а) узнать свой факультет?</p>
+        <button id="sortBtn" class="btn">Определить факультет</button>
+        <div id="sortingResult" class="result hidden"></div>
+    </div>
 
-## Deploying to Netlify
+    <!-- 🪄 Заклинания -->
+    <div id="spells" class="page hidden">
+        <h2>🪄 Заклинание дня</h2>
+        <button id="spellBtn" class="btn">Получить заклинание</button>
+        <div id="spellOutput" class="result"></div>
+    </div>
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/astro-platform-starter)
+    <!-- 📜 Профиль -->
+    <div id="profile" class="page hidden">
+        <h2>📜 Твой профиль</h2>
 
-## Developing Locally
+        <div class="profile-box">
+            <p><b>Имя:</b> <span id="profileName">Незнакомец</span></p>
+            <p><b>Факультет:</b> <span id="profileHouse">—</span></p>
+            <p><b>Питомец:</b> <span id="profilePet">—</span></p>
+        </div>
 
-| Prerequisites                                                                |
-| :--------------------------------------------------------------------------- |
-| [Node.js](https://nodejs.org/) v18.20.8+.                                    |
-| (optional) [nvm](https://github.com/nvm-sh/nvm) for Node version management. |
+        <input id="nameInput" class="input" placeholder="Введи своё имя" />
+        <button class="btn" onclick="saveName()">Сохранить</button>
+    </div>
 
-1. Clone this repository, then run `npm install` in its root directory.
+    <!-- 🎒 Инвентарь -->
+    <div id="inventory" class="page hidden">
+        <h2>🎒 Инвентарь</h2>
+        <ul id="inventoryList" class="inventory-list"></ul>
+        <button class="btn" onclick="addItem()">Добавить случайный предмет</button>
+    </div>
 
-2. Recommended: link your local repository to a Netlify project. This will ensure you're using the same runtime version for both local development and your deployed project.
+    <!-- 🐾 Питомец -->
+    <div id="pet" class="page hidden">
+        <h2>🐾 Выбор питомца</h2>
 
-```
-netlify link
-```
+        <div class="pets">
+            <button class="pet-btn" onclick="choosePet('🐱 Кот')">🐱 Кот</button>
+            <button class="pet-btn" onclick="choosePet('🦉 Сова')">🦉 Сова</button>
+            <button class="pet-btn" onclick="choosePet('🐸 Жаба')">🐸 Жаба</button>
+            <button class="pet-btn" onclick="choosePet('🔥 Феникс')">🔥 Феникс</button>
+        </div>
 
-3. Run the Astro.js development server:
+        <p id="petResult" class="result"></p>
+    </div>
 
-```
-npm run dev
-```
+
+<script src="script.js"></script>
+</body>
+</html>

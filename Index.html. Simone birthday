@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Joyeux Anniversaire 🎉</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #333;
+    }
+    .card {
+      background: #fff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 400px;
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      background: #ff6f61;
+      color: #fff;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    .btn:hover {
+      background: #e05146;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🎉 Buon Compleanno, Simone ! 🎉</h1>
+    <p>19 ans aujourd'hui ! Ti auguro una giornata piena di gioia, de bonnes vibes et de belles surprises 🎂🇮🇹</p>
+    <img src="https://i.imgur.com/3ZQ3ZQF.gif" alt="Chat qui fait la fête" style="width:100%;border-radius:15px;margin-bottom:20px;" />
+    <a class="btn" href="#" onclick="alert('Encore joyeux anniversaire ! 🎂🎈')">Clique ici 💛</a>
+  </div>
+</body>
+</html>

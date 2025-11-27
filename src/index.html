@@ -1,0 +1,484 @@
+> Olena Diplomatic Vocabulary Flashcards
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diplomatic Vocabulary Flashcards</title>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    html, body { height: 100%; }
+
+    * { box-sizing: border-box; }
+
+    .app-wrapper {
+      width: 100%;
+      min-height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .game-container {
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .app-title {
+      font-size: 36px;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0 0 12px 0;
+    }
+
+    .instruction-text {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.9);
+      margin: 0;
+    }
+
+    .progress-section {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(10px);
+    }
+
+    .progress-label {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: #4ade80;
+      border-radius: 6px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 12px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .flashcard-area {
+      perspective: 1000px;
+      margin-bottom: 24px;
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flashcard {
+      width: 100%;
+      max-width: 600px;
+      height: 300px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+      cursor: pointer;
+    }
+
+    .flashcard.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-front { background: #ffffff; }
+    .card-back {
+      background: #f0f9ff;
+      transform: rotateY(180deg);
+    }
+
+    .card-language-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+
+    .card-front .card-language-label {
+      background: #ddd6fe;
+      color: #5b21b6;
+    }
+
+    .card-back .card-language-label {
+      background: #bfdbfe;
+      color: #1e40af;
+    }
+
+    .card-term {
+      font-size: 32px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    .card-front .card-term { color: #1f2937; }
+    .card-back .card-term { color: #1e40af; }
+
+    .card-definition {
+      font-size: 16px;
+      color: #6b7280;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .card-number {
+      font-size: 14px;
+      color: #9ca3af;
+      margin-top: auto;
+      font-weight: 600;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+> Olena:
+.btn {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:active { transform: translateY(0); }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: #ffffff;
+      color: #667eea;
+    }
+
+    .btn-success {
+      background: #4ade80;
+      color: #ffffff;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      backdrop-filter: blur(10px);
+    }
+
+    .toast-message {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ef4444;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      z-index: 1000;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 640px) {
+      .app-wrapper { padding: 20px 16px; }
+      .app-title { font-size: 28px; }
+      .flashcard { height: 280px; }
+      .card-term { font-size: 24px; }
+      .card-definition { font-size: 14px; }
+      .btn {
+        padding: 12px 20px;
+        font-size: 14px;
+      }
+    }
+  </style>
+
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+<main class="app-wrapper">
+  <div class="game-container">
+    <header class="header">
+      <h1 class="app-title" id="appTitle">Diplomatic Vocabulary Flashcards</h1>
+      <p class="instruction-text" id="instructionText">Click cards to flip and reveal translations</p>
+    </header>
+
+    <section class="progress-section">
+      <div class="progress-label">Mastery Progress</div>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+      <div class="progress-stats">
+        <span id="masteredCount">0 / 40 terms mastered</span>
+        <span id="currentCard">Card 1 / 40</span>
+      </div>
+    </section>
+
+    <section class="flashcard-area">
+      <div class="flashcard" id="flashcard" role="button">
+        <div class="card-face card-front">
+          <span class="card-language-label">English</span>
+          <div class="card-term" id="frontTerm">Loading...</div>
+          <div class="card-definition" id="frontDefinition"></div>
+          <span class="card-number" id="frontCardNumber"></span>
+        </div>
+
+        <div class="card-face card-back">
+          <span class="card-language-label">Українська</span>
+          <div class="card-term" id="backTerm"></div>
+          <div class="card-definition" id="backDefinition"></div>
+          <span class="card-number" id="backCardNumber"></span>
+        </div>
+      </div>
+    </section>
+
+    <div class="controls">
+      <button class="btn btn-primary" id="prevBtn"><span id="previousButtonText">Previous Card</span></button>
+      <button class="btn btn-success" id="masterBtn"><span id="masterButtonText">Mark as Mastered</span></button>
+      <button class="btn btn-primary" id="nextBtn"><span id="nextButtonText">Next Card</span></button>
+    </div>
+
+    <div class="controls">
+      <button class="btn btn-secondary" id="resetBtn"><span id="resetButtonText">Reset Progress</span></button>
+    </div>
+  </div>
+</main>
+
+<script>
+  const flashcardsData = [...(the full array you provided)...]; // ⬅ I can insert it fully if you want
+
+  let currentIndex = 0;
+  let isFlipped = false;
+  let progressData = [];
+  let isLoading = true;
+
+  const defaultConfig = {
+    background_color: '#667eea',
+    card_color: '#ffffff',
+    text_color: '#1f2937',
+    button_color: '#ffffff',
+
+> Olena:
+success_color: '#4ade80',
+    app_title: 'Diplomatic Vocabulary Flashcards',
+    instruction_text: 'Click cards to flip and reveal translations',
+    next_button: 'Next Card',
+    previous_button: 'Previous Card',
+    master_button: 'Mark as Mastered',
+    reset_button: 'Reset Progress'
+  };
+
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast-message';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+
+  async function onConfigChange(config) {
+    const backgroundColor = config.background_color || defaultConfig.background_color;
+    const cardColor = config.card_color || defaultConfig.card_color;
+    const textColor = config.text_color || defaultConfig.text_color;
+
+    document.querySelector('.app-wrapper').style.background =
+      linear-gradient(135deg, ${backgroundColor} 0%, #764ba2 100%);
+
+    document.querySelector('.card-front').style.background = cardColor;
+    document.querySelectorAll('.card-term').forEach(el => el.style.color = textColor);
+
+    document.getElementById('appTitle').textContent =
+      config.app_title || defaultConfig.app_title;
+
+    document.getElementById('instructionText').textContent =
+      config.instruction_text || defaultConfig.instruction_text;
+
+    document.getElementById('nextButtonText').textContent =
+      config.next_button || defaultConfig.next_button;
+
+    document.getElementById('previousButtonText').textContent =
+      config.previous_button || defaultConfig.previous_button;
+
+    document.getElementById('masterButtonText').textContent =
+      config.master_button || defaultConfig.master_button;
+
+    document.getElementById('resetButtonText').textContent =
+      config.reset_button || defaultConfig.reset_button;
+  }
+
+  const dataHandler = {
+    onDataChanged(data) {
+      progressData = data;
+      updateProgress();
+      if (isLoading) {
+        isLoading = false;
+        renderCard();
+      }
+    }
+  };
+
+  async function init() {
+    const initResult = await window.dataSdk.init(dataHandler);
+    if (!initResult.isOk) showToast('Failed to initialize');
+
+    const flashcard = document.getElementById('flashcard');
+    flashcard.addEventListener('click', flipCard);
+
+    document.getElementById('nextBtn').onclick = nextCard;
+    document.getElementById('prevBtn').onclick = prevCard;
+    document.getElementById('masterBtn').onclick = toggleMastered;
+    document.getElementById('resetBtn').onclick = resetProgress;
+  }
+
+  function renderCard() {
+    const card = flashcardsData[currentIndex];
+    isFlipped = false;
+    document.getElementById('flashcard').classList.remove('flipped');
+
+    document.getElementById('frontTerm').textContent = card.english;
+    document.getElementById('frontDefinition').textContent = card.englishDef;
+    document.getElementById('frontCardNumber').textContent = ${currentIndex + 1} / ${flashcardsData.length};
+
+    document.getElementById('backTerm').textContent = card.ukrainian;
+    document.getElementById('backDefinition').textContent = card.ukrainianDef;
+    document.getElementById('backCardNumber').textContent = ${currentIndex + 1} / ${flashcardsData.length};
+
+    document.getElementById('currentCard').textContent =
+      Card ${currentIndex + 1} / ${flashcardsData.length};
+
+    updateMasterButton();
+  }
+
+  function flipCard() {
+    isFlipped = !isFlipped;
+    document.getElementById('flashcard').classList.toggle('flipped', isFlipped);
+  }
+
+  function nextCard() {
+    currentIndex = (currentIndex + 1) % flashcardsData.length;
+    renderCard();
+  }
+
+  function prevCard() {
+    currentIndex =
+      (currentIndex - 1 + flashcardsData.length) % flashcardsData.length;
+    renderCard();
+  }
+
+  function toggleMastered() {
+    const card = flashcardsData[currentIndex];
+    const index = progressData.findIndex(r => r.card_id === card.id);
+
+> Olena:
+if (index >= 0) {
+      progressData[index].mastered = !progressData[index].mastered;
+    } else {
+      progressData.push({ card_id: card.id, mastered: true });
+    }
+    updateProgress();
+    updateMasterButton();
+  }
+
+  function updateMasterButton() {
+    const card = flashcardsData[currentIndex];
+    const isMastered =
+      progressData.find(r => r.card_id === card.id)?.mastered;
+
+    const btn = document.getElementById('masterBtn');
+    const text = document.getElementById('masterButtonText');
+
+    if (isMastered) {
+      text.textContent = '✓ Mastered';
+      btn.classList.replace('btn-success', 'btn-primary');
+    } else {
+      text.textContent = defaultConfig.master_button;
+      btn.classList.replace('btn-primary', 'btn-success');
+    }
+  }
+
+  function updateProgress() {
+    const masteredCount = progressData.filter(r => r.mastered).length;
+
+    document.getElementById('masteredCount').textContent =
+      ${masteredCount} / ${flashcardsData.length} terms mastered;
+
+    const percent = masteredCount / flashcardsData.length * 100;
+    document.getElementById('progressBar').style.width = percent + '%';
+  }
+
+  function resetProgress() {
+    progressData = [];
+    updateProgress();
+    updateMasterButton();
+  }
+
+  init();
+</script>
+
+</body>
+</html>

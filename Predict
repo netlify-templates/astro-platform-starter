@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PredictMaster - Game Prediction App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --secondary: #2196F3;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --gray: #6B7280;
+            --border: #E5E7EB;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .cta-button {
+            background: var(--primary);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-dark);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--dark);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Matches Section */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--primary);
+        }
+
+        .filter-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Matches Grid */
+        .matches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .match-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--border);
+        }
+
+        .match-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .match-league {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .match-league i {
+            color: var(--primary);
+        }
+
+        .match-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-live {
+            background: #FEE2E2;
+            color: var(--danger);
+        }
+
+        .status-upcoming {
+            background: #DBEAFE;
+            color: var(--secondary);
+        }
+
+        .status-finished {
+            background: #D1FAE5;
+            color: #059669;
+        }
+
+        .teams-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .team {
+            flex: 1;
+            text-align: center;
+        }
+
+        .team-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .team-logo.away {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+        }
+
+        .team-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .team-score {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .match-vs {
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .vs-text {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .match-time {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .match-odds {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .odd-item {
+            text-align: center;
+        }
+
+        .odd-label {
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .odd-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .predict-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .predict-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 30px;
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: var(--gray);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column ul li a {
+            color: #D1D5DB;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #9CA3AF;
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .matches-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                padding: 20px;
+                flex-direction: column;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            .teams-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .match-vs {
+                padding: 15px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .matches-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .section-title h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    PredictMaster
+                </a>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <div class="nav-links" id="navLinks">
+                    <a href="#home" class="active">Home</a>
+                    <a href="#matches">Matches</a>
+                    <a href="#predictions">Predictions</a>
+                    <a href="#leagues">Leagues</a>
+                    <a href="#features">Features</a>
+                    <a href="#" class="cta-button">Get Started</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Predict <span>Game Outcomes</span> with AI Accuracy</h1>
+            <p>Leverage advanced machine learning to predict football, basketball, tennis matches and more. Join thousands of sports enthusiasts making smarter predictions.</p>
+            
+            <div class="hero-buttons">
+                <a href="#matches" class="btn btn-primary">
+                    <i class="fas fa-play-circle"></i> View Live Matches
+                </a>
+                <a href="#" class="btn btn-secondary">
+                    <i class="fas fa-user-plus"></i> Sign Up Free
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Matches Section -->
+    <section class="section" id="matches">
+        <div class="container">
+            <div class="section-title">
+                <h2>Live & Upcoming Matches</h2>
+                <p>Predict outcomes for matches across multiple sports and leagues</p>
+            </div>
+            
+            <!-- Filter Tabs -->
+            <div class="filter-tabs">
+                <div class="filter-tab active" data-sport="all">All Sports</div>
+                <div class="filter-tab" data-sport="football">
+                    <i class="fas fa-futbol"></i> Football
+                </div>
+                <div class="filter-tab" data-sport="basketball">
+                    <i class="fas fa-basketball-ball"></i> Basketball
+                </div>
+                <div class="filter-tab" data-sport="tennis">
+                    <i class="fas fa-baseball-ball"></i> Tennis
+                </div>
+            </div>
+            
+            <!-- Matches Grid -->
+            <div class="matches-grid" id="matchesGrid">
+                <!-- Matches will be loaded here by JavaScript -->
+            </div>
+            
+            <div style="text-align: center;">
+                <a href="#" class="btn btn-secondary">
+                    <i class="fas fa-eye"></i> View All Matches
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section" id="features" style="background: #f8fafc;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose PredictMaster?</h2>
+                <p>Advanced features that give you the prediction edge</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered Predictions</h3>
+                    <p>Our algorithms analyze thousands of data points to provide accurate match predictions.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Real-Time Updates</h3>
+                    <p>Live scores, odds changes, and injury updates keep you informed in real-time.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Advanced Analytics</h3>
+                    <p>Deep dive into team statistics, player form, and historical performance data.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>PredictMaster</h3>
+                    <p>The intelligent way to predict sports outcomes. Join our community of sports analysts today.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Sports</h3>
+                    <ul>
+                        <li><a href="#">Football</a></li>
+                        <li><a href="#">Basketball</a></li>
+                        <li><a href="#">Tennis</a></li>
+                        <li><a href="#">Cricket</a></li>
+                        <li><a href="#">Baseball</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Leagues</h3>
+                    <ul>
+                        <li><a href="#">Premier League</a></li>
+                        <li><a href="#">NBA</a></li>
+                        <li><a href="#">La Liga</a></li>
+                        <li><a href="#">Champions League</a></li>
+                        <li><a href="#">Serie A</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2024 PredictMaster. All rights reserved. | Made with <i class="fas fa-heart" style="color: #EF4444;"></i> for sports fans</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Sample match data
+        const matches = [
+            {
+                id: 1,
+                sport: "football",
+                league: "Premier League",
+                homeTeam: "Manchester City",
+                awayTeam: "Liverpool",
+                homeScore: 2,
+                awayScore: 1,
+                status: "live",
+                minute: "65'",
+                homeOdds: 2.10,
+                drawOdds: 3.40,
+                awayOdds: 3.20,
+                time: "Today, 15:00"
+            },
+            {
+                id: 2,
+                sport: "football",
+                league: "La Liga",
+                homeTeam: "Real Madrid",
+                awayTeam: "Barcelona",
+                homeScore: null,
+                awayScore: null,
+                status: "upcoming",
+                minute: null,
+                homeOdds: 2.30,
+                drawOdds: 3.50,
+                awayOdds: 3.00,
+                time: "Tomorrow, 20:00"
+            },
+            {
+                id: 3,
+                sport: "basketball",
+                league: "NBA",
+                homeTeam: "LA Lakers",
+                awayTeam: "Golden State",
+                homeScore: 98,
+                awayScore: 95,
+                status: "finished",
+                minute: null,
+                homeOdds: 1.90,
+                awayOdds: 1.95,
+                drawOdds: null,
+                time: "Final"
+            },
+            {
+                id: 4,
+                sport: "football",
+                league: "Serie A",
+                homeTeam: "AC Milan",
+                awayTeam: "Inter Milan",
+                homeScore: 1,
+                awayScore: 2,
+                status: "finished",
+                minute: null,
+                homeOdds: 2.70,
+                drawOdds: 3.20,
+                awayOdds: 2.60,
+                time: "Yesterday"
+            },
+            {
+                id: 5,
+                sport: "tennis",
+                league: "Australian Open",
+                homeTeam: "Novak Djokovic",
+                awayTeam: "Carlos Alcaraz",
+                homeScore: null,
+                awayScore: null,
+                status: "upcoming",
+                minute: null,
+                homeOdds: 1.80,
+                awayOdds: 2.05,
+                drawOdds: null,
+                time: "Jan 19, 08:00"
+            },
+            {
+                id: 6,
+                sport: "football",
+                league: "Bundesliga",
+                homeTeam: "Bayern Munich",
+                awayTeam: "Dortmund",
+                homeScore: null,
+                awayScore: null,
+                status: "upcoming",
+                minute: null,
+                homeOdds: 1.65,
+                drawOdds: 4.00,
+                awayOdds: 5.20,
+                time: "Jan 20, 17:30"
+            }
+        ];
+
+        // DOM Elements
+        const matchesGrid = document.getElementById('matchesGrid');
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        // Render matches
+        function renderMatches(sport = 'all') {
+            matchesGrid.innerHTML = '';
+            
+            const filteredMatches = sport === 'all' 
+                ? matches 
+                : matches.filter(match => match.sport === sport);
+            
+            filteredMatches.forEach(match => {
+                const matchCard = document.createElement('div');
+                matchCard.className = 'match-card';
+                
+                // Get status class
+                let statusClass = '';
+                let statusText = '';
+                switch(match.status) {
+                    case 'live':
+                        statusClass = 'status-live';
+                        statusText = `LIVE ${match.minute}`;
+                        break;
+                    case 'upcoming':
+                        statusClass = 'status-upcoming';
+                        statusText = 'UPCOMING';
+                        break;
+                    case 'finished':
+                        statusClass = 'status-finished';
+                        statusText = 'FINISHED';
+                        break;
+                }
+                
+                // Get sport icon
+                let sportIcon = '';
+                switch(match.sport) {
+                    case 'football':
+                        sportIcon = 'fas fa-futbol';
+                        break;
+                    case 'basketball':
+                        sportIcon = 'fas fa-basketball-ball';
+                        break;
+                    case 'tennis':
+                        sportIcon = 'fas fa-baseball-ball';
+                        break;
+                }
+                
+                matchCard.innerHTML = `
+                    <div class="match-header">
+                        <div class="match-league">
+                            <i class="${sportIcon}"></i>
+                            <span>${match.league}</span>
+                        </div>
+                        <div class="match-status ${statusClass}">${statusText}</div>
+                    </div>
+                    
+                    <div class="teams-container">
+                        <div class="team">
+                            <div class="team-logo">${match.homeTeam.substring(0, 2)}</div>
+                            <div class="team-name">${match.homeTeam}</div>
+                            ${match.homeScore !== null ? `<div class="team-score">${match.homeScore}</div>` : ''}
+                        </div>
+                        
+                        <div class="match-vs">
+                            <div class="vs-text">VS</div>
+                            <div class="match-time">${match.time}</div>
+                        </div>
+                        
+                        <div class="team">
+                            <div class="team-logo away">${match.awayTeam.substring(0, 2)}</div>
+                            <div class="team-name">${match.awayTeam}</div>
+                            ${match.awayScore !== null ? `<div class="team-score">${match.awayScore}</div>` : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="match-odds">
+                        <div class="odd-item">
+                            <div class="odd-label">1</div>
+                            <div class="odd-value">${match.homeOdds.toFixed(2)}</div>
+                        </div>
+                        ${match.drawOdds ? `
+                        <div class="odd-item">
+                            <div class="odd-label">X</div>
+                            <div class="odd-value">${match.drawOdds.toFixed(2)}</div>
+                        </div>
+                        ` : ''}
+                        <div class="odd-item">
+                            <div class="odd-label">2</div>
+                            <div class="odd-value">${match.awayOdds.toFixed(2)}</div>
+                        </div>
+                    </div>
+                    
+                    <button class="predict-btn" onclick="predictMatch(${match.id})">
+                        <i class="fas fa-bullseye"></i> Make Prediction
+                    </button>
+                `;
+                
+                matchesGrid.appendChild(matchCard);
+            });
+            
+            // If no matches
+            if (filteredMatches.length === 0) {
+                matchesGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                        <i class="fas fa-inbox" style="font-size: 48px; color: #9CA3AF; margin-bottom: 20px;"></i>
+                        <h3 style="color: #6B7280; margin-bottom: 10px;">No Matches Found</h3>
+                        <p style="color: #9CA3AF;">Try selecting a different sport filter</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Filter functionality
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                filterTabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                // Get sport filter
+                const sport = tab.getAttribute('data-sport');
+                // Render matches with filter
+                renderMatches(sport);
+            });
+        });
+
+        // Mobile menu toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Prediction function
+        function predictMatch(matchId) {
+            const match = matches.find(m => m.id === matchId);
+            if (match) {
+                alert(`Making prediction for: ${match.homeTeam} vs ${match.awayTeam}\n\nRedirecting to prediction page...`);
+                // In a real app, this would redirect to a prediction page
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMatches();
+            
+            // Update live match timer
+            setInterval(() => {
+                const liveMatches = matches.filter(m => m.status === 'live');
+                liveMatches.forEach(match => {
+                    // Simulate minute increase
+                    if (match.minute) {
+                        const currentMinute = parseInt(match.minute);
+                        if (currentMinute < 90) {
+                            match.minute = (currentMinute + 1) + "'";
+                        }
+                    }
+                });
+                
+                // Re-render if we're on the all sports tab
+                const activeTab = document.querySelector('.filter-tab.active');
+                if (activeTab && activeTab.getAttribute('data-sport') === 'all') {
+                    renderMatches('all');
+                }
+            }, 30000); // Update every 30 seconds
+        });
+
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add click animation to match cards
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('.match-card')) {
+                    const card = e.target.closest('.match-card');
+                    card.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        card.style.transform = '';
+                    }, 200);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

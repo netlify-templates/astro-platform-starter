@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Mino ❤️</title>
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+.card {
+  background: rgba(255,255,255,0.9);
+  padding: 60px 55px;
+  border-radius: 28px;
+  max-width: 700px;
+  min-height: 500px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 30px;
+  font-size: 2.6em;
+  color: #b84c65;
+}
+
+p {
+  font-size: 1.2em;
+  color: #444;
+  line-height: 1.9;
+  white-space: pre-line;
+  min-height: 300px;
+}
+
+button {
+  display: block;
+  margin: 35px auto 0;
+  padding: 14px 38px;
+  border: none;
+  border-radius: 40px;
+  background: #b84c65;
+  color: #fff;
+  font-size: 1em;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.06);
+}
+
+/* Floating hearts */
+.heart {
+  position: absolute;
+  bottom: -30px;
+  font-size: 22px;
+  animation: floatUp 7s linear infinite;
+  opacity: 0.8;
+}
+
+/* Floating rabbits */
+.rabbit {
+  position: absolute;
+  bottom: -40px;
+  font-size: 26px;
+  animation: floatUpRabbit 9s linear infinite;
+  opacity: 0.9;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-110vh); opacity: 0; }
+}
+
+@keyframes floatUpRabbit {
+  from { transform: translateY(0) scale(1); opacity: 1; }
+  to { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>My Dearest Mino ❤️</h1>
+  <p id="letter">Click the button to open your letter 💌</p>
+  <button onclick="nextPart()">Open Next Part 🐰</button>
+</div>
+
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const letterParts = [
+`Happy Birthday, Mino.
+
+Today isn’t just about candles or numbers or another year passing.
+It’s about celebrating you — the person who quietly changed my life in ways I never expected.`,
+
+`You walked into my world and somehow made everything softer.
+The loud days felt calmer.
+The hard days felt survivable.
+Even the ordinary moments started to matter more, just because you were there.`,
+
+`I don’t say this enough, but you are my comfort.
+You are the place my mind goes when I need peace.
+When things feel heavy, thinking of you reminds me that not everything has to be perfect to be good.`,
+
+`I love the way you exist in this world.
+Your presence, your reactions, your small habits.
+You make life feel less rushed and more meaningful, and that is rare.`,
+
+`I don’t promise you a perfect life.
+I don’t promise easy days or flawless plans.
+What I promise is effort, honesty, patience, and choosing you even on the difficult days.`,
+
+`If I could give you one thing on your birthday, it wouldn’t be something you can hold.
+It would be the certainty that you are deeply loved, valued, and never taken for granted.`,
+
+`So today, and every day after this one, I hope you feel safe, happy, and cherished.
+I hope life is kind to you.
+And I hope I get to stand beside you through all of it.`,
+
+`Happy Birthday, Mino ❤️
+
+You are my favorite part of every year.
+Always.`
+];
+
+let partIndex = 0;
+
+function nextPart() {
+  if(partIndex === 0) document.getElementById('music').play();
+  if (partIndex < letterParts.length) {
+    document.getElementById("letter").innerText = letterParts[partIndex];
+    partIndex++;
+  }
+}
+
+// Floating hearts and rabbits
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (5 + Math.random() * 3) + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 8000);
+}
+
+function createRabbit() {
+  const rabbit = document.createElement("div");
+  rabbit.className = "rabbit";
+  rabbit.innerText = "🐰";
+  rabbit.style.left = Math.random() * 100 + "vw";
+  rabbit.style.animationDuration = (7 + Math.random() * 3) + "s";
+  document.body.appendChild(rabbit);
+  setTimeout(() => rabbit.remove(), 10000);
+}
+
+setInterval(createHeart, 800);
+setInterval(createRabbit, 1800);
+</script>
+
+</body>
+</html>

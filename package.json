@@ -14,7 +14,7 @@
         "@astrojs/react": "^4.4.0",
         "@fontsource-variable/inter": "^5.2.5",
         "@netlify/blobs": "^10.5.0",
-        "@netlify/functions": "^5.1.1",
+        "@netlify/functions": "^5.1.2",
         "@tailwindcss/vite": "^4.1.16",
         "astro": "^5.15.0",
         "blobshape": "^1.0.0",

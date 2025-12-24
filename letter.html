@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Romantic Christmas Letter</title>
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Georgia', serif;
+  background: linear-gradient(to bottom, #0d1b2a, #1b263b);
+  color: white;
+  overflow-x: hidden;
+  text-align: center;
+  position: relative;
+}
+
+button {
+  padding: 18px 30px;
+  margin: 20px;
+  font-size: 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  position: relative;
+}
+.yes-btn { background-color: #4CAF50; color: white; }
+.no-btn { background-color: #f44336; color: white; }
+.yes-btn:hover, .yes-btn:active { transform: scale(1.1); }
+
+.intro { margin-top: 20vh; }
+
+.letter-container {
+  display: none;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+  position: relative;
+  width: 100%;
+}
+
+.letter-container.show {
+  display: flex;
+  opacity: 1;
+}
+
+.letter {
+  background-color: rgba(139,0,0,0.8);
+  padding: 20px;
+  border-radius: 20px;
+  max-width: 90%;
+  box-shadow: 0 0 20px rgba(255,215,0,0.8);
+  position: relative;
+  z-index: 1;
+}
+
+.name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #FFD700;
+  margin-bottom: 15px;
+  animation: float 2s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+.gift {
+  width: 30vw;
+  max-width: 150px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.5s;
+  filter: drop-shadow(0 0 10px #FFD700);
+  margin-top: 15vh;
+  animation: glow 2s infinite alternate;
+}
+
+.gift:hover { transform: scale(1.1); }
+
+@keyframes glow {
+  0% { box-shadow: 0 0 10px #FFD700; transform: scale(1); }
+  50% { box-shadow: 0 0 25px #FFD700; transform: scale(1.05); }
+  100% { box-shadow: 0 0 10px #FFD700; transform: scale(1); }
+}
+
+.heart {
+  color: pink;
+  font-size: 5vw;
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  animation: heartFall linear forwards;
+}
+@keyframes heartFall {
+  0% { transform: translate(0,0) rotate(0deg); opacity:1; }
+  100% { transform: translate(var(--x,0px), 80vh) rotate(360deg); opacity:0; }
+}
+
+.snowflake {
+  position: fixed;
+  top: -10px;
+  color: white;
+  font-size: 2vw;
+  user-select: none;
+  pointer-events: none;
+  z-index: 9999;
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes fall {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(100vh) rotate(360deg); }
+}
+
+.star {
+  position: absolute;
+  width: 1vw;
+  height: 1vw;
+  background: yellow;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: twinkle 1.5s infinite alternate;
+  z-index: 0;
+}
+@keyframes twinkle {
+  from { opacity: 0.3; transform: scale(1); }
+  to { opacity: 1; transform: scale(1.5); }
+}
+</style>
+</head>
+<body>
+
+<div class="intro" id="intro">
+  <h1>Do you want to open my Christmas letter? 🎄❤️</h1>
+  <button class="yes-btn" id="yesBtn">Yes</button>
+  <button class="no-btn" id="noBtn">No</button>
+</div>
+
+<div id="giftContainer" style="display:none;">
+  <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" id="gift" class="gift" alt="Gift">
+  <p>Tap the gift to open it! 🎁</p>
+</div>
+
+<div class="letter-container" id="letter-container">
+  <div class="letter">
+    <div class="name">JOSE</div>
+    <p>My love,</p>
+    <p>I’m writing you this letter with all my heart. I know how hard the distance can be, sometimes even painful, but one thing will never change: I love you. Being your girlfriend makes me so happy, more than you could ever imagine.</p>
+    <p>For me, the greatest gift I could ever receive is you. Your presence, your love, your support — even from far away, you’re always there for me, and I’m so grateful for that. Thank you for being you, thank you for loving me the way you do.</p>
+    <p>Every single day, my love for you grows stronger. I have no doubt about it: I will always wait for you, for my whole life, because my heart belongs only to you. You are the one I love, and no one else.</p>
+    <p>I’m yours, baby, forever.</p>
+    <p>MERRY CHRISTMAS ❤️🎄✨</p>
+  </div>
+</div>
+
+<!-- Son magique -->
+<audio id="magicSound" src="https://www.soundjay.com/button/sounds/button-16.mp3" preload="auto"></audio>
+
+<script>
+// No button qui fuit
+const noBtn = document.getElementById('noBtn');
+noBtn.addEventListener('mouseenter', () => {
+  const x = Math.random() * 200 - 100; 
+  const y = Math.random() * 50 - 25;   
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+});
+
+// Flocons de neige
+function createSnowflakes() {
+  const snowflakeCount = 40;
+  for(let i=0; i<snowflakeCount; i++) {
+    const snowflake = document.createElement('div');
+    snowflake.className = 'snowflake';
+    snowflake.style.left = Math.random() * window.innerWidth + 'px';
+    snowflake.style.animationDuration = (5 + Math.random()*10) + 's';
+    snowflake.innerHTML = '❄';
+    document.body.appendChild(snowflake);
+  }
+}
+createSnowflakes();
+
+// Yes -> montrer le cadeau
+document.getElementById('yesBtn').addEventListener('click', () => {
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('giftContainer').style.display = 'block';
+});
+
+// Click cadeau -> confettis coeur + lettre + son
+document.getElementById('gift').addEventListener('click', () => {
+  document.getElementById('giftContainer').style.display = 'none';
+
+  // Jouer le son
+  const sound = document.getElementById('magicSound');
+  sound.currentTime = 0;
+  sound.play();
+
+  // Confettis coeur
+  for(let i=0;i<50;i++){
+    const heart = document.createElement('div');
+    heart.innerHTML = '❤️';
+    heart.className = 'heart';
+    heart.style.left = Math.random()*window.innerWidth+'px';
+    heart.style.setProperty('--x', (Math.random()*200-100)+'px');
+    heart.style.animationDuration = 3 + Math.random()*2 + 's';
+    heart.style.fontSize = (5+Math.random()*10)+'vw';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),5000);
+  }
+
+  // Affichage lettre
+  const letterContainer = document.getElementById('letter-container');
+  letterContainer.classList.add('show');
+
+  // étoiles scintillantes
+  for(let i=0; i<20; i++){
+    let star = document.createElement('div');
+    star.className = 'star';
+    star.style.top = Math.random()*window.innerHeight + 'px';
+    star.style.left = Math.random()*window.innerWidth + 'px';
+    star.style.width = star.style.height = (2 + Math.random()*3) + 'px';
+    star.style.animationDuration = (1 + Math.random()*2) + 's';
+    letterContainer.appendChild(star);
+  }
+});
+</script>
+</body>
+</html>

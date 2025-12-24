@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مطعم تيك تاك</title>
+    <style>
+        body { margin: 0; font-family: 'Tahoma', sans-serif; background: #f7f7f7; color: #222; }
+        header { background: #d62828; padding: 25px; text-align: center; color: #fff; font-size: 32px; font-weight: bold; }
+        nav { background: #03045e; padding: 12px; text-align: center; }
+        nav a { color: #fff; margin: 0 18px; text-decoration: none; font-size: 18px; }
+        .hero { background: url('https://i.imgur.com/gwWq1RR.jpg') center/cover no-repeat; height: 330px; display: flex; align-items: center; justify-content: center; color: white; font-size: 40px; font-weight: bold; text-shadow: 2px 2px 10px #000; }
+        section { padding: 50px; text-align: center; }
+        .menu-grid, .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px; }
+        .item { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .item img { width: 100%; border-radius: 10px; }
+        .gallery-grid img { width: 100%; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        button { padding: 12px 22px; background: #d62828; color: white; border: none; border-radius: 10px; font-size: 16px; cursor: pointer; }
+        footer { background: #03045e; color: #fff; text-align: center; padding: 18px; margin-top: 40px; }
+        input, textarea { padding: 10px; width: 260px; border-radius: 8px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+
+<header>مطعم تيك تاك</header>
+<nav>
+    <a href="#home">الرئيسية</a>
+    <a href="#menu">قائمة الطعام</a>
+    <a href="#order">الطلبات</a>
+    <a href="#reservation">الحجوزات</a>
+    <a href="#gallery">المعرض</a>
+    <a href="#contact">تواصل معنا</a>
+</nav>
+
+<!-- شعار المطعم -->
+<div style="text-align:center; padding:20px;">
+    <img src="https://i.imgur.com/8h3gS2W.png" alt="شعار تيك تاك" style="width:140px;">
+</div>
+
+<div class="hero">أفضل الأطباق تجدونها في تيك تاك</div>
+
+<section id="offers">
+    <h2>عروض اليوم</h2>
+    <div class="menu-grid">
+        <div class="item"><img src="https://i.imgur.com/kd0zF2w.jpg"><h3>عرض البرغر + مشروب</h3><p>سعر: 40 درهم</p><button onclick="order('عرض البرغر')">اطلب العرض</button></div>
+        <div class="item"><img src="https://i.imgur.com/FJp1pO3.jpg"><h3>بيتزا + بطاطس</h3><p>سعر: 50 درهم</p><button onclick="order('عرض البيتزا')">اطلب العرض</button></div>
+    </div>
+</section>
+
+<section id="menu">
+    <h2>قائمة الطعام</h2>
+    <div class="menu-grid">
+        <div class="item"><img src="https://i.imgur.com/kd0zF2w.jpg"><h3>برغر تيك تاك</h3><p>سعر: 35 درهم</p><button onclick="order('برغر تيك تاك')">اطلب الآن</button></div>
+        <div class="item"><img src="https://i.imgur.com/FJp1pO3.jpg"><h3>بيتزا مارغريتا</h3><p>سعر: 45 درهم</p><button onclick="order('بيتزا مارغريتا')">اطلب الآن</button></div>
+        <div class="item"><img src="https://i.imgur.com/FtC3iV2.jpg"><h3>طاكوس تيك تاك</h3><p>سعر: 30 درهم</p><button onclick="order('طاكوس تيك تاك')">اطلب الآن</button></div>
+    </div>
+</section>
+
+<section id="order">
+    <h2>الطلبات عبر واتساب</h2>
+    <p>اضغط على الزر لإرسال طلبك مباشرة:</p>
+    <button onclick="sendWhatsApp()">إرسال طلب عبر واتساب</button>
+</section>
+
+<section id="reservation">
+    <h2>حجز طاولة</h2>
+    <form>
+        <input type="text" placeholder="الاسم"><br><br>
+        <input type="number" placeholder="عدد الأشخاص"><br><br>
+        <input type="date"><br><br>
+        <input type="time"><br><br>
+        <button>إرسال الطلب</button>
+    </form>
+</section>
+
+<section id="reviews">
+    <h2>آراء الزبائن</h2>
+    <div class="menu-grid">
+        <div class="item"><p>“أذكى طاكوس في المدينة! الخدمة ممتازة.”</p><h4>- محمد</h4></div>
+        <div class="item"><p>“بيتزا لذيذة و الأسعار مناسبة جداً.”</p><h4>- سارة</h4></div>
+        <div class="item"><p>“مكان رائع والطعام طازج دائماً.”</p><h4>- عصام</h4></div>
+    </div>
+</section>
+
+<section id="gallery"">
+    <h2>معرض الصور</h2>
+    <div class="gallery-grid">
+        <img src="https://i.imgur.com/gwWq1RR.jpg">
+        <img src="https://i.imgur.com/kd0zF2w.jpg">
+        <img src="https://i.imgur.com/FJp1pO3.jpg">
+        <img src="https://i.imgur.com/FtC3iV2.jpg">
+    </div>
+</section>
+
+<section id="contact">
+    <h2>تواصل معنا</h2>
+    <p>العنوان: المغرب</p>
+    <p>الهاتف: 0600000000</p>
+</section>
+
+<section id="payment">
+    <h2>الدفع الإلكتروني</h2>
+    <p>يمكنك الدفع بسهولة عبر الطرق التالية:</p>
+
+    <div class="menu-grid">
+        <div class="item">
+            <h3>الدفع ببطاقة بنكية</h3>
+            <p>Visa / Mastercard</p>
+            <button onclick="payNow('card')">الدفع الآن</button>
+        </div>
+
+        <div class="item">
+            <h3>بايبال</h3>
+            <p>دفع آمن وسريع عبر PayPal</p>
+            <button onclick="payNow('paypal')">الدفع عبر PayPal</button>
+        </div>
+
+        <div class="item">
+            <h3>الدفع عند الاستلام</h3>
+            <p>ادفع عندما يصلك طلبك</p>
+            <button onclick="payNow('cod')">اختيار الدفع عند الاستلام</button>
+        </div>
+    </div>
+</section>
+
+<section id="map"" style="text-align:center; padding:50px;">
+    <h2>موقع المطعم على الخريطة</h2>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d26552.228389665764!2d-7.62!3d33.58" width="90%" height="350" style="border:0; border-radius:12px;" allowfullscreen="" loading="lazy"></iframe>
+</section>
+
+<footer>© 2025 مطعم تيك تاك - جميع الحقوق محفوظة</footer>
+
+<script>
+function sendWhatsApp() {
+    window.open('https://wa.me/212600000000?text=السلام عليكم، أريد طلب وجبة من مطعم تيك تاك');
+}
+function order(item) {
+    window.open('https://wa.me/212600000000?text=أريد طلب: ' + item);
+}
+</script>
+
+<script>
+function payNow(method) {
+    if(method === 'card') {
+        window.open('https://example.com/pay-with-card');
+    } else if(method === 'paypal') {
+        window.open('https://www.paypal.com');
+    } else if(method === 'cod') {
+        alert('تم اختيار الدفع عند الاستلام. سيتم التواصل معكم لتأكيد الطلب.');
+    }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<title>Yeni il sürprizi 🎄</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#1d2671,#c33764);
+color:white;
+text-align:center;
+}
+.box{
+background:rgba(0,0,0,0.35);
+margin:30px auto;
+padding:20px;
+border-radius:15px;
+max-width:400px;
+}
+button{
+background:#ffcc00;
+border:none;
+padding:12px 20px;
+font-size:16px;
+border-radius:10px;
+cursor:pointer;
+margin-top:15px;
+}
+input{
+margin-top:15px;
+}
+</style>
+</head>
+<body>
+
+<div class="box" id="a">
+<h2>👋 Xoş gəlmisən</h2>
+<p>Kiçik bir Yeni il sürprizi üçün davam et 🎁</p>
+<button onclick="b()">📧 Gmail ilə davam et</button>
+</div>
+
+<div class="box" id="b" style="display:none">
+<h2>✅ Razılıq</h2>
+<p>
+Şəkilləri <b>öz istəyimlə</b> paylaşıram.  
+Onlar yalnız mənim üçün hazırlanacaq  
+<b>Yeni il sürpriz videosu</b> üçündür 💝
+</p>
+<button onclick="c()">Razıyam və davam et</button>
+</div>
+
+<div class="box" id="c" style="display:none">
+<h2>🎄 Yeni ilin mübarək!</h2>
+<p>
+Qoy bu il sənə sevinc, sağlamlıq  
+və gözəl xatirələr gətirsin ✨  
+<br><br>
+İndi videon üçün istədiyin şəkilləri seç 📸
+</p>
+<input type="file" multiple accept="image/*">
+<p style="font-size:14px">Şəkilləri yalnız sən seçirsən</p>
+</div>
+
+<script>
+function b(){
+document.getElementById("a").style.display="none";
+document.getElementById("b").style.display="block";
+}
+function c(){
+document.getElementById("b").style.display="none";
+document.getElementById("c").style.display="block";
+}
+</script>
+
+</body>
+</html>

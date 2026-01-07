@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fiverr Services | Sajid Khan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+font-family: Arial, sans-serif;
+margin: 0;
+background: #f5f5f5;
+}
+header {
+background: #1dbf73;
+color: #fff;
+padding: 30px 20px;
+text-align: center;
+}
+header h1 {
+margin: 0;
+font-size: 32px;
+}
+nav {
+background: #0f9d58;
+padding: 10px;
+text-align: center;
+}
+nav a {
+color: #fff;
+margin: 0 12px;
+text-decoration: none;
+font-weight: bold;
+}
+.container {
+padding: 20px;
+max-width: 1000px;
+margin: auto;
+}
+.card {
+background: #fff;
+padding: 20px;
+border-radius: 10px;
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+margin-bottom: 20px;
+}
+.btn {
+display: inline-block;
+background: #1dbf73;
+color: #fff;
+padding: 12px 20px;
+text-decoration: none;
+border-radius: 6px;
+font-weight: bold;
+}
+.btn:hover {
+background: #17a864;
+}
+footer {
+background: #333;
+color: #fff;
+text-align: center;
+padding: 15px;
+}
+</style>
+</head>
+<body>
+
+
+<header>
+<h1>Hi, I'm Sajid Khan</h1>
+<p>Professional Data Entry & Excel Expert on Fiverr</p>
+<a class="btn" href="#contact">Hire Me on Fiverr</a>
+</header>
+
+
+<nav>
+<a href="#about">About</a>
+<a href="#services">Services</a>
+<a href="#whyme">Why Me</a>
+</html>
+

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G.Z Balloons – הצעת מחיר</title>
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  background:radial-gradient(circle at top, #2a2a2a, #000);
+  font-family:Arial, sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+}
+
+.card{
+  width:100%;
+  max-width:420px;
+  background:linear-gradient(180deg,#111,#050505);
+  border-radius:22px;
+  padding:22px;
+  border:1px solid #d4af37;
+  box-shadow:0 0 40px rgba(212,175,55,.25);
+}
+
+.logo{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.logo img{
+  max-width:240px;
+}
+
+.field{
+  margin-bottom:14px;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  margin-bottom:6px;
+  color:#d4af37;
+}
+
+input, select{
+  width:100%;
+  padding:11px;
+  border-radius:12px;
+  border:1px solid #333;
+  background:#000;
+  color:#fff;
+  font-size:14px;
+}
+
+.colors{
+  display:flex;
+  gap:10px;
+}
+
+.buttons{
+  display:flex;
+  gap:10px;
+  margin-top:18px;
+}
+
+button{
+  flex:1;
+  padding:13px;
+  border:none;
+  border-radius:14px;
+  font-size:15px;
+  cursor:pointer;
+  color:#fff;
+}
+
+.whatsapp{
+  background:linear-gradient(180deg,#25d366,#1ebe5d);
+}
+
+.email{
+  background:linear-gradient(180deg,#2563eb,#1e40af);
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <div class="logo">
+    <!-- החלף לנתיב הלוגו באתר שלך -->
+    <img src="logo.png" alt="G.Z Balloons">
+  </div>
+
+  <div class="field">
+    <label>שם לקוח</label>
+    <input id="name">
+  </div>
+
+  <div class="field">
+    <label>טלפון / אימייל</label>
+    <input id="contact">
+  </div>
+
+  <div class="field">
+    <label>תאריך הגעה</label>
+    <input type="date" id="date">
+  </div>
+
+  <div class="field">
+    <label>שעה רצויה להגעה</label>
+    <input type="time" id="time">
+  </div>
+
+  <div class="field">
+    <label>כתובת האירוע</label>
+    <input id="address">
+  </div>
+
+  <div class="field">
+    <label>בחירת 2 צבעים</label>
+    <div class="colors">
+      <select id="color1">
+        <option>זהב</option><option>ירוק</option><option>לבן</option>
+        <option>שחור</option><option>כחול</option><option>ורוד</option>
+      </select>
+      <select id="color2">
+        <option>זהב</option><option>ירוק</option><option>לבן</option>
+        <option>שחור</option><option>כחול</option><option>ורוד</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button class="whatsapp" onclick="sendWhatsApp()">שליחה לוואטסאפ</button>
+    <button class="email" onclick="sendEmail()">שליחה למייל</button>
+  </div>
+</div>
+
+<script>
+const WHATSAPP = "972528757615";
+
+function buildText(){
+  return `
+הצעת מחיר – G.Z Balloons
+
+שם לקוח: ${name.value}
+יצירת קשר: ${contact.value}
+
+תאריך הגעה: ${date.value}
+שעה רצויה: ${time.value}
+כתובת: ${address.value}
+
+צבעים: ${color1.value} + ${color2.value}
+`;
+}
+
+function sendWhatsApp(){
+  const text = encodeURIComponent(buildText());
+  window.open(`https://wa.me/${WHATSAPP}?text=${text}`,"_blank");
+}
+
+function sendEmail(){
+  const subject = encodeURIComponent("הצעת מחיר – G.Z Balloons");
+  const body = encodeURIComponent(buildText());
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+}
+</script>
+
+</body>
+</html>

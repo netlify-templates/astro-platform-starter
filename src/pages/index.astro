@@ -1,19 +1,506 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Markdown from '../components/Markdown.astro';
 
-const explainer = `
-An Astro website can go way beyond static pages - on the right platform.
+const name = "Syahmi Zufayri";
+const role = "Interactive Media • Unity / C# • Video Editing";
+const intro =
+  "I build interactive projects, simple games, and clean visuals. Here you’ll find my best work, skills, and how to contact me.";
 
-Netlify supports not only [Streaming SSR](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming) and fast [Edge Middleware](https://docs.astro.build/en/guides/middleware/), but also [on-demand revalidation](https://www.netlify.com/blog/cache-tags-and-purge-api-on-netlify/) and [stale-while-revalidate](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/). 
-Any page or data can be rebuilt only when needed, without site visitors ever getting a performance hit.
-`;
+const quickLinks = [
+  { label: "View Projects", href: "#projects" },
+  { label: "Skills", href: "#skills" },
+  { label: "Contact", href: "#contact" },
+];
+
+const highlights = [
+  { title: "Fast & Clean", desc: "Simple, responsive UI with good UX and performance." },
+  { title: "Interactive Media", desc: "Unity, C#, multimedia principles, and user-focused design." },
+  { title: "Creative Editing", desc: "Kinetic typography, green screen, and modern video edits." },
+];
+
+const projects = [
+  {
+    title: "Flashcard + Drag & Drop Game (Unity)",
+    desc: "A study game with difficulty modes, timer, audio, and scoring.",
+    tags: ["Unity", "C#", "UI/UX"],
+    link: "#",
+  },
+  {
+    title: "3D Cafeteria Module (OpenGL)",
+    desc: "Built using primitives, transformation stack, and reusable functions.",
+    tags: ["OpenGL", "C++", "3D"],
+    link: "#",
+  },
+  {
+    title: "Interactive Media Coursework",
+    desc: "Reports + prototypes focused on Mayer’s principles and instructional design.",
+    tags: ["Interactive Media", "Design", "Learning Tech"],
+    link: "#",
+  },
+];
+
+const socials = [
+  { label: "GitHub", href: "https://github.com/" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/" },
+  { label: "Email", href: "mailto:ahmadsyahmi723@gmail.com" },
+];
 ---
 
-<Layout title="Welcome to Astro.">
-    <h1 class="mb-10">Netlify Platform Starter for Astro</h1>
-    <Markdown content={explainer} class="mb-10 text-lg" />
-    <p>
-        <a href="https://docs.netlify.com/frameworks/astro/" class="btn btn-lg sm:min-w-64">Read the Docs</a>
-    </p>
+<Layout title={`${name} — Portfolio`}>
+  <div class="wrap">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="heroCard">
+        <div class="badgeRow">
+          <span class="badge b1">Available for projects</span>
+          <span class="badge b2">Malaysia (GMT+8)</span>
+          <span class="badge b3">Portfolio v1</span>
+        </div>
+
+        <h1 class="title">
+          Hi, I’m <span class="gradText">{name}</span>
+        </h1>
+
+        <p class="subtitle">{role}</p>
+        <p class="lead">{intro}</p>
+
+        <div class="ctaRow">
+          <a class="btn primary" href="#projects">See Projects</a>
+          <a class="btn ghost" href="#contact">Contact Me</a>
+          <a class="btn soft" href="/resume.pdf" target="_blank" rel="noreferrer">Download CV</a>
+        </div>
+
+        <div class="mini">
+          <div class="miniItem">
+            <div class="dot d1"></div>
+            <span>Fast pages (Astro)</span>
+          </div>
+          <div class="miniItem">
+            <div class="dot d2"></div>
+            <span>Mobile-first</span>
+          </div>
+          <div class="miniItem">
+            <div class="dot d3"></div>
+            <span>Clean design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="heroSide">
+        <div class="glass">
+          <div class="glassTop">
+            <div class="pill">Featured Skills</div>
+          </div>
+          <div class="chipGrid">
+            <span class="chip">Unity</span>
+            <span class="chip">C#</span>
+            <span class="chip">UI</span>
+            <span class="chip">OpenGL</span>
+            <span class="chip">Adobe Animate</span>
+            <span class="chip">Shotcut / VN</span>
+            <span class="chip">Kinetic Typography</span>
+            <span class="chip">Green Screen</span>
+          </div>
+          <div class="divider"></div>
+          <p class="small">
+            Tip: Replace the project links below with your real GitHub / demo links.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HIGHLIGHTS -->
+    <section class="grid3" aria-label="Highlights">
+      {highlights.map((h) => (
+        <article class="card">
+          <h3 class="cardTitle">{h.title}</h3>
+          <p class="cardDesc">{h.desc}</p>
+        </article>
+      ))}
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section">
+      <div class="sectionHead">
+        <h2 class="h2">Projects</h2>
+        <p class="muted">A few things I’ve built (add screenshots later for extra impact).</p>
+      </div>
+
+      <div class="projGrid">
+        {projects.map((p) => (
+          <article class="projCard">
+            <div class="projTop">
+              <h3 class="projTitle">{p.title}</h3>
+              <a class="projLink" href={p.link} target="_blank" rel="noreferrer">
+                View →
+              </a>
+            </div>
+            <p class="projDesc">{p.desc}</p>
+            <div class="tagRow">
+              {p.tags.map((t) => (
+                <span class="tag">{t}</span>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="section">
+      <div class="sectionHead">
+        <h2 class="h2">Skills</h2>
+        <p class="muted">What I use most often.</p>
+      </div>
+
+      <div class="skillGrid">
+        <div class="skillCard s1">
+          <h3>Development</h3>
+          <ul>
+            <li>Unity (UI, gameplay systems)</li>
+            <li>C# scripting (GameManager, timer, audio, scoring)</li>
+            <li>Basic web (HTML/CSS)</li>
+          </ul>
+        </div>
+
+        <div class="skillCard s2">
+          <h3>Creative</h3>
+          <ul>
+            <li>Green screen workflow</li>
+            <li>Kinetic typography</li>
+            <li>Video editing (Shotcut / VN)</li>
+          </ul>
+        </div>
+
+        <div class="skillCard s3">
+          <h3>Academic</h3>
+          <ul>
+            <li>Interactive Media concepts</li>
+            <li>Mayer’s multimedia learning</li>
+            <li>Instructional design basics</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <div class="contactCard">
+        <div>
+          <h2 class="h2">Contact</h2>
+          <p class="muted">
+            Want to collaborate or ask about my projects? Message me anytime.
+          </p>
+
+          <div class="linkRow">
+            {socials.map((s) => (
+              <a class="linkBtn" href={s.href} target="_blank" rel="noreferrer">{s.label}</a>
+            ))}
+          </div>
+        </div>
+
+        <div class="contactSide">
+          <div class="note">
+            <div class="noteTitle">Quick edit</div>
+            <div class="noteText">
+              Replace links: GitHub, LinkedIn, Email.<br />
+              Add your resume file as <span class="mono">/public/resume.pdf</span>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <div class="footInner">
+        <span>© {new Date().getFullYear()} {name}</span>
+        <nav class="footNav">
+          {quickLinks.map((l) => (
+            <a href={l.href}>{l.label}</a>
+          ))}
+        </nav>
+      </div>
+    </footer>
+  </div>
+
+  <style>
+    /* Page container */
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
+
+    /* HERO */
+    .hero{
+      display:grid;
+      grid-template-columns: 1.3fr .9fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 12px;
+      margin-bottom: 18px;
+    }
+
+    .heroCard{
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      padding: 26px;
+      background:
+        radial-gradient(900px 400px at 10% 0%, rgba(124,92,255,.35), transparent 60%),
+        radial-gradient(700px 400px at 90% 20%, rgba(45,212,191,.28), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .badgeRow{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom: 14px; }
+    .badge{
+      font-size: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      backdrop-filter: blur(8px);
+    }
+    .b1{ box-shadow: 0 0 0 1px rgba(124,92,255,.25) inset; }
+    .b2{ box-shadow: 0 0 0 1px rgba(45,212,191,.22) inset; }
+    .b3{ box-shadow: 0 0 0 1px rgba(255,255,255,.18) inset; }
+
+    .title{
+      font-size: clamp(34px, 3.2vw, 54px);
+      line-height: 1.05;
+      margin: 0 0 10px;
+      letter-spacing: -0.02em;
+    }
+    .gradText{
+      background: linear-gradient(90deg, #7c5cff, #2dd4bf);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .subtitle{
+      margin: 0 0 10px;
+      opacity: .85;
+      font-weight: 600;
+    }
+    .lead{
+      margin: 0 0 18px;
+      opacity: .78;
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 62ch;
+    }
+
+    .ctaRow{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom: 16px; }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 11px 14px;
+      border-radius: 14px;
+      text-decoration:none;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      font-weight: 700;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.22); }
+    .primary{
+      background: linear-gradient(90deg, rgba(124,92,255,.95), rgba(45,212,191,.85));
+      border-color: transparent;
+      color: rgba(0,0,0,.9);
+    }
+    .primary:hover{ filter: brightness(1.05); transform: translateY(-1px); }
+    .ghost{ background: rgba(255,255,255,.03); }
+    .soft{ background: rgba(124,92,255,.16); }
+
+    .mini{
+      display:flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+    .miniItem{
+      display:flex; align-items:center; gap:8px;
+      font-size: 13px;
+      opacity: .85;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .dot{ width:10px; height:10px; border-radius:999px; }
+    .d1{ background: #2dd4bf; }
+    .d2{ background: #7c5cff; }
+    .d3{ background: #fbbf24; }
+
+    .heroSide{ display:flex; }
+    .glass{
+      width:100%;
+      border-radius: 24px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(700px 280px at 20% 10%, rgba(45,212,191,.18), transparent 55%),
+        radial-gradient(700px 280px at 80% 20%, rgba(124,92,255,.18), transparent 60%),
+        rgba(255,255,255,.04);
+      backdrop-filter: blur(10px);
+    }
+    .glassTop{ display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px; }
+    .pill{
+      font-size: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .chipGrid{ display:flex; flex-wrap:wrap; gap:8px; }
+    .chip{
+      font-size: 13px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+      opacity: .9;
+    }
+    .divider{ height:1px; background: rgba(255,255,255,.12); margin: 14px 0; }
+    .small{ margin:0; font-size: 13px; opacity:.75; line-height:1.55; }
+
+    /* HIGHLIGHTS */
+    .grid3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 18px 0 24px;
+    }
+    .card{
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+    .cardTitle{ margin:0 0 8px; font-size: 16px; }
+    .cardDesc{ margin:0; opacity:.75; line-height:1.55; }
+
+    /* SECTIONS */
+    .section{ margin: 28px 0; }
+    .sectionHead{ margin-bottom: 12px; }
+    .h2{ margin:0 0 6px; font-size: 26px; letter-spacing: -0.01em; }
+    .muted{ margin:0; opacity:.72; }
+
+    /* PROJECTS */
+    .projGrid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .projCard{
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(350px 180px at 20% 0%, rgba(124,92,255,.18), transparent 60%),
+        rgba(255,255,255,.04);
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .projCard:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.22); background:
+        radial-gradient(420px 210px at 20% 0%, rgba(45,212,191,.16), transparent 60%),
+        rgba(255,255,255,.06);
+    }
+    .projTop{ display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+    .projTitle{ margin:0; font-size: 16px; line-height:1.35; }
+    .projLink{ text-decoration:none; font-weight:800; opacity:.9; }
+    .projLink:hover{ opacity:1; text-decoration: underline; }
+    .projDesc{ margin:10px 0 12px; opacity:.75; line-height:1.55; }
+    .tagRow{ display:flex; flex-wrap:wrap; gap:8px; }
+    .tag{
+      font-size: 12px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+      opacity: .9;
+    }
+
+    /* SKILLS */
+    .skillGrid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .skillCard{
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+    .skillCard h3{ margin:0 0 10px; }
+    .skillCard ul{ margin:0; padding-left: 18px; opacity:.78; line-height:1.7; }
+    .s1{ background: radial-gradient(420px 200px at 20% 0%, rgba(45,212,191,.16), transparent 62%), rgba(255,255,255,.04); }
+    .s2{ background: radial-gradient(420px 200px at 20% 0%, rgba(124,92,255,.18), transparent 62%), rgba(255,255,255,.04); }
+    .s3{ background: radial-gradient(420px 200px at 20% 0%, rgba(251,191,36,.14), transparent 62%), rgba(255,255,255,.04); }
+
+    /* CONTACT */
+    .contactCard{
+      border-radius: 24px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(520px 220px at 15% 0%, rgba(124,92,255,.22), transparent 60%),
+        radial-gradient(520px 220px at 85% 10%, rgba(45,212,191,.18), transparent 60%),
+        rgba(255,255,255,.04);
+      display:grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 14px;
+      align-items: start;
+      margin-top: 14px;
+    }
+    .linkRow{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 12px; }
+    .linkBtn{
+      display:inline-flex;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      text-decoration:none;
+      font-weight: 800;
+    }
+    .linkBtn:hover{ background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.22); }
+    .contactSide{ display:flex; }
+    .note{
+      width:100%;
+      border-radius: 18px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+    }
+    .noteTitle{ font-weight:900; margin-bottom: 6px; }
+    .noteText{ opacity:.78; line-height:1.55; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+
+    /* FOOTER */
+    .foot{ margin-top: 30px; }
+    .footInner{
+      display:flex; justify-content:space-between; align-items:center;
+      border-top: 1px solid rgba(255,255,255,.12);
+      padding-top: 16px;
+      opacity: .8;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .footNav{ display:flex; gap: 12px; }
+    .footNav a{ text-decoration:none; opacity:.9; font-weight:700; }
+    .footNav a:hover{ text-decoration: underline; }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero{ grid-template-columns: 1fr; }
+      .grid3, .projGrid, .skillGrid{ grid-template-columns: 1fr; }
+      .contactCard{ grid-template-columns: 1fr; }
+    }
+  </style>
 </Layout>

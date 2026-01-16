@@ -16,7 +16,7 @@
         "@netlify/blobs": "^10.5.0",
         "@netlify/functions": "^5.1.2",
         "@tailwindcss/vite": "^4.1.16",
-        "astro": "^5.15.0",
+        "astro": "^5.16.10",
         "blobshape": "^1.0.0",
         "marked": "^17.0.0",
         "marked-shiki": "^1.2.1",

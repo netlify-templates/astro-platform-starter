@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '../components/Section.astro';
+import Card from '../components/Card.astro';
+import MemberCard from '../components/MemberCard.astro';
+import Markdown from '../components/Markdown.astro';
+
+const ourStory = `
+Bengals Cricket Club was founded in 2018 with the vision of inspiring the next generation of cricketers in Northern California. Our members come from diverse ethnicities, professions, and age groups, united by a love for the game and a commitment to excellence.
+
+We currently compete in NCCA T20 leagues, recognized by USA Cricket and affiliated with the International Cricket Council (ICC).
+`;
+
+const clubValues = [
+    {
+        title: 'Meritocracy',
+        content: 'Selection based purely on performance and commitment'
+    },
+    {
+        title: 'Accessibility',
+        content: 'Open and transparent communication'
+    },
+    {
+        title: 'Democracy',
+        content: 'Collective decision-making'
+    },
+    {
+        title: 'Trust',
+        content: 'Transparent operations for all members'
+    }
+];
+
+const executiveCommittee = [
+    { name: 'Prince Ahmed', role: 'President' },
+    { name: 'Anirban Paul', role: 'Vice President' },
+    { name: 'Devashish Ravindranath', role: 'General Secretary' },
+    { name: 'Shraddhan Sahula', role: 'Logistics Officer' },
+    { name: 'Sharan CK', role: 'Treasurer' }
+];
+
+const boardMembers = [
+    { name: 'Ob Rashid', role: 'Board Member' },
+    { name: 'Razab Chowdhury', role: 'Board Member' },
+    { name: 'Raiyan Mainuddin', role: 'Board Member' }
+];
+---
+
+<Layout title="About Us - Bengals Cricket Club">
+    <h1 class="text-4xl sm:text-5xl font-bold mb-8">About Us</h1>
+
+    <Section title="Our Story">
+        <Markdown content={ourStory} class="text-lg text-gray-700 max-w-3xl mx-auto" />
+    </Section>
+
+    <Section variant="alternate">
+        <div class="bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-primary rounded-lg p-8 sm:p-12 text-center max-w-3xl mx-auto">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-4 text-gray-900">Our Vision</h2>
+            <p class="text-lg text-gray-800">
+                To build a competitive yet inclusive cricketing ecosystem that promotes talent, teamwork, and community engagement across the Bay Area.
+            </p>
+        </div>
+    </Section>
+
+    <Section title="Club Culture & Values">
+        <div class="grid sm:grid-cols-2 gap-6">
+            {clubValues.map(value => (
+                <Card title={value.title} content={value.content} />
+            ))}
+        </div>
+    </Section>
+
+    <Section title="Leadership & Management" variant="alternate">
+        <div class="mb-12">
+            <h3 class="text-2xl font-bold mb-6 text-center">Executive Committee</h3>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {executiveCommittee.map(member => (
+                    <MemberCard name={member.name} role={member.role} />
+                ))}
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-2xl font-bold mb-6 text-center">Non-Profit Board Members</h3>
+            <div class="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+                {boardMembers.map(member => (
+                    <MemberCard name={member.name} role={member.role} />
+                ))}
+            </div>
+        </div>
+    </Section>
+</Layout>

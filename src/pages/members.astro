@@ -1,0 +1,93 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '../components/Section.astro';
+import StatsGrid from '../components/StatsGrid.astro';
+import Card from '../components/Card.astro';
+
+const membershipStats = [
+    { label: 'Total Members', value: '130+' },
+    { label: 'Youth & Students', value: '30+' },
+    { label: 'Counties Covered', value: '6+' }
+];
+
+const eligibleMembers = [
+    {
+        title: 'Adult Players',
+        content: 'All skill levels welcome, from beginners to experienced cricketers'
+    },
+    {
+        title: 'Youth & Students',
+        content: 'Young cricketers looking to develop their skills in a competitive environment'
+    },
+    {
+        title: 'Competitive & Recreational',
+        content: 'Whether you play for competition or just for fun, there\'s a place for you'
+    }
+];
+
+const joinSteps = [
+    {
+        number: '1',
+        title: 'Complete Membership Form',
+        content: 'Fill out our membership application with your details and cricket experience'
+    },
+    {
+        number: '2',
+        title: 'Register for NCCA League',
+        content: 'Register with the Northern California Cricket Association to be eligible for league play'
+    },
+    {
+        number: '3',
+        title: 'Pay Annual Club Dues',
+        content: 'Complete payment of annual membership dues to activate your membership'
+    },
+    {
+        number: '4',
+        title: 'Join Communication Channels',
+        content: 'Get added to team WhatsApp groups and email lists to stay connected'
+    }
+];
+---
+
+<Layout title="Membership - Bengals Cricket Club">
+    <h1 class="text-4xl sm:text-5xl font-bold mb-8">Become a Member</h1>
+
+    <Section title="Who Can Join">
+        <div class="grid md:grid-cols-3 gap-6">
+            {eligibleMembers.map(item => (
+                <Card title={item.title} content={item.content} />
+            ))}
+        </div>
+    </Section>
+
+    <Section variant="alternate">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-8 text-center">Membership Overview</h2>
+        <StatsGrid stats={membershipStats} />
+    </Section>
+
+    <Section title="How to Join">
+        <div class="grid sm:grid-cols-2 gap-6 mb-12">
+            {joinSteps.map(step => (
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 hover:bg-gray-100 transition-colors">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-2xl font-bold text-white">
+                            {step.number}
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold mb-2 text-gray-900">{step.title}</h3>
+                            <p class="text-gray-700">{step.content}</p>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+
+        <div class="text-center bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-primary rounded-lg p-8 max-w-2xl mx-auto">
+            <h3 class="text-2xl font-bold mb-4 text-gray-900">Ready to Join?</h3>
+            <p class="text-lg text-gray-800 mb-6">
+                Get in touch with us to start your membership journey with Bengals Cricket Club.
+            </p>
+            <a href="/contact" class="btn btn-lg">Contact Us Now</a>
+        </div>
+    </Section>
+</Layout>

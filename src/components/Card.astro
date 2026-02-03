@@ -1,0 +1,33 @@
+---
+interface Props {
+    title: string;
+    content?: string;
+    image?: string;
+    link?: string;
+    linkText?: string;
+}
+
+const { title, content, image, link, linkText = "Learn More" } = Astro.props;
+---
+
+<div class="bg-gray-50 border border-gray-200 rounded-lg p-6 hover:bg-gray-100 transition-colors">
+    {image && (
+        <div class="mb-4 rounded overflow-hidden">
+            <img src={image} alt={title} class="w-full h-48 object-cover" />
+        </div>
+    )}
+    <h3 class="text-xl sm:text-2xl font-bold mb-3 text-gray-900">
+        {title}
+    </h3>
+    {content && (
+        <p class="text-gray-600 mb-4">
+            {content}
+        </p>
+    )}
+    <slot />
+    {link && (
+        <a href={link} class="inline-block mt-4 text-primary hover:text-primary/80 transition-colors">
+            {linkText} →
+        </a>
+    )}
+</div>

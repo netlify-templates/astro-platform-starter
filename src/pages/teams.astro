@@ -1,0 +1,90 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '../components/Section.astro';
+import Card from '../components/Card.astro';
+
+const teams = [
+    {
+        title: 'Bengals Tigers',
+        details: [
+            'NCCA T20 Division 1 team',
+            'Regular practice sessions',
+            'Competitive league participation'
+        ]
+    },
+    {
+        title: 'Bengals Bulls',
+        details: [
+            'NCCA T20 Division 2 team',
+            'Development-focused squad',
+            'Pathway to Tigers team'
+        ]
+    },
+    {
+        title: 'Development & Youth Squads',
+        details: [
+            'Seasonal development programs',
+            'Youth cricket initiatives',
+            'Skill-building focus'
+        ]
+    }
+];
+
+const playerDevelopment = [
+    {
+        title: 'Competitive League Exposure',
+        content: 'Regular participation in NCCA leagues provides players with consistent competitive cricket experience.'
+    },
+    {
+        title: 'Leadership Opportunities',
+        content: 'Members have opportunities to take on captaincy, coaching, and organizational roles within the club.'
+    },
+    {
+        title: 'Regional & National Tournaments',
+        content: 'Players participate in regional and national tournaments, expanding their cricket experience beyond local leagues.'
+    },
+    {
+        title: 'USA Minor & Masters Leagues',
+        content: 'Our members have the opportunity to play in USA Minor and Masters League competitions.'
+    }
+];
+---
+
+<Layout title="Teams - Bengals Cricket Club">
+    <h1 class="text-4xl sm:text-5xl font-bold mb-8">Our Teams</h1>
+
+    <Section>
+        <div class="grid md:grid-cols-3 gap-6 mb-12">
+            {teams.map(team => (
+                <Card title={team.title}>
+                    <ul class="space-y-2 text-gray-700">
+                        {team.details.map(detail => (
+                            <li class="flex items-start">
+                                <span class="text-primary mr-2">•</span>
+                                <span>{detail}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </Card>
+            ))}
+        </div>
+    </Section>
+
+    <Section title="Player Development" variant="alternate">
+        <div class="grid sm:grid-cols-2 gap-6">
+            {playerDevelopment.map(item => (
+                <Card title={item.title} content={item.content} />
+            ))}
+        </div>
+    </Section>
+
+    <Section>
+        <div class="text-center bg-gray-50 border border-gray-200 rounded-lg p-8 max-w-2xl mx-auto">
+            <h2 class="text-2xl font-bold mb-4 text-gray-900">Interested in Joining a Team?</h2>
+            <p class="text-gray-700 mb-6">
+                We welcome players of all skill levels. Whether you're a seasoned cricketer or just starting out, there's a place for you at Bengals CC.
+            </p>
+            <a href="/members" class="btn">Learn About Membership</a>
+        </div>
+    </Section>
+</Layout>

@@ -1,0 +1,33 @@
+---
+interface Props {
+    name: string;
+    role: string;
+    image?: string;
+    bio?: string;
+}
+
+const { name, role, image, bio } = Astro.props;
+---
+
+<div class="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center hover:bg-gray-100 transition-colors">
+    <div class="mb-4 flex justify-center">
+        {image ? (
+            <img src={image} alt={name} class="w-24 h-24 rounded-full object-cover" />
+        ) : (
+            <div class="w-24 h-24 rounded-full bg-orange-100 flex items-center justify-center text-3xl font-bold text-primary">
+                {name.split(' ').map(n => n[0]).join('')}
+            </div>
+        )}
+    </div>
+    <h3 class="text-xl font-bold mb-1 text-gray-900">
+        {name}
+    </h3>
+    <p class="text-primary text-sm mb-3">
+        {role}
+    </p>
+    {bio && (
+        <p class="text-gray-600 text-sm">
+            {bio}
+        </p>
+    )}
+</div>

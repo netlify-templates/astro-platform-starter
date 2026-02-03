@@ -1,0 +1,186 @@
+
+BENGALS CRICKET CLUB
+WEBSITE WIREFRAMES DOCUMENT
+
+================================================
+GLOBAL LAYOUT (ALL PAGES)
+================================================
+
+HEADER
+- Club Logo / Name
+- Navigation Menu (Home | Club | Teams | Membership | Sponsors | Gallery | Contact)
+- Optional CTA Button (Join)
+
+FOOTER
+- Club Name
+- Social Media Links
+- League Affiliation
+- Copyright
+
+================================================
+HOME PAGE WIREFRAME
+================================================
+
+HERO SECTION
+- Club Name
+- Location (Bay Area, California)
+- Highlight: 2024 T20 Division 1 Champions
+- CTA Buttons: Join | Sponsor | Contact
+
+HIGHLIGHTS SECTION
+- Founded Year
+- Total Members
+- Teams
+- Leagues
+
+ABOUT PREVIEW
+- Short description about the club
+- Link to Club page
+
+ACHIEVEMENTS
+- 2024 Summer League – Winners (T20 Division 1)
+- Other major achievements
+
+WHERE WE PLAY
+- List of grounds / cities
+- Optional map embed
+
+LATEST UPDATES
+- Update Card (Title, Date, Short Description)
+- Repeat for multiple updates
+
+MEDIA PREVIEW
+- Image thumbnails
+- Link to full Gallery
+
+================================================
+CLUB (ABOUT US) PAGE WIREFRAME
+================================================
+
+OUR STORY
+- Club history and background
+
+VISION
+- Vision statement
+
+CLUB VALUES
+- Meritocracy
+- Accessibility
+- Democracy
+- Trust
+
+LEADERSHIP
+- Executive Committee (Name + Role cards)
+
+BOARD MEMBERS
+- Non-Profit Board Members (Name + Role cards)
+
+================================================
+TEAMS PAGE WIREFRAME
+================================================
+
+TEAMS OVERVIEW
+- Bengals Tigers
+- Bengals Bulls
+- Development / Youth Squads
+
+TEAM DETAILS (PER TEAM)
+- Captain / Manager
+- League / Format
+- Practice Info
+
+PLAYER DEVELOPMENT
+- Competitive exposure
+- Leadership opportunities
+- USA Minor / Masters League participation
+
+================================================
+MEMBERSHIP PAGE WIREFRAME
+================================================
+
+WHO CAN JOIN
+- Adult players
+- Youth & students
+- Competitive & recreational players
+
+MEMBERSHIP STATS
+- Total Members
+- Youth Members
+- Counties Covered
+
+HOW TO JOIN
+1. Fill membership form
+2. League registration
+3. Pay annual dues
+4. Join communication channels
+
+CALL TO ACTION
+- Join Now button
+
+================================================
+NEWS & UPDATES PAGE WIREFRAME
+================================================
+
+UPDATES LIST
+- Post Title
+- Date
+- Short Description
+- Read More (optional)
+
+================================================
+GALLERY PAGE WIREFRAME
+================================================
+
+FILTERS (OPTIONAL)
+- All
+- Matches
+- Events
+- Trophies
+
+IMAGE GRID
+- Photo thumbnails in grid layout
+
+INSTAGRAM FEED (OPTIONAL)
+- Embedded Instagram posts
+
+================================================
+SPONSORS PAGE WIREFRAME
+================================================
+
+WHY SPONSOR US
+- Brand visibility
+- Community support
+- Social media reach
+
+SPONSOR TIERS
+- Platinum Sponsor (benefits list)
+- Gold Sponsor (benefits list)
+
+SPONSOR LOGOS
+- Sponsor logo grid
+
+CALL TO ACTION
+- Become a Sponsor button
+
+================================================
+CONTACT PAGE WIREFRAME
+================================================
+
+CONTACT FORM
+- Name
+- Email
+- Message
+- Submit Button
+
+CONTACT INFORMATION
+- Email
+- Location
+
+SOCIAL LINKS
+- Instagram
+- Facebook
+- YouTube
+
+================================================
+END OF DOCUMENT
+================================================

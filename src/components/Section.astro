@@ -1,0 +1,20 @@
+---
+interface Props {
+    title?: string;
+    variant?: 'default' | 'alternate';
+}
+
+const { title, variant = 'default' } = Astro.props;
+const bgClass = variant === 'alternate' ? 'bg-gray-50' : '';
+---
+
+<section class={`py-12 sm:py-16 ${bgClass}`}>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        {title && (
+            <h2 class="text-3xl sm:text-4xl font-bold mb-8 sm:mb-12 text-center">
+                {title}
+            </h2>
+        )}
+        <slot />
+    </div>
+</section>

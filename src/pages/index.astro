@@ -1,19 +1,96 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Markdown from '../components/Markdown.astro';
+import HeroSection from '../components/HeroSection.astro';
+import StatsGrid from '../components/StatsGrid.astro';
+import Section from '../components/Section.astro';
+import Card from '../components/Card.astro';
 
-const explainer = `
-An Astro website can go way beyond static pages - on the right platform.
+const highlights = [
+    { label: 'Founded', value: '2018' },
+    { label: 'Active Members', value: '130+' },
+    { label: 'Teams', value: '2+' },
+    { label: 'Counties', value: '6+' }
+];
 
-Netlify supports not only [Streaming SSR](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming) and fast [Edge Middleware](https://docs.astro.build/en/guides/middleware/), but also [on-demand revalidation](https://www.netlify.com/blog/cache-tags-and-purge-api-on-netlify/) and [stale-while-revalidate](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/). 
-Any page or data can be rebuilt only when needed, without site visitors ever getting a performance hit.
-`;
+const achievements = [
+    { year: '2024', title: 'Summer League – Winners (T20 Division 1)' },
+    { year: '2024', title: 'Winter League – Runners Up (T20)' },
+    { year: '2023', title: 'Summer League Stage 1st Place (T20)' },
+    { year: '2022', title: 'Semi-Finalists (T30)' },
+    { year: '2022', title: 'Quarter Finalists (T20)' },
+    { year: '2021', title: 'Winter Semi-Finalists (T25 BACA League)' }
+];
 ---
 
-<Layout title="Welcome to Astro.">
-    <h1 class="mb-10">Netlify Platform Starter for Astro</h1>
-    <Markdown content={explainer} class="mb-10 text-lg" />
-    <p>
-        <a href="https://docs.netlify.com/frameworks/astro/" class="btn btn-lg sm:min-w-64">Read the Docs</a>
-    </p>
+<Layout title="Bengals Cricket Club - Bay Area, California">
+    <HeroSection
+        title="Bengals Cricket Club"
+        subtitle="Bay Area, California"
+    >
+        <div class="mt-6 inline-block bg-primary/20 border-2 border-primary px-6 py-2 rounded-full text-sm sm:text-base font-semibold">
+            2024 Summer League – T20 Division 1 Champions
+        </div>
+        <div class="mt-8 flex flex-wrap gap-4 justify-center">
+            <a href="/members" class="btn btn-lg">Join the Club</a>
+            <a href="/contact" class="btn btn-lg bg-gray-200 hover:bg-gray-300 text-gray-900">Contact Us</a>
+        </div>
+    </HeroSection>
+
+    <Section title="Quick Highlights">
+        <StatsGrid stats={highlights} />
+    </Section>
+
+    <Section variant="alternate">
+        <div class="text-center max-w-3xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6">About Bengals CC</h2>
+            <p class="text-lg text-gray-700 mb-6">
+                Founded in 2018, Bengals Cricket Club is a community-driven cricket organization competing in Northern California Cricket Association (NCCA) leagues. We bring together players from diverse backgrounds with a shared passion for competitive cricket, sportsmanship, and continuous growth.
+            </p>
+            <a href="/about" class="btn">Learn More About Us</a>
+        </div>
+    </Section>
+
+    <Section title="Recent Achievements">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {achievements.map(achievement => (
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 hover:bg-gray-100 transition-colors">
+                    <div class="text-2xl font-bold text-primary mb-2">{achievement.year}</div>
+                    <p class="text-gray-800">{achievement.title}</p>
+                </div>
+            ))}
+        </div>
+    </Section>
+
+    <Section title="Where We Play" variant="alternate">
+        <div class="text-center max-w-3xl mx-auto">
+            <p class="text-lg text-gray-700 mb-6">
+                Our teams compete across the Bay Area at premier cricket grounds:
+            </p>
+            <div class="flex flex-wrap justify-center gap-3 text-gray-700">
+                <span class="px-4 py-2 bg-gray-100 rounded-full">San Jose</span>
+                <span class="px-4 py-2 bg-gray-100 rounded-full">Sunnyvale</span>
+                <span class="px-4 py-2 bg-gray-100 rounded-full">Fremont</span>
+                <span class="px-4 py-2 bg-gray-100 rounded-full">Milpitas</span>
+                <span class="px-4 py-2 bg-gray-100 rounded-full">Livermore</span>
+                <span class="px-4 py-2 bg-gray-100 rounded-full">Morgan Hill</span>
+                <span class="px-4 py-2 bg-gray-100 rounded-full">Tracy</span>
+                <span class="px-4 py-2 bg-gray-100 rounded-full">Davis</span>
+            </div>
+        </div>
+    </Section>
+
+    <Section title="Media Gallery">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+            {[1, 2, 3, 4, 5, 6].map(i => (
+                <div class="aspect-video bg-gray-100 border border-gray-200 rounded-lg overflow-hidden hover:opacity-80 transition-opacity">
+                    <div class="w-full h-full flex items-center justify-center text-gray-400">
+                        Photo {i}
+                    </div>
+                </div>
+            ))}
+        </div>
+        <div class="text-center">
+            <a href="/gallery" class="btn">View Full Gallery</a>
+        </div>
+    </Section>
 </Layout>

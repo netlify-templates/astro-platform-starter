@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '../components/Section.astro';
+
+const filters = ['All', 'Matches', 'Events', 'Trophies'];
+
+// Placeholder for gallery images - will be replaced with actual images
+const galleryImages = Array.from({ length: 12 }, (_, i) => ({
+    id: i + 1,
+    alt: `Gallery image ${i + 1}`,
+    category: filters[Math.floor(Math.random() * filters.length)]
+}));
+---
+
+<Layout title="Gallery - Bengals Cricket Club">
+    <h1 class="text-4xl sm:text-5xl font-bold mb-8">Media Gallery</h1>
+
+    <Section>
+        <div class="flex flex-wrap gap-3 justify-center mb-12">
+            {filters.map(filter => (
+                <button class="px-6 py-2 rounded-full bg-gray-100 border border-gray-300 hover:bg-primary hover:border-primary hover:text-white text-gray-700 transition-colors">
+                    {filter}
+                </button>
+            ))}
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {galleryImages.map(image => (
+                <div class="group relative aspect-[4/3] bg-gray-100 border border-gray-200 rounded-lg overflow-hidden hover:border-primary transition-colors cursor-pointer">
+                    <div class="w-full h-full flex items-center justify-center text-gray-400 group-hover:text-primary transition-colors">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">📸</div>
+                            <div class="text-sm">Photo {image.id}</div>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </Section>
+
+    <Section variant="alternate">
+        <div class="text-center max-w-2xl mx-auto">
+            <h2 class="text-2xl sm:text-3xl font-bold mb-4 text-gray-900">Follow Us on Social Media</h2>
+            <p class="text-lg text-gray-700 mb-6">
+                Stay updated with our latest photos, videos, and match highlights on Instagram, Facebook, and YouTube.
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="btn">
+                    Instagram
+                </a>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="btn bg-gray-200 hover:bg-gray-300 text-gray-900">
+                    Facebook
+                </a>
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="btn bg-gray-200 hover:bg-gray-300 text-gray-900">
+                    YouTube
+                </a>
+            </div>
+        </div>
+    </Section>
+</Layout>

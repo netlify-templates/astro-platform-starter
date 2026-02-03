@@ -1,10 +1,40 @@
 @import 'tailwindcss';
 
 @theme {
+    /* Typography */
     --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Brand Colors */
     --color-primary: #f97316;
     --color-primary-content: #ffffff;
     --color-complementary: #355c7d;
+
+    /* Background Colors */
+    --color-bg-body: #ffffff;
+    --color-bg-card: #f9fafb;          /* gray-50 */
+    --color-bg-card-hover: #f3f4f6;    /* gray-100 */
+    --color-bg-section-alt: #f9fafb;   /* gray-50 for alternate sections */
+    --color-bg-hero: #fff7ed;          /* orange-50 */
+    --color-bg-hero-dark: #ffedd5;     /* orange-100 */
+    --color-bg-input: #f9fafb;         /* gray-50 */
+
+    /* Text Colors */
+    --color-text-body: #111827;        /* gray-900 */
+    --color-text-heading: #111827;     /* gray-900 */
+    --color-text-muted: #4b5563;       /* gray-600 */
+    --color-text-subtle: #6b7280;      /* gray-500 */
+    --color-text-placeholder: #9ca3af; /* gray-400 */
+
+    /* Border Colors */
+    --color-border: #e5e7eb;           /* gray-200 */
+    --color-border-strong: #d1d5db;    /* gray-300 */
+
+    /* Secondary Button Colors */
+    --color-btn-secondary: #e5e7eb;    /* gray-200 */
+    --color-btn-secondary-hover: #d1d5db; /* gray-300 */
+    --color-btn-secondary-text: #111827;  /* gray-900 */
+
+    /* Noise Background */
     --background-image-noise: linear-gradient(
             to bottom,
             color-mix(in oklab, var(--color-gray-50) 0%, transparent),
@@ -55,6 +85,7 @@
         }
     }
 
+    /* Button Styles */
     .btn {
         @apply inline-flex items-center justify-center gap-2 bg-primary text-primary-content cursor-pointer text-center font-semibold no-underline transition-colors;
         padding: var(--btn-py, 0.875rem) var(--btn-px, 1.25rem);
@@ -70,9 +101,78 @@
         }
     }
 
+    .btn-secondary {
+        background-color: var(--color-btn-secondary);
+        color: var(--color-btn-secondary-text);
+
+        &:hover {
+            background-color: var(--color-btn-secondary-hover);
+        }
+    }
+
     .btn-lg {
         --btn-font-size: 1.125rem;
         --btn-px: 1.5rem;
         --btn-py: 1.125rem;
+    }
+
+    /* Card Styles */
+    .card {
+        background-color: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        @apply rounded-lg p-6 transition-colors;
+
+        &:hover {
+            background-color: var(--color-bg-card-hover);
+        }
+    }
+
+    /* Hero Section Styles */
+    .hero-bg {
+        background: linear-gradient(to bottom right, var(--color-bg-hero), var(--color-bg-hero-dark));
+    }
+
+    /* Text Styles */
+    .text-body {
+        color: var(--color-text-body);
+    }
+
+    .text-heading {
+        color: var(--color-text-heading);
+    }
+
+    .text-muted {
+        color: var(--color-text-muted);
+    }
+
+    .text-subtle {
+        color: var(--color-text-subtle);
+    }
+
+    /* Form Input Styles */
+    .input {
+        background-color: var(--color-bg-input);
+        border: 1px solid var(--color-border-strong);
+        color: var(--color-text-body);
+        @apply px-4 py-3 rounded-lg transition-colors;
+        @apply focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+
+        &::placeholder {
+            color: var(--color-text-placeholder);
+        }
+    }
+
+    /* Tag/Badge Styles */
+    .tag {
+        background-color: var(--color-bg-card-hover);
+        color: var(--color-text-body);
+        @apply px-4 py-2 rounded-full;
+    }
+
+    /* Accent Box Styles */
+    .accent-box {
+        background: linear-gradient(to bottom right, var(--color-bg-hero), var(--color-bg-hero-dark));
+        border: 2px solid var(--color-primary);
+        @apply rounded-lg p-8;
     }
 }

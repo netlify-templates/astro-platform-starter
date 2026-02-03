@@ -9,18 +9,18 @@ const { title, subtitle, backgroundImage } = Astro.props;
 ---
 
 <section class="relative py-16 sm:py-24 -mx-4 sm:-mx-6 lg:-mx-8">
-    <div class="absolute inset-0 bg-gradient-to-br from-orange-50 to-orange-100"></div>
+    <div class="absolute inset-0 hero-bg"></div>
     {backgroundImage && (
         <div class="absolute inset-0 opacity-20">
             <img src={backgroundImage} alt="" class="w-full h-full object-cover" />
         </div>
     )}
     <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-gray-900">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-heading">
             {title}
         </h1>
         {subtitle && (
-            <p class="text-xl sm:text-2xl text-gray-700">
+            <p class="text-xl sm:text-2xl text-muted">
                 {subtitle}
             </p>
         )}

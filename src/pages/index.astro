@@ -32,7 +32,7 @@ const achievements = [
         </div>
         <div class="mt-8 flex flex-wrap gap-4 justify-center">
             <a href="/members" class="btn btn-lg">Join the Club</a>
-            <a href="/contact" class="btn btn-lg bg-gray-200 hover:bg-gray-300 text-gray-900">Contact Us</a>
+            <a href="/contact" class="btn btn-secondary btn-lg">Contact Us</a>
         </div>
     </HeroSection>
 
@@ -43,7 +43,7 @@ const achievements = [
     <Section variant="alternate">
         <div class="text-center max-w-3xl mx-auto">
             <h2 class="text-3xl sm:text-4xl font-bold mb-6">About Bengals CC</h2>
-            <p class="text-lg text-gray-700 mb-6">
+            <p class="text-lg text-muted mb-6">
                 Founded in 2018, Bengals Cricket Club is a community-driven cricket organization competing in Northern California Cricket Association (NCCA) leagues. We bring together players from diverse backgrounds with a shared passion for competitive cricket, sportsmanship, and continuous growth.
             </p>
             <a href="/about" class="btn">Learn More About Us</a>
@@ -53,9 +53,9 @@ const achievements = [
     <Section title="Recent Achievements">
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {achievements.map(achievement => (
-                <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 hover:bg-gray-100 transition-colors">
+                <div class="card">
                     <div class="text-2xl font-bold text-primary mb-2">{achievement.year}</div>
-                    <p class="text-gray-800">{achievement.title}</p>
+                    <p class="text-body">{achievement.title}</p>
                 </div>
             ))}
         </div>
@@ -63,18 +63,18 @@ const achievements = [
 
     <Section title="Where We Play" variant="alternate">
         <div class="text-center max-w-3xl mx-auto">
-            <p class="text-lg text-gray-700 mb-6">
+            <p class="text-lg text-muted mb-6">
                 Our teams compete across the Bay Area at premier cricket grounds:
             </p>
-            <div class="flex flex-wrap justify-center gap-3 text-gray-700">
-                <span class="px-4 py-2 bg-gray-100 rounded-full">San Jose</span>
-                <span class="px-4 py-2 bg-gray-100 rounded-full">Sunnyvale</span>
-                <span class="px-4 py-2 bg-gray-100 rounded-full">Fremont</span>
-                <span class="px-4 py-2 bg-gray-100 rounded-full">Milpitas</span>
-                <span class="px-4 py-2 bg-gray-100 rounded-full">Livermore</span>
-                <span class="px-4 py-2 bg-gray-100 rounded-full">Morgan Hill</span>
-                <span class="px-4 py-2 bg-gray-100 rounded-full">Tracy</span>
-                <span class="px-4 py-2 bg-gray-100 rounded-full">Davis</span>
+            <div class="flex flex-wrap justify-center gap-3">
+                <span class="tag">San Jose</span>
+                <span class="tag">Sunnyvale</span>
+                <span class="tag">Fremont</span>
+                <span class="tag">Milpitas</span>
+                <span class="tag">Livermore</span>
+                <span class="tag">Morgan Hill</span>
+                <span class="tag">Tracy</span>
+                <span class="tag">Davis</span>
             </div>
         </div>
     </Section>

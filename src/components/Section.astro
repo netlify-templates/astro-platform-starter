@@ -5,13 +5,14 @@ interface Props {
 }
 
 const { title, variant = 'default' } = Astro.props;
-const bgClass = variant === 'alternate' ? 'bg-gray-50' : '';
+const bgClass = variant === 'alternate' ? '' : '';
+const bgStyle = variant === 'alternate' ? `background-color: var(--color-bg-section-alt);` : '';
 ---
 
-<section class={`py-12 sm:py-16 ${bgClass}`}>
+<section class={`py-12 sm:py-16 ${bgClass}`} style={bgStyle}>
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {title && (
-            <h2 class="text-3xl sm:text-4xl font-bold mb-8 sm:mb-12 text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-8 sm:mb-12 text-center text-heading">
                 {title}
             </h2>
         )}

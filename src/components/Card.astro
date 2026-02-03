@@ -10,17 +10,17 @@ interface Props {
 const { title, content, image, link, linkText = "Learn More" } = Astro.props;
 ---
 
-<div class="bg-gray-50 border border-gray-200 rounded-lg p-6 hover:bg-gray-100 transition-colors">
+<div class="card">
     {image && (
         <div class="mb-4 rounded overflow-hidden">
             <img src={image} alt={title} class="w-full h-48 object-cover" />
         </div>
     )}
-    <h3 class="text-xl sm:text-2xl font-bold mb-3 text-gray-900">
+    <h3 class="text-xl sm:text-2xl font-bold mb-3 text-heading">
         {title}
     </h3>
     {content && (
-        <p class="text-gray-600 mb-4">
+        <p class="text-muted mb-4">
             {content}
         </p>
     )}

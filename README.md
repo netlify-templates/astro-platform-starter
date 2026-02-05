@@ -1,43 +1,97 @@
-# Astro on Netlify Platform Starter
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+    xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:wp="http://wordpress.org/export/1.2/"
+>
+<channel>
+    <title>Somali Innovators</title>
+    <link>https://www.somaliinnovators.com</link>
+    <description>Maqalo aqoonta, wararka, taariikhda & ciyaaraha</description>
+    <language>so-SO</language>
+    <wp:wxr_version>1.2</wp:wxr_version>
 
-[Live Demo](https://astro-platform-starter.netlify.app/)
+    <!-- Categories -->
+    <wp:category>
+        <wp:term_id>1</wp:term_id>
+        <wp:category_nicename>news</wp:category_nicename>
+        <wp:cat_name><![CDATA[Wararka]]></wp:cat_name>
+    </wp:category>
+    <wp:category>
+        <wp:term_id>2</wp:term_id>
+        <wp:category_nicename>sports</wp:category_nicename>
+        <wp:cat_name><![CDATA[Ciyaaraha]]></wp:cat_name>
+    </wp:category>
+    <wp:category>
+        <wp:term_id>3</wp:term_id>
+        <wp:category_nicename>history</wp:category_nicename>
+        <wp:cat_name><![CDATA[Taariikhda]]></wp:cat_name>
+    </wp:category>
+    <wp:category>
+        <wp:term_id>4</wp:term_id>
+        <wp:category_nicename>information</wp:category_nicename>
+        <wp:cat_name><![CDATA[Aqoon]]></wp:cat_name>
+    </wp:category>
 
-A modern starter based on Astro.js, Tailwind, and [Netlify Core Primitives](https://docs.netlify.com/core/overview/#develop) (Edge Functions, Image CDN, Blobs).
+    <!-- Pages -->
+    <item>
+        <title>Home</title>
+        <link>https://www.somaliinnovators.com/home</link>
+        <pubDate>Wed, 05 Feb 2026 12:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[Admin]]></dc:creator>
+        <guid isPermaLink="false">home</guid>
+        <description></description>
+        <content:encoded><![CDATA[
+            Soo dhawoow Somali Innovators! Hel maqalo cusub, warar, taariikh & ciyaaro.
+        ]]></content:encoded>
+        <wp:post_type>page</wp:post_type>
+        <wp:status>publish</wp:status>
+    </item>
 
-## Astro Commands
+    <item>
+        <title>Wararka</title>
+        <link>https://www.somaliinnovators.com/news</link>
+        <pubDate>Wed, 05 Feb 2026 12:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[Admin]]></dc:creator>
+        <guid isPermaLink="false">news</guid>
+        <description></description>
+        <content:encoded><![CDATA[
+            Maqalo ku saabsan wararka gudaha iyo caalamka.
+        ]]></content:encoded>
+        <wp:post_type>page</wp:post_type>
+        <wp:status>publish</wp:status>
+    </item>
 
-All commands are run from the root of the project, from a terminal:
+    <item>
+        <title>Ciyaaraha</title>
+        <link>https://www.somaliinnovators.com/sports</link>
+        <pubDate>Wed, 05 Feb 2026 12:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[Admin]]></dc:creator>
+        <guid isPermaLink="false">sports</guid>
+        <description></description>
+        <content:encoded><![CDATA[
+            Maqalo ku saabsan ciyaaraha gudaha & dibadda.
+        ]]></content:encoded>
+        <wp:post_type>page</wp:post_type>
+        <wp:status>publish</wp:status>
+    </item>
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## Deploying to Netlify
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/astro-platform-starter)
-
-## Developing Locally
-
-| Prerequisites                                                                |
-| :--------------------------------------------------------------------------- |
-| [Node.js](https://nodejs.org/) v18.20.8+.                                    |
-| (optional) [nvm](https://github.com/nvm-sh/nvm) for Node version management. |
-
-1. Clone this repository, then run `npm install` in its root directory.
-
-2. Recommended: link your local repository to a Netlify project. This will ensure you're using the same runtime version for both local development and your deployed project.
-
-```
-netlify link
-```
-
-3. Run the Astro.js development server:
-
-```
-npm run dev
-```
+    <!-- Example Article -->
+    <item>
+        <title>AI Conference Held in Mogadishu 2026</title>
+        <link>https://www.somaliinnovators.com/ai-conference</link>
+        <pubDate>Wed, 15 Feb 2026 08:00:00 +0000</pubDate>
+        <dc:creator><![CDATA[Admin]]></dc:creator>
+        <guid isPermaLink="false">ai-conference</guid>
+        <description><![CDATA[Dhowr xildhibaan iyo aqoon yahan ayaa ku kulmay caasimada dalka si ay ugu qanciyaan adeegyada AI ee Soomaaliya...]]></description>
+        <content:encoded><![CDATA[
+            <p>Dhowr xildhibaan iyo aqoon yahan ayaa ku kulmay caasimada dalka si ay ugu qanciyaan adeegyada AI ee Soomaaliya...</p>
+        ]]></content:encoded>
+        <wp:post_type>post</wp:post_type>
+        <wp:status>publish</wp:status>
+        <category domain="category" nicename="news"><![CDATA[Wararka]]></category>
+    </item>
+</channel>
+</rss>

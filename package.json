@@ -10,13 +10,13 @@
         "astro": "astro"
     },
     "dependencies": {
-        "@astrojs/netlify": "^6.6.0",
-        "@astrojs/react": "^4.4.0",
+        "@astrojs/netlify": "^7.0.0-beta.13",
+        "@astrojs/react": "^5.0.0-beta.3",
         "@fontsource-variable/inter": "^5.2.5",
         "@netlify/blobs": "^10.7.0",
         "@netlify/functions": "^5.1.2",
         "@tailwindcss/vite": "^4.1.16",
-        "astro": "^5.16.10",
+        "astro": "^6.0.0-beta.19",
         "blobshape": "^1.0.0",
         "marked": "^17.0.0",
         "marked-shiki": "^1.2.1",

@@ -1,0 +1,291 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Markdown from '../components/Markdown.astro';
+import { REACTIONS } from '../../netlify/server/reactions.mjs';
+
+const explainer = `
+A Netlify Server is one long-running Node.js process deployed next to your site. A function runs per request, but a server keeps running between them,
+so it can **remember things in memory** and **hold WebSockets open**.
+
+The card below is a live WebSocket to that process. It picked a name when it booted and has been counting ever since. Send a reaction and everyone
+on this page watches it float by (try a second tab). The same numbers are plain JSON at [\`/server/status\`](/server/status).
+
+Once nobody has been around for five minutes, the server scales to zero. The next visitor wakes a brand-new process with a new name and every counter
+back at zero. That's why its memory is a cache and never storage: anything that has to survive belongs somewhere like [Blobs](/blobs).
+`;
+
+const howItWorks = `
+## How it works
+
+The server lives in \`netlify/server/index.mjs\`. This one is a plain request handler, but Express, Hono or Fastify would work the same way. Here's the gist of it:
+
+~~~js
+import { getWebSockets, upgradeWebSocket } from '@netlify/server';
+
+// Module scope runs once per process, not once per request.
+const instance = { name: pickName(), requests: 0, reactions: 0 };
+
+export default async (request) => {
+    instance.requests++;
+
+    if (request.headers.get('upgrade') === 'websocket') {
+        const { socket, response } = upgradeWebSocket(request);
+        socket.onmessage = ({ data }) => {
+            instance.reactions++;
+            for (const visitor of getWebSockets()) visitor.send(data);
+        };
+        return response;
+    }
+
+    return Response.json(instance);
+};
+
+// Astro serves the rest of the site, so the server only claims its own corner of it.
+export const config = {
+    path: '/server/*'
+};
+~~~
+
+Astro's adapter deploys a function that answers every path, so a small integration in \`astro.config.mjs\` tells that function to leave \`/server/*\` alone.
+`;
+
+const stats = [
+    { key: 'uptime', label: 'Awake for' },
+    { key: 'visitors', label: 'Here right now' },
+    { key: 'requests', label: 'Requests served' },
+    { key: 'reactions', label: 'Reactions relayed' }
+];
+---
+
+<Layout title="Server">
+    <h1 class="mb-10">A Server That Naps</h1>
+    <Markdown content={explainer} class="mb-12" />
+
+    <section id="server-demo" data-state="connecting" aria-label="Live connection to the server" class="relative p-6 text-gray-900 bg-white rounded-lg group sm:p-8">
+        <div class="absolute inset-0 overflow-hidden rounded-lg pointer-events-none" data-stage aria-hidden="true"></div>
+        <p class="flex items-center gap-2 mb-6 text-sm font-semibold" role="status">
+            <span
+                class="w-2.5 h-2.5 rounded-full bg-gray-400 group-data-[state=live]:bg-emerald-500 group-data-[state=connecting]:bg-amber-400 group-data-[state=connecting]:animate-pulse"
+            ></span>
+            <span data-status>Waking the server…</span>
+        </p>
+        <!-- What the server said last is stale once the connection is gone, so it dims until we're live again. -->
+        <div class="transition-opacity opacity-40 group-data-[state=live]:opacity-100">
+            <p class="text-sm text-gray-500">You're talking to</p>
+            <p class="mb-6 text-3xl font-bold tracking-tight break-words" data-stat="name">…</p>
+            <dl class="grid grid-cols-2 gap-6 sm:grid-cols-4">
+                {
+                    stats.map((stat) => (
+                        <div>
+                            <dt class="text-sm text-gray-500">{stat.label}</dt>
+                            <dd class="text-xl font-semibold tabular-nums" data-stat={stat.key}>
+                                –
+                            </dd>
+                        </div>
+                    ))
+                }
+            </dl>
+        </div>
+        <p class="mt-6 text-sm text-gray-600 min-h-5" data-note></p>
+        <div class="relative flex flex-wrap items-center gap-3 mt-6">
+            {
+                REACTIONS.map((reaction) => (
+                    <button
+                        class="inline-flex items-center justify-center text-2xl transition rounded-full cursor-pointer w-14 h-14 bg-complementary/10 enabled:hover:bg-complementary/25 enabled:hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-default"
+                        data-reaction={reaction}
+                        aria-label={`Send ${reaction} to everyone here`}
+                        disabled
+                    >
+                        {reaction}
+                    </button>
+                ))
+            }
+            <button class="btn" data-reconnect hidden>Wake it up</button>
+        </div>
+    </section>
+
+    <Markdown content={howItWorks} class="mt-12" />
+</Layout>
+
+<script>
+    const IDLE_MS = 2 * 60_000;
+    const MAX_RETRIES = 5;
+
+    const demo = document.getElementById('server-demo');
+    const stage = demo.querySelector('[data-stage]');
+    const reactionButtons = demo.querySelectorAll<HTMLButtonElement>('[data-reaction]');
+    const reconnectButton = demo.querySelector<HTMLButtonElement>('[data-reconnect]');
+
+    let socket: WebSocket | undefined;
+    // Bumped on every connect and letGo, so callbacks from an older attempt can tell they're stale.
+    let attempt = 0;
+    let retries = 0;
+    let retryTimer: ReturnType<typeof setTimeout>;
+    let idleTimer: ReturnType<typeof setTimeout>;
+    let bootedAt = 0;
+    let lastName = '';
+
+    function setText(selector: string, text: string | number) {
+        demo.querySelector(selector).textContent = String(text);
+    }
+
+    function setState(state: 'connecting' | 'live' | 'resting', status: string) {
+        demo.dataset.state = state;
+        setText('[data-status]', status);
+        reactionButtons.forEach((button) => (button.disabled = state !== 'live'));
+        reconnectButton.hidden = state !== 'resting';
+    }
+
+    async function connect() {
+        const current = ++attempt;
+        clearTimeout(retryTimer);
+        setState('connecting', retries ? 'Reconnecting…' : 'Waking the server…');
+
+        // A plain HTTP request to the same process: it wakes the server if it was asleep, and says straight away if there isn't one.
+        const response = await fetch('/server/status').catch(() => undefined);
+        const instance = response?.ok ? await response.json().catch(() => undefined) : undefined;
+        if (current !== attempt) return;
+        if (!instance) {
+            if (!response || response.status >= 500) return retry();
+            return letGo("There's no server here. Astro's dev server doesn't run it: deploy to Netlify to see it live.");
+        }
+        render({ instance });
+
+        socket = new WebSocket(`${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/server/socket`);
+        socket.onopen = () => {
+            retries = 0;
+            setState('live', 'Connected');
+            restartIdleTimer();
+        };
+        socket.onmessage = (event) => render(JSON.parse(event.data));
+        socket.onclose = () => {
+            if (current === attempt) retry();
+        };
+    }
+
+    // Connections do get dropped (deploys, scaling, flaky networks), so try again, backing off each time.
+    function retry() {
+        if (retries >= MAX_RETRIES) return letGo("Can't reach the server right now.");
+        setState('connecting', 'Reconnecting…');
+        retryTimer = setTimeout(connect, Math.min(500 * 2 ** retries++, 8000));
+    }
+
+    // An open WebSocket keeps the server awake, so let go of it whenever nobody is watching.
+    function letGo(status: string) {
+        attempt++;
+        clearTimeout(retryTimer);
+        clearTimeout(idleTimer);
+        socket?.close();
+        socket = undefined;
+        retries = 0;
+        setState('resting', status);
+    }
+
+    function restartIdleTimer() {
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => letGo('Disconnected after a quiet couple of minutes, so the server can get some sleep.'), IDLE_MS);
+    }
+
+    function render({ instance, reaction, from }: { instance: Record<string, any>; reaction?: string; from?: string }) {
+        bootedAt = Date.now() - instance.uptime * 1000;
+        for (const key of ['name', 'visitors', 'requests', 'reactions']) setText(`[data-stat="${key}"]`, instance[key]);
+        showUptime();
+
+        if (instance.name !== lastName) {
+            if (lastName) setText('[data-note]', `This is a different process from ${lastName}, so none of its memory came along.`);
+            else if (instance.uptime < 5) setText('[data-note]', 'It was asleep: your visit just booted a brand-new process.');
+            else setText('[data-note]', 'It was already awake, so it remembers everything since it booted.');
+            lastName = instance.name;
+        }
+        if (reaction) float(reaction, from);
+    }
+
+    function showUptime() {
+        if (!bootedAt || demo.dataset.state !== 'live') return;
+        const seconds = Math.max(0, Math.round((Date.now() - bootedAt) / 1000));
+        const parts = [`${Math.floor(seconds / 3600)}h`, `${Math.floor(seconds / 60) % 60}m`, `${seconds % 60}s`];
+        while (parts.length > 1 && parts[0].startsWith('0')) parts.shift();
+        setText('[data-stat="uptime"]', parts.join(' '));
+    }
+
+    function float(reaction: string, from?: string) {
+        const element = document.createElement('span');
+        element.className = 'reaction';
+        element.textContent = reaction;
+        if (from && /^[A-Z]{2}$/.test(from)) {
+            // A country code becomes its flag by shifting both letters into the regional indicator range.
+            const flag = document.createElement('small');
+            flag.textContent = String.fromCodePoint(...[...from].map((letter) => 0x1f1a5 + letter.charCodeAt(0)));
+            element.append(flag);
+        }
+        element.style.left = `${5 + Math.random() * 85}%`;
+        element.addEventListener('animationend', () => element.remove());
+        stage.append(element);
+    }
+
+    reactionButtons.forEach((button) =>
+        button.addEventListener('click', () => {
+            socket?.send(button.dataset.reaction);
+            restartIdleTimer();
+        })
+    );
+    reconnectButton.addEventListener('click', connect);
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) letGo('Disconnected while this tab is in the background, so the server can get some sleep.');
+        else connect();
+    });
+    setInterval(showUptime, 1000);
+
+    if (document.hidden) letGo('Waiting for this tab to come to the front.');
+    else connect();
+</script>
+
+<style>
+    /* Reactions are added by the script, so they need global selectors. */
+    #server-demo :global(.reaction) {
+        position: absolute;
+        bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 1.875rem;
+        line-height: 1;
+        animation: reaction-float 2.4s ease-out forwards;
+    }
+
+    #server-demo :global(.reaction small) {
+        margin-top: 0.25rem;
+        font-size: 0.875rem;
+    }
+
+    @keyframes reaction-float {
+        from {
+            opacity: 0;
+            transform: translateY(0) scale(0.6);
+        }
+        15% {
+            opacity: 1;
+            transform: translateY(-2rem) scale(1.15);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(-16rem) scale(1);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        #server-demo :global(.reaction) {
+            animation-name: reaction-fade;
+        }
+    }
+
+    @keyframes reaction-fade {
+        from,
+        70% {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+</style>

@@ -1,19 +1,155 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Markdown from '../components/Markdown.astro';
-
-const explainer = `
-An Astro website can go way beyond static pages - on the right platform.
-
-Netlify supports not only [Streaming SSR](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming) and fast [Edge Middleware](https://docs.astro.build/en/guides/middleware/), but also [on-demand revalidation](https://www.netlify.com/blog/cache-tags-and-purge-api-on-netlify/) and [stale-while-revalidate](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/). 
-Any page or data can be rebuilt only when needed, without site visitors ever getting a performance hit.
-`;
+// Holding page. Change these two lines to your own details.
+const linkedin = 'https://www.linkedin.com/in/YOUR-PROFILE/';
+const email = 'you@example.com';
 ---
 
-<Layout title="bye">
-    <h1 class="mb-10">Netlify Platform Starter for Astro</h1>
-    <Markdown content={explainer} class="mb-10 text-lg" />
-    <p>
-        <a href="https://docs.netlify.com/frameworks/astro/" class="btn btn-lg sm:min-w-64">Read the Docs</a>
-    </p>
-</Layout>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Tom — new website coming soon</title>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@700&display=swap" rel="stylesheet" />
+        <script is:inline>
+            // Apply the saved or system theme before the page paints, so it never flashes.
+            (() => {
+                let theme;
+                try { theme = localStorage.getItem('theme'); } catch (e) {}
+                if (!theme) theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                document.documentElement.dataset.theme = theme;
+            })();
+        </script>
+        <style is:global>
+            :root {
+                --page: #f5f5f5;
+                --bar: #ffffff;
+                --chip: #f2f2f2;
+                --chip-hover: #e8e8e8;
+                --text: #111111;
+                --icon: #6b6b6b;
+            }
+            :root[data-theme='dark'] {
+                --page: #111111;
+                --bar: #1b1b1b;
+                --chip: #262626;
+                --chip-hover: #333333;
+                --text: #f2f2f2;
+                --icon: #a3a3a3;
+            }
+
+            * { box-sizing: border-box; margin: 0; }
+
+            body {
+                min-height: 100vh;
+                min-height: 100dvh;
+                display: grid;
+                place-items: center;
+                padding: 16px;
+                background: var(--page);
+                color: var(--text);
+                transition: background-color 0.2s;
+            }
+
+            .bar {
+                display: flex;
+                align-items: center;
+                gap: 3px;
+                padding: 4px;
+                background: var(--bar);
+                border-radius: 6px;
+            }
+
+            .logo {
+                display: grid;
+                place-items: center;
+                width: 40px;
+                height: 34px;
+                font: 700 24px/1 'Inter', system-ui, sans-serif;
+                letter-spacing: -0.02em;
+                color: var(--text);
+                text-decoration: none;
+            }
+
+            .label {
+                display: flex;
+                align-items: center;
+                height: 34px;
+                padding: 0 20px;
+                margin-right: 13px;
+                background: var(--chip);
+                border-radius: 4px;
+                font: 400 17px/1 'Instrument Serif', Georgia, serif;
+                white-space: nowrap;
+            }
+
+            .chip {
+                display: grid;
+                place-items: center;
+                width: 61px;
+                height: 34px;
+                padding: 0;
+                border: 0;
+                background: var(--chip);
+                border-radius: 4px;
+                color: var(--icon);
+                cursor: pointer;
+                transition: background-color 0.15s, color 0.15s;
+            }
+            .chip:hover { background: var(--chip-hover); color: var(--text); }
+            .chip:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+            .chip svg { width: 18px; height: 18px; }
+
+            /* Show the sun in light mode and the moon in dark mode */
+            .icon-moon { display: none; }
+            [data-theme='dark'] .icon-sun { display: none; }
+            [data-theme='dark'] .icon-moon { display: block; }
+
+            @media (max-width: 440px) {
+                .label { padding: 0 14px; margin-right: 6px; font-size: 16px; }
+                .logo { width: 32px; }
+                .chip { width: 38px; }
+            }
+        </style>
+    </head>
+    <body>
+        <main class="bar">
+            <a class="logo" href="/" aria-label="Home">t</a>
+            <p class="label">New website coming soon</p>
+
+            <a class="chip" href={linkedin} target="_blank" rel="noopener" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.850-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
+                </svg>
+            </a>
+
+            <a class="chip" href={`mailto:${email}`} aria-label="Email">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true">
+                    <rect x="2.5" y="5" width="19" height="14" rx="1" />
+                    <path d="M3 5.5l9 7.5 9-7.5M3 18.5l6.5-6.5M21 18.5L14.5 12" />
+                </svg>
+            </a>
+
+            <button class="chip" id="theme-toggle" type="button" aria-label="Switch light or dark mode">
+                <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4.5" />
+                    <path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8" />
+                </svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11z" />
+                </svg>
+            </button>
+        </main>
+
+        <script is:inline>
+            document.getElementById('theme-toggle').addEventListener('click', () => {
+                const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+                document.documentElement.dataset.theme = next;
+                try { localStorage.setItem('theme', next); } catch (e) {}
+            });
+        </script>
+    </body>
+</html>

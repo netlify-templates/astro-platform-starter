@@ -1,0 +1,74 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const capabilities = [
+    {
+        label: 'Ship',
+        title: 'Deploys stay close to the code',
+        body: 'Connect the repository, push a branch, and preview the exact experience before it reaches production.'
+    },
+    {
+        label: 'Serve',
+        title: 'Pages run where they make sense',
+        body: 'Mix static routes, server rendering, edge logic, image transforms, and functions without moving to a separate app.'
+    },
+    {
+        label: 'Update',
+        title: 'Content can refresh on demand',
+        body: 'Use cache tags and revalidation patterns to keep pages fast while still reacting to product and editorial changes.'
+    }
+];
+
+const checks = ['Astro routes', 'Edge redirects', 'Image optimization', 'Blobs storage', 'Cache revalidation'];
+---
+
+<Layout title="Platform Overview">
+    <section class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+        <div>
+            <p class="mb-4 text-sm font-semibold uppercase tracking-[0.28em] text-primary">Platform overview</p>
+            <h1 class="mb-6 max-w-3xl">One starter, several Netlify building blocks</h1>
+            <p class="max-w-2xl text-lg leading-8 text-white/82">
+                This page ties together the examples in the starter and shows how a production Astro site can combine
+                rendering, caching, media, and storage features behind a single deploy workflow.
+            </p>
+        </div>
+
+        <aside class="border border-white/18 bg-white/[0.07] p-5 shadow-2xl shadow-gray-950/20 backdrop-blur">
+            <p class="mb-4 text-sm font-semibold text-white/72">Starter coverage</p>
+            <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-2">
+                {
+                    checks.map((check) => (
+                        <div class="border border-white/12 bg-gray-950/20 px-3 py-3 text-sm font-medium text-white/88">
+                            {check}
+                        </div>
+                    ))
+                }
+            </div>
+        </aside>
+    </section>
+
+    <section class="mt-14 grid gap-4 md:grid-cols-3">
+        {
+            capabilities.map((item) => (
+                <article class="border border-white/16 bg-white/[0.06] p-6">
+                    <p class="mb-8 inline-flex bg-primary px-2.5 py-1 text-xs font-bold uppercase tracking-[0.22em] text-primary-content">
+                        {item.label}
+                    </p>
+                    <h2 class="mb-4 text-2xl">{item.title}</h2>
+                    <p class="leading-7 text-white/76">{item.body}</p>
+                </article>
+            ))
+        }
+    </section>
+
+    <section class="mt-14 border-t border-white/18 pt-8">
+        <div class="grid gap-6 md:grid-cols-[0.7fr_1fr] md:items-center">
+            <h2>Use the examples as a launchpad</h2>
+            <div class="flex flex-wrap gap-3">
+                <a href="/revalidation" class="btn">Try revalidation</a>
+                <a href="/image-cdn" class="btn">View image CDN</a>
+                <a href="/blobs" class="btn">Open blobs demo</a>
+            </div>
+        </div>
+    </section>
+</Layout>
